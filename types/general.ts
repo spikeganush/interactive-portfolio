@@ -1,0 +1,3 @@
+type PageComponentProps = {
+  id?: string;
+};

@@ -6,7 +6,7 @@ import SectionHeading from './section-heading';
 import { projectsData } from '@/lib/data';
 import Project from './project';
 
-const Projects = () => {
+const Projects = ({ id }: PageComponentProps) => {
   const { ref } = useSectionInView('Projects', 0.5);
 
   return (

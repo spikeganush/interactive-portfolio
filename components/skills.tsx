@@ -20,7 +20,7 @@ const fadeInAnimationVariants = {
   }),
 };
 
-const Skill = () => {
+const Skill = ({ id }: PageComponentProps) => {
   const { ref } = useSectionInView('Skills');
 
   return (

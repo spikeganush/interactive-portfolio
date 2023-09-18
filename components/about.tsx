@@ -5,7 +5,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import SectionHeading from './section-heading';
 
-const About = () => {
+const About = ({ id }: PageComponentProps) => {
   const { ref } = useSectionInView('About');
 
   return (

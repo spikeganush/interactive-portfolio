@@ -6,18 +6,21 @@ import ThemeContextProvider from '@/context/theme-context';
 import { Toaster } from 'react-hot-toast';
 import ThemeSwitch from '@/components/theme-switch';
 import Footer from '@/components/footer';
+import ProviderSession from '@/components/provider';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'Spike Portfolio',
-  description: 'Florian "Spike" Jourdain full-stack developer portfolio',
+  title: 'Your personal portfolio',
+  description: 'Customise your personal portfolio and share it with the world.',
 };
 
 export default function RootLayout({
   children,
+  session,
 }: {
   children: React.ReactNode;
+  session: any;
 }) {
   return (
     <html lang="en" className="!scroll-smooth">
@@ -26,15 +29,17 @@ export default function RootLayout({
       >
         <div className="bg-[#fbe2e3] absolute top-[-6rem] -z-10 right-[11rem] h-[31.25rem] w-[31.25rem] rounded-full blur-[10rem] sm:w-[68.75rem] dark:bg-[#946263]"></div>
         <div className="bg-[#dbd7fb] absolute top-[-1rem] -z-10 left-[-35rem] h-[31.25rem] w-[50rem] rounded-full blur-[10rem] sm:w-[68.75rem] md:left-[-33rem] lg:left-[-28rem] xl:left-[-15rem] 2xl:left-[-5rem] dark:bg-[#676394]"></div>
-        <ThemeContextProvider>
-          <ActiveSectionContextProvider>
-            <Header />
-            {children}
-            <Footer />
-            <Toaster position="top-right" />
-            <ThemeSwitch />
-          </ActiveSectionContextProvider>
-        </ThemeContextProvider>
+        <ProviderSession session={session}>
+          <ThemeContextProvider>
+            <ActiveSectionContextProvider>
+              <Header />
+              {children}
+              <Footer />
+              <Toaster position="top-right" />
+              <ThemeSwitch />
+            </ActiveSectionContextProvider>
+          </ThemeContextProvider>
+        </ProviderSession>
       </body>
     </html>
   );

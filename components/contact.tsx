@@ -8,7 +8,7 @@ import { sendEmail } from '@/actions/sendEmail';
 import SubmitBtn from './submit-btn';
 import toast from 'react-hot-toast';
 
-const Contact = () => {
+const Contact = ({ id }: PageComponentProps) => {
   const { ref } = useSectionInView('Contact');
 
   return (
