@@ -10,7 +10,7 @@ import Skill from '@/components/skills';
 import { useParams } from 'next/navigation';
 import React from 'react';
 
-const page = () => {
+const PersonalPortfolio = () => {
   const params = useParams();
 
   return (
@@ -26,4 +26,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default PersonalPortfolio;
