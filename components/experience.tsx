@@ -7,13 +7,16 @@ import {
   VerticalTimelineElement,
 } from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
-import { experiencesData } from '@/lib/data';
+import { experiencesData, experiencesDataIcons } from '@/lib/data';
 import { useSectionInView } from '@/lib/hooks';
 import { useTheme } from '@/context/theme-context';
+import { PageComponentProps } from '@/types/general';
+import { usePortfolioDataContext } from '@/context/portfolio-data-context';
 
 export default function Experience({ id }: PageComponentProps) {
   const { ref } = useSectionInView('Experience');
   const { theme } = useTheme();
+  const { data } = usePortfolioDataContext();
 
   return (
     <section id="experience" ref={ref} className="scroll-mt-28 mb-28 sm:mb-40">
@@ -36,8 +39,12 @@ export default function Experience({ id }: PageComponentProps) {
                     ? '0.4rem solid #9ca3af'
                     : '0.4rem solid rgba(255, 255, 255, 0.5)',
               }}
-              date={item.date}
-              icon={item.icon}
+              date={
+                item.endYear
+                  ? item.startYear + ' - ' + item.endYear
+                  : item.startYear
+              }
+              icon={React.createElement(experiencesDataIcons[item.icon])}
               iconStyle={{
                 background: theme === 'light' ? 'white' : '#1c2432',
                 fontSize: '1.5rem',

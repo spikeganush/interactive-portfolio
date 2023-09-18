@@ -5,6 +5,8 @@ import SectionHeading from './section-heading';
 import { skillsData } from '@/lib/data';
 import { useSectionInView } from '@/lib/hooks';
 import { motion } from 'framer-motion';
+import { PageComponentProps } from '@/types/general';
+import { usePortfolioDataContext } from '@/context/portfolio-data-context';
 
 const fadeInAnimationVariants = {
   initial: {
@@ -22,6 +24,7 @@ const fadeInAnimationVariants = {
 
 const Skill = ({ id }: PageComponentProps) => {
   const { ref } = useSectionInView('Skills');
+  const { data } = usePortfolioDataContext();
 
   return (
     <section

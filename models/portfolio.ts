@@ -13,15 +13,15 @@ const portfolioSchema = new Schema({
     type: String,
     required: [true, 'Intro is required'],
   },
-  resume: {
+  resumeUrl: {
     type: String,
     required: [true, 'Resume is required'],
   },
-  github: {
+  githubUrl: {
     type: String,
     required: [true, 'Github is required'],
   },
-  linkedin: {
+  linkedinUrl: {
     type: String,
     required: [true, 'Linkedin is required'],
   },
@@ -33,21 +33,21 @@ const portfolioSchema = new Schema({
     {
       title: {
         type: String,
-        required: [true, 'Title is required'],
+        required: [true, 'ProjectTitle is required'],
       },
       description: {
         type: String,
-        required: [true, 'Description is required'],
+        required: [true, 'ProjectDescription is required'],
       },
-      image: {
+      imageUrl: {
         type: String,
-        required: [true, 'Image is required'],
+        required: [true, 'ProjectImage is required'],
       },
       url: {
-        type: String,
+        type: [String],
         required: [false],
       },
-      technologies: {
+      tags: {
         type: [String],
         required: [true, 'Technologies is required'],
       },
@@ -59,13 +59,17 @@ const portfolioSchema = new Schema({
   },
   experience: [
     {
+      logo: {
+        type: String,
+        required: [true, 'Logo is required'],
+      },
       title: {
         type: String,
         required: [true, 'Title is required'],
       },
-      city: {
+      location: {
         type: String,
-        required: [true, 'City is required'],
+        required: [true, 'Location is required'],
       },
       description: {
         type: String,
@@ -85,21 +89,25 @@ const portfolioSchema = new Schema({
     type: String,
     required: [true, 'Email is required'],
   },
-  LeftLightBg: {
+  leftLightBg: {
     type: String,
     required: [true, 'Left light background is required'],
   },
-  LeftDarkBg: {
+  leftDarkBg: {
     type: String,
     required: [true, 'Left dark background is required'],
   },
-  RightLightBg: {
+  rightLightBg: {
     type: String,
     required: [true, 'Right light background is required'],
   },
-  RightDarkBg: {
+  rightDarkBg: {
     type: String,
     required: [true, 'Right dark background is required'],
+  },
+  customUrl: {
+    type: String,
+    required: [false],
   },
 });
 

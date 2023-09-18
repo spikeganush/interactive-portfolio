@@ -1,11 +1,7 @@
-import React from 'react';
 import { CgWorkAlt } from 'react-icons/cg';
 import { FaReact } from 'react-icons/fa';
 import { LuGraduationCap } from 'react-icons/lu';
-import marketplaceImg from '@/public/marketplace.png';
-import appImg from '@/public/app.png';
-import metaverseImg from '@/public/metaverse.png';
-import golfImg from '@/public/golf.png';
+import { IconType } from 'react-icons/lib';
 
 export const links = [
   {
@@ -34,39 +30,29 @@ export const links = [
   },
 ] as const;
 
-export const experiencesData = [
-  {
-    title: 'Bachelor in Mobile App Development',
-    location: 'Sydney, Australia',
-    description: 'I graduated after 3 years of studying at AIT.',
-    icon: React.createElement(LuGraduationCap),
-    date: '2019-2022',
-  },
-  {
-    title: 'Full-Stack Developer',
-    location: 'Sydney, Australia',
-    description:
-      "I've developed a CMS to organise and update the roster for a private company.",
-    icon: React.createElement(CgWorkAlt),
-    date: '2021',
-  },
-  {
-    title: 'Full-stack Developer',
-    location: 'Sydney, Australia',
-    description:
-      'I worked as a full-stack developer for 1 year for Mirk as a full-stack developer. After 8 months, I was promoted to Web Lead Developer.',
-    icon: React.createElement(CgWorkAlt),
-    date: '2022 - 2023',
-  },
-  {
-    title: 'Full-stack Developer',
-    location: 'Sydney, Australia',
-    description:
-      "Looking for a new position. My stack includes React, React-Native, Next.js, TypeScript, Tailwind, MongoDB, Firebase, Postgresql, AWS. I'm open to full-time opportunities.",
-    icon: React.createElement(FaReact),
-    date: 'Present',
-  },
-] as const;
+export const fontFormat = ['font-bold', 'italic', 'underline'] as const;
+
+export const IntroData =
+  '<span class="font-bold">Hello, I\'m John Doe.</span> I\'m a <span class="font-bold">superheroe </span> with <span class="font-bold">2 years</span> of experience. I enjoy saving <span class="italic">dogs & cats</span>. My focus is <span class="underline">Flying and Super-speed</span>.';
+
+export const AboutData = `<p className="mb-3">
+After earning a degree in <span className="font-medium">Computer Science</span>, 
+I was fortunate to transition directly from my final-year internship into a role at TechCorp as a Backend Developer. 
+What <span className="underline">excites</span> me the most about coding is the endless opportunity for innovation. 
+There's nothing like the thrill of cracking a complex algorithm or optimizing a piece of code. 
+My primary tech stack includes <span className="font-medium">Java, Spring Boot, Angular, MySQL, and AWS</span>. 
+</p>
+<p className="mb-3">
+I'm always eager to explore new technologies and methodologies to stay ahead of the curve. 
+Currently, I'm on the lookout for a challenging full-time role in software development.
+</p>
+
+<p>
+<span className="italic">Outside of the coding world</span>, my interests are quite diverse. 
+I'm an avid reader, particularly of science fiction and history. 
+I also enjoy hiking and have recently taken up photography as a hobby. 
+Currently, I'm diving into the world of machine learning to broaden my skill set.
+</p>`;
 
 export const projectsData = [
   {
@@ -82,7 +68,7 @@ export const projectsData = [
       'Zustand',
     ],
     url: ['https://marketplace.playtoday.cc'],
-    imageUrl: marketplaceImg,
+    imageUrl: '/marketplace.png',
   },
   {
     title: 'Play Today. App Showcase',
@@ -90,7 +76,7 @@ export const projectsData = [
       "I was in charge of the full project. It's a website to showcase the Golf app we have made on React-Native.",
     tags: ['React', 'TypeScript', 'Postgresql', 'Firebase', 'Zustand'],
     url: ['https://app.playtoday.cc'],
-    imageUrl: appImg,
+    imageUrl: '/app.png',
   },
   {
     title: 'Play Today. Golf',
@@ -101,7 +87,7 @@ export const projectsData = [
       'https://play.google.com/store/apps/details?id=cc.playtoday.golfapp',
       'https://apps.apple.com/au/app/play-today/id1631790603',
     ],
-    imageUrl: golfImg,
+    imageUrl: '/golf.png',
   },
   {
     title: 'Play Today. Metaverse',
@@ -109,9 +95,9 @@ export const projectsData = [
       'The React front-end initialises a Unity instance to render the WebGL project and handles user authentication, transferring the data to the WebGL build.',
     tags: ['React', 'TypeScript', 'Firebase', 'Zustand'],
     url: ['https://playtoday.cc'],
-    imageUrl: metaverseImg,
+    imageUrl: '/metaverse.png',
   },
-] as const;
+];
 
 export const skillsData = [
   'HTML',
@@ -132,4 +118,46 @@ export const skillsData = [
   'AWS',
   'Express',
   'PostgreSQL',
-] as const;
+];
+
+export const experiencesDataIcons: { [key: string]: IconType } = {
+  LuGraduationCap: LuGraduationCap,
+  CgWorkAlt: CgWorkAlt,
+  FaReact: FaReact,
+};
+
+export const experiencesData = [
+  {
+    title: 'Bachelor in Mobile App Development',
+    location: 'Sydney, Australia',
+    description: 'I graduated after 3 years of studying at AIT.',
+    icon: 'LuGraduationCap',
+    startYear: '2019',
+    endYear: '2022',
+  },
+  {
+    title: 'Full-Stack Developer',
+    location: 'Sydney, Australia',
+    description:
+      "I've developed a CMS to organise and update the roster for a private company.",
+    icon: 'CgWorkAlt',
+    startYear: '2021',
+  },
+  {
+    title: 'Full-stack Developer',
+    location: 'Sydney, Australia',
+    description:
+      'I worked as a full-stack developer for 1 year for Mirk as a full-stack developer. After 8 months, I was promoted to Web Lead Developer.',
+    icon: 'CgWorkAlt',
+    startYear: '2022',
+    endYear: '2023',
+  },
+  {
+    title: 'Full-stack Developer',
+    location: 'Sydney, Australia',
+    description:
+      "Looking for a new position. My stack includes React, React-Native, Next.js, TypeScript, Tailwind, MongoDB, Firebase, Postgresql, AWS. I'm open to full-time opportunities.",
+    icon: 'FaReact',
+    startYear: 'Present',
+  },
+];
