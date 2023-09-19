@@ -1,22 +1,55 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { links } from '@/lib/data';
 import Link from 'next/link';
 import clsx from 'clsx';
 import { useActiveSectionContext } from '@/context/active-section-context';
 import { useSession } from 'next-auth/react';
+import { usePortfolioDataContext } from '@/context/portfolio-data-context';
+import { useTheme } from '@/context/theme-context';
 
 const Header = () => {
   const { activeSection, setActiveSection, setTimeOfLastClick } =
     useActiveSectionContext();
   const { data: session } = useSession();
+  const { data } = usePortfolioDataContext();
+  const { theme } = useTheme();
+  const [leftLightBg, setLeftLightBg] = React.useState<string>(
+    data.leftLightBg ?? 'dbd7fb'
+  );
+  const [rightLightBg, setRightLightBg] = React.useState<string>(
+    data.rightLightBg ?? 'fbe2e3'
+  );
+  const [leftDarkBg, setLeftDarkBg] = React.useState<string>(
+    data.leftDarkBg ?? '676394'
+  );
+  const [rightDarkBg, setRightDarkBg] = React.useState<string>(
+    data.rightDarkBg ?? '946263'
+  );
+
+  useEffect(() => {
+    setLeftLightBg(data.leftLightBg ?? 'dbd7fb');
+    setRightLightBg(data.rightLightBg ?? 'fbe2e3');
+    setLeftDarkBg(data.leftDarkBg ?? '676394');
+    setRightDarkBg(data.rightDarkBg ?? '946263');
+  }, [data]);
 
   return (
     <>
-      <div className="bg-[#fbe2e3] absolute top-[-6rem] -z-10 right-[11rem] h-[31.25rem] w-[31.25rem] rounded-full blur-[10rem] sm:w-[68.75rem] dark:bg-[#946263]" />
-      <div className="bg-[#dbd7fb] absolute top-[-1rem] -z-10 left-[-35rem] h-[31.25rem] w-[50rem] rounded-full blur-[10rem] sm:w-[68.75rem] md:left-[-33rem] lg:left-[-28rem] xl:left-[-15rem] 2xl:left-[-5rem] dark:bg-[#676394]" />
+      <div
+        className={`absolute top-[-1rem] -z-10 left-[-35rem] h-[31.25rem] w-[50rem] rounded-full blur-[10rem] sm:w-[68.75rem] md:left-[-33rem] lg:left-[-28rem] xl:left-[-15rem] 2xl:left-[-5rem]`}
+        style={{
+          backgroundColor: `#${theme === 'light' ? leftLightBg : leftDarkBg}`,
+        }}
+      />
+      <div
+        className={`absolute top-[-6rem] -z-10 right-[11rem] h-[31.25rem] w-[31.25rem] rounded-full blur-[10rem] sm:w-[68.75rem]`}
+        style={{
+          backgroundColor: `#${theme === 'light' ? rightLightBg : rightDarkBg}`,
+        }}
+      />
 
       <header className="z-[999] relative">
         <motion.div

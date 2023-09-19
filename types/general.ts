@@ -38,3 +38,15 @@ export type DataState = {
   experiences: experience[] | null;
   email: string | null;
 };
+
+export type EditState = {
+  photo: Boolean;
+  leftColor: Boolean;
+  rightColor: Boolean;
+  intro: Boolean;
+  about: Boolean;
+  projects: Boolean;
+  skills: Boolean;
+  experiences: Boolean;
+  email: Boolean;
+};
