@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import About from '@/components/about';
 import Contact from '@/components/contact';
 import Experience from '@/components/experience';
@@ -10,15 +10,7 @@ import SectionDivider from '@/components/section-divider';
 import Skill from '@/components/skills';
 import { useParams } from 'next/navigation';
 import React from 'react';
-import {
-  AboutData,
-  IntroData,
-  experiencesData,
-  projectsData,
-  skillsData,
-} from '@/lib/data';
 import { useSession } from 'next-auth/react';
-import { DataState } from '@/types/general';
 import { usePortfolioDataContext } from '@/context/portfolio-data-context';
 
 const PersonalPortfolio = () => {
