@@ -26,3 +26,15 @@ body {
 .black_btn {
   @apply rounded-full border border-black bg-black py-1.5 px-5 text-white transition-all hover:bg-white hover:text-black text-center text-sm flex items-center justify-center;
 }
+
+.black_round_btn {
+  @apply bg-gray-900 text-white px-7 py-3 flex items-center gap-2 rounded-full outline-none focus:scale-110 hover:scale-110 hover:bg-gray-950 active:scale-105 transition;
+}
+
+.bubble {
+  @apply fixed bottom-20 right-5 font-medium w-36 bg-white borderBlack rounded-xl px-5 py-3 dark:bg-white/10 scale-0 transition-transform duration-300;
+}
+
+.bubble.open {
+  @apply scale-100;
+}

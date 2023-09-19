@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { links } from '@/lib/data';
 import Link from 'next/link';
@@ -9,6 +9,8 @@ import { useActiveSectionContext } from '@/context/active-section-context';
 import { useSession } from 'next-auth/react';
 import { usePortfolioDataContext } from '@/context/portfolio-data-context';
 import { useTheme } from '@/context/theme-context';
+import { BG_COLORS } from '@/constant/general';
+import useConnexion from '@/hooks/useConnexion';
 
 const Header = () => {
   const { activeSection, setActiveSection, setTimeOfLastClick } =
@@ -16,36 +18,38 @@ const Header = () => {
   const { data: session } = useSession();
   const { data } = usePortfolioDataContext();
   const { theme } = useTheme();
-  const [leftLightBg, setLeftLightBg] = React.useState<string>(
-    data.leftLightBg ?? 'dbd7fb'
+  const [leftLightBg, setLeftLightBg] = useState<string>(
+    data.leftLightBg ?? BG_COLORS.LEFT_LIGHT
   );
-  const [rightLightBg, setRightLightBg] = React.useState<string>(
-    data.rightLightBg ?? 'fbe2e3'
+  const [rightLightBg, setRightLightBg] = useState<string>(
+    data.rightLightBg ?? BG_COLORS.RIGHT_LIGHT
   );
-  const [leftDarkBg, setLeftDarkBg] = React.useState<string>(
-    data.leftDarkBg ?? '676394'
+  const [leftDarkBg, setLeftDarkBg] = useState<string>(
+    data.leftDarkBg ?? BG_COLORS.LEFT_DARK
   );
-  const [rightDarkBg, setRightDarkBg] = React.useState<string>(
-    data.rightDarkBg ?? '946263'
+  const [rightDarkBg, setRightDarkBg] = useState<string>(
+    data.rightDarkBg ?? BG_COLORS.RIGHT_DARK
   );
 
+  useConnexion();
+
   useEffect(() => {
-    setLeftLightBg(data.leftLightBg ?? 'dbd7fb');
-    setRightLightBg(data.rightLightBg ?? 'fbe2e3');
-    setLeftDarkBg(data.leftDarkBg ?? '676394');
-    setRightDarkBg(data.rightDarkBg ?? '946263');
-  }, [data]);
+    setLeftDarkBg(data.leftDarkBg ?? BG_COLORS.LEFT_DARK);
+    setRightDarkBg(data.rightDarkBg ?? BG_COLORS.RIGHT_DARK);
+    setLeftLightBg(data.leftLightBg ?? BG_COLORS.LEFT_LIGHT);
+    setRightLightBg(data.rightLightBg ?? BG_COLORS.RIGHT_LIGHT);
+  }, [data.leftDarkBg, data.rightDarkBg, data.leftLightBg, data.rightLightBg]);
 
   return (
     <>
       <div
-        className={`absolute top-[-1rem] -z-10 left-[-35rem] h-[31.25rem] w-[50rem] rounded-full blur-[10rem] sm:w-[68.75rem] md:left-[-33rem] lg:left-[-28rem] xl:left-[-15rem] 2xl:left-[-5rem]`}
+        className="absolute top-[-1rem] -z-10 left-[-35rem] h-[31.25rem] w-[50rem] rounded-full blur-[10rem] sm:w-[68.75rem] md:left-[-33rem] lg:left-[-28rem] xl:left-[-15rem] 2xl:left-[-5rem]"
         style={{
           backgroundColor: `#${theme === 'light' ? leftLightBg : leftDarkBg}`,
         }}
       />
       <div
-        className={`absolute top-[-6rem] -z-10 right-[11rem] h-[31.25rem] w-[31.25rem] rounded-full blur-[10rem] sm:w-[68.75rem]`}
+        className="absolute top-[-6rem] -z-10 right-[11rem] h-[31.25rem] w-[31.25rem] rounded-full blur-[10rem] sm:w-[68.75rem]"
         style={{
           backgroundColor: `#${theme === 'light' ? rightLightBg : rightDarkBg}`,
         }}
@@ -99,12 +103,18 @@ const Header = () => {
               </motion.li>
             ))}
             {session?.user ? (
-              <Link
-                href="/api/auth/signout"
-                className="flex w-full items-center justify-center px-3 py-3 hover:text-gray-950 transition dark:text-gray-500 dark:hover:text-gray-300"
+              <motion.li
+                className="h-3/4 flex items-center justify-center relative"
+                initial={{ y: -100, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
               >
-                Sign out
-              </Link>
+                <Link
+                  href="/api/auth/signout"
+                  className="flex w-full items-center justify-center px-3 py-3 hover:text-gray-950 transition dark:text-gray-500 dark:hover:text-gray-300"
+                >
+                  Sign out
+                </Link>
+              </motion.li>
             ) : null}
           </ul>
         </nav>

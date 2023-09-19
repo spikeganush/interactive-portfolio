@@ -7,41 +7,41 @@ const portfolioSchema = new Schema({
   },
   photo: {
     type: String,
-    required: [true, 'Photo is required'],
+    required: [false],
   },
   intro: {
     type: String,
-    required: [true, 'Intro is required'],
+    required: [false],
   },
   resumeUrl: {
     type: String,
-    required: [true, 'Resume is required'],
+    required: [false],
   },
   githubUrl: {
     type: String,
-    required: [true, 'Github is required'],
+    required: [false],
   },
   linkedinUrl: {
     type: String,
-    required: [true, 'Linkedin is required'],
+    required: [false],
   },
   about: {
     type: String,
-    required: [true, 'About is required'],
+    required: [false],
   },
   projects: [
     {
       title: {
         type: String,
-        required: [true, 'ProjectTitle is required'],
+        required: [false],
       },
       description: {
         type: String,
-        required: [true, 'ProjectDescription is required'],
+        required: [false],
       },
       imageUrl: {
         type: String,
-        required: [true, 'ProjectImage is required'],
+        required: [false],
       },
       url: {
         type: [String],
@@ -49,35 +49,35 @@ const portfolioSchema = new Schema({
       },
       tags: {
         type: [String],
-        required: [true, 'Technologies is required'],
+        required: [false],
       },
     },
   ],
   skills: {
     type: [String],
-    required: [true, 'Skills is required'],
+    required: [false],
   },
   experience: [
     {
       logo: {
         type: String,
-        required: [true, 'Logo is required'],
+        required: [false],
       },
       title: {
         type: String,
-        required: [true, 'Title is required'],
+        required: [false],
       },
       location: {
         type: String,
-        required: [true, 'Location is required'],
+        required: [false],
       },
       description: {
         type: String,
-        required: [true, 'Description is required'],
+        required: [false],
       },
       startYear: {
         type: String,
-        required: [true, 'Start year is required'],
+        required: [false],
       },
       endYear: {
         type: String,
@@ -87,23 +87,23 @@ const portfolioSchema = new Schema({
   ],
   email: {
     type: String,
-    required: [true, 'Email is required'],
+    required: [false],
   },
   leftLightBg: {
     type: String,
-    required: [true, 'Left light background is required'],
+    required: [false],
   },
   leftDarkBg: {
     type: String,
-    required: [true, 'Left dark background is required'],
+    required: [false],
   },
   rightLightBg: {
     type: String,
-    required: [true, 'Right light background is required'],
+    required: [false],
   },
   rightDarkBg: {
     type: String,
-    required: [true, 'Right dark background is required'],
+    required: [false],
   },
   customUrl: {
     type: String,

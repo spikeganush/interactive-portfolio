@@ -1,36 +1,34 @@
 'use client';
 
-import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { BsArrowRight, BsLinkedin } from 'react-icons/bs';
 import { HiDownload } from 'react-icons/hi';
-import { FaGithubSquare } from 'react-icons/fa';
+import { FaGithubSquare, FaUserTie } from 'react-icons/fa';
+import { FiEdit } from 'react-icons/fi';
 import { useSectionInView } from '@/lib/hooks';
 import { useActiveSectionContext } from '@/context/active-section-context';
-import { FaUserTie } from 'react-icons/fa';
-import { signIn, signOut, useSession } from 'next-auth/react';
-import { usePathname, useRouter } from 'next/navigation';
+import { signIn, useSession } from 'next-auth/react';
 import { IntroData } from '@/lib/data';
 import sanitizeHtml from 'sanitize-html';
 import { PageComponentProps } from '@/types/general';
 import { usePortfolioDataContext } from '@/context/portfolio-data-context';
+import BgPicker from './edition/bg-picker';
+import UploadPhoto from './edition/upload-photo';
+import { usePathname } from 'next/navigation';
+import { useIsOwnerContext } from '@/context/is-owner-context';
 
 export default function Intro({ id }: PageComponentProps) {
   const { ref } = useSectionInView('Home', 0.5);
   const { setActiveSection, setTimeOfLastClick } = useActiveSectionContext();
-  const router = useRouter();
-  const pathName = usePathname();
-  const { data } = usePortfolioDataContext();
+  const { data, edit, setEdit } = usePortfolioDataContext();
   const { data: session } = useSession();
+  const { isOwner } = useIsOwnerContext();
 
-  useEffect(() => {
-    if (session?.user?.id && pathName === '/') {
-      // add the user id to the url
-      router.push(`/${session?.user?.id}`);
-    }
-  }, [session?.user?.id]);
+  const handleEditPhoto = () => {
+    setEdit((prev) => ({ ...prev, photo: true }));
+  };
 
   return (
     <section
@@ -38,7 +36,13 @@ export default function Intro({ id }: PageComponentProps) {
       id="home"
       className="mb-28 max-w-[50rem] text-center sm:mb-0 scroll-mt-[100rem]"
     >
-      <div className="flex items-center justify-center mb-5">
+      <div
+        className={`flex mb-5 ${
+          isOwner
+            ? 'justify-between items-start'
+            : 'justify-center items-center'
+        }`}
+      >
         {session?.user ? null : (
           <button
             type="button"
@@ -50,43 +54,68 @@ export default function Intro({ id }: PageComponentProps) {
             Customise your portfolio
           </button>
         )}
+        {isOwner ? <BgPicker /> : null}
       </div>
       <div className="flex items-center justify-center">
         <div className="relative">
-          <motion.div
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{
-              type: 'tween',
-              duration: 0.2,
-            }}
-          >
-            {data?.photo ? (
-              <img
-                src={data?.photo}
-                alt="Ricardo portrait"
-                width="192"
-                height="192"
-                className="h-24 w-24 rounded-full object-cover border-[0.35rem] border-white shadow-xl"
-              />
-            ) : (
-              <FaUserTie size="5rem" />
-            )}
-          </motion.div>
+          {edit.photo ? (
+            <UploadPhoto />
+          ) : (
+            <>
+              <motion.div
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{
+                  type: 'tween',
+                  duration: 0.2,
+                }}
+              >
+                {data?.photo ? (
+                  <img
+                    src={data?.photo}
+                    alt="Ricardo portrait"
+                    width="192"
+                    height="192"
+                    className="h-24 w-24 rounded-full object-cover border-[0.35rem] border-white shadow-xl"
+                  />
+                ) : (
+                  <FaUserTie size="5rem" />
+                )}
+              </motion.div>
 
-          <motion.span
-            className="absolute bottom-0 right-0 text-4xl"
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{
-              type: 'spring',
-              stiffness: 125,
-              delay: 0.1,
-              duration: 0.7,
-            }}
-          >
-            👋
-          </motion.span>
+              <motion.span
+                className="absolute bottom-0 right-0 text-4xl"
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{
+                  type: 'spring',
+                  stiffness: 125,
+                  delay: 0.1,
+                  duration: 0.7,
+                }}
+              >
+                👋
+              </motion.span>
+            </>
+          )}
+          {/* {isOwner ? (
+            edit.photo ? null : (
+              <motion.button
+                className="absolute bottom-0 -right-6"
+                onClick={() => handleEditPhoto()}
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{
+                  type: 'spring',
+                  stiffness: 125,
+                  delay: 0.1,
+                  duration: 0.7,
+                }}
+              >
+                <FiEdit size="1.5rem" />
+              </motion.button>
+            )
+          ) : null} */}
         </div>
       </div>
 
@@ -114,7 +143,7 @@ export default function Intro({ id }: PageComponentProps) {
       >
         <Link
           href="#contact"
-          className="group bg-gray-900 text-white px-7 py-3 flex items-center gap-2 rounded-full outline-none focus:scale-110 hover:scale-110 hover:bg-gray-950 active:scale-105 transition"
+          className="black_round_btn"
           onClick={() => {
             setActiveSection('Contact');
             setTimeOfLastClick(Date.now());

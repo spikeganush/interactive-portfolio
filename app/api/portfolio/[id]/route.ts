@@ -1,11 +1,15 @@
 import Portfolio from '@/models/portfolio';
 import { connectToDatabase } from '@/utils/database';
+import { NextRequest } from 'next/server';
 
 type Params = {
   id: string;
 };
 
-export const GET = async (request: Request, { params }: { params: Params }) => {
+export const GET = async (
+  request: NextRequest,
+  { params }: { params: Params }
+) => {
   try {
     await connectToDatabase;
 
@@ -23,33 +27,38 @@ export const GET = async (request: Request, { params }: { params: Params }) => {
 };
 
 export const PATCH = async (
-  request: Request,
+  request: NextRequest,
   { params }: { params: Params }
 ) => {
-  const { portfolio } = await request.json();
   try {
+    const { portfolio } = await request.json();
     await connectToDatabase;
 
-    const existingPortfolio = await Portfolio.findById(params.id);
+    const existingPortfolio = await Portfolio.findOne({ creator: params.id });
 
     if (!existingPortfolio) {
       return new Response('Portfolio not found', { status: 404 });
     }
 
     for (const key in portfolio) {
-      existingPortfolio[key] = portfolio[key];
+      if (key === 'userId') {
+        existingPortfolio['creator'] = portfolio[key];
+      } else {
+        existingPortfolio[key] = portfolio[key];
+      }
     }
 
     await existingPortfolio.save();
 
     return new Response('Successfully updated the portfolio', { status: 200 });
   } catch (error) {
+    console.log(error);
     return new Response('Failed to update portfolio', { status: 500 });
   }
 };
 
 export const DELETE = async (
-  request: Request,
+  request: NextRequest,
   { params }: { params: Params }
 ) => {
   try {

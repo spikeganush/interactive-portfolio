@@ -8,6 +8,9 @@ import ThemeSwitch from '@/components/theme-switch';
 import Footer from '@/components/footer';
 import ProviderSession from '@/components/provider';
 import PortfolioDataContextProvider from '@/context/portfolio-data-context';
+import IsOwnerContextProvider from '@/context/is-owner-context';
+import InfoBubbleContextProvider from '@/context/info-bubble-context';
+import AllProviders from '@/context/all-provider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -26,19 +29,13 @@ export default function RootLayout({
   return (
     <html lang="en" className="!scroll-smooth">
       <body className={`${inter.className}`}>
-        <ProviderSession session={session}>
-          <ThemeContextProvider>
-            <PortfolioDataContextProvider>
-              <ActiveSectionContextProvider>
-                <Header />
-                {children}
-                <Footer />
-                <Toaster position="top-right" />
-                <ThemeSwitch />
-              </ActiveSectionContextProvider>
-            </PortfolioDataContextProvider>
-          </ThemeContextProvider>
-        </ProviderSession>
+        <AllProviders session={session}>
+          <Header />
+          {children}
+          <Footer />
+          <Toaster position="top-right" />
+          <ThemeSwitch />
+        </AllProviders>
       </body>
     </html>
   );

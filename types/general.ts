@@ -41,8 +41,7 @@ export type DataState = {
 
 export type EditState = {
   photo: Boolean;
-  leftColor: Boolean;
-  rightColor: Boolean;
+  color: Boolean;
   intro: Boolean;
   about: Boolean;
   projects: Boolean;

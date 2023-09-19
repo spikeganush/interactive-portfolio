@@ -1,5 +1,6 @@
 'use client';
 
+import { BG_COLORS } from '@/constant/general';
 import { DataState, EditState } from '@/types/general';
 import React, { useState, createContext, useContext } from 'react';
 
@@ -24,10 +25,10 @@ export default function PortfolioDataContextProvider({
 }: PortfolioDataContextProviderProps) {
   const [data, setData] = useState<DataState>({
     userId: null,
-    leftLightBg: 'dbd7fb',
-    rightLightBg: 'fbe2e3',
-    leftDarkBg: '676394',
-    rightDarkBg: '946263',
+    leftLightBg: BG_COLORS.LEFT_LIGHT,
+    rightLightBg: BG_COLORS.RIGHT_LIGHT,
+    leftDarkBg: BG_COLORS.LEFT_DARK,
+    rightDarkBg: BG_COLORS.RIGHT_DARK,
     photo: null,
     intro: null,
     resumeUrl: null,
@@ -42,8 +43,7 @@ export default function PortfolioDataContextProvider({
   const [loading, setLoading] = useState(false);
   const [edit, setEdit] = useState<EditState>({
     photo: false,
-    leftColor: false,
-    rightColor: false,
+    color: false,
     intro: false,
     about: false,
     projects: false,
