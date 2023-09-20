@@ -19,8 +19,19 @@ const UploadPhoto = () => {
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     try {
       setEdit((prev) => ({ ...prev, photo: false }));
-
       setLoading(true);
+      if (!acceptedFiles.length) {
+        toast.error('No files were uploaded');
+        throw new Error('No files were uploaded');
+      }
+      if (acceptedFiles.length > 1) {
+        toast.error('Only one file can be uploaded at a time');
+        throw new Error('Only one file can be uploaded at a time');
+      }
+      if (acceptedFiles[0].size > 2 * 1024 * 1024) {
+        toast.error('File size must be less than 2MB');
+        throw new Error('File size must be less than 2MB');
+      }
       const data = new FormData();
       if (!acceptedFiles[0] || !session?.user) return;
       data.append('file', acceptedFiles[0]);
@@ -56,7 +67,6 @@ const UploadPhoto = () => {
       'image/*': ['.jpeg', '.png', '.jpg', '.webp'],
     },
     multiple: false,
-    maxSize: 2 * 1024 * 1024,
     onDrop: onDrop,
   });
 
@@ -87,7 +97,10 @@ const UploadPhoto = () => {
         {isDragAccept && <p>All files will be accepted</p>}
         {isDragReject && <p>Some files will be rejected</p>}
         {!isDragActive && (
-          <p>Drag 'n' drop an image here, or click to select one</p>
+          <>
+            <p>Drag 'n' drop an image here, or click to select one</p>
+            <p className="text-xs">(Less than 2MB)</p>
+          </>
         )}
       </div>
     </motion.section>
