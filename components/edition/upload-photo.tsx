@@ -43,6 +43,7 @@ const UploadPhoto = () => {
       console.log(error);
       toast.error('File upload failed');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const {

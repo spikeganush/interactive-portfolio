@@ -23,7 +23,7 @@ export async function POST(
   const buffer = Buffer.from(bytes);
 
   const directory = path.join(
-    process.env.UPLOAD_DIR_PATH!,
+    process.env.UPLOAD_DIR_PATH ?? '',
     'public',
     'images',
     params.id,
