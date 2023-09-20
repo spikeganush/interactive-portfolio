@@ -7,7 +7,6 @@ type PhotoLoaderProps = {
 const PhotoLoader = ({ className }: PhotoLoaderProps) => {
   return (
     <ContentLoader className={className}>
-      // a circle
       <circle cx="43" cy="43" r="43" />
     </ContentLoader>
   );
