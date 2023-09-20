@@ -38,3 +38,11 @@ body {
 .bubble.open {
   @apply scale-100;
 }
+
+.color-picker {
+  @apply !absolute scale-0 left-1/2 -translate-x-1/2 top-12 z-10 transition-transform duration-300;
+}
+
+.color-picker.open {
+  @apply scale-100;
+}

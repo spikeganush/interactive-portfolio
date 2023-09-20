@@ -49,7 +49,7 @@ const Header = () => {
         }}
       />
       <div
-        className="absolute top-[-6rem] -z-10 right-[11rem] h-[31.25rem] w-[31.25rem] rounded-full blur-[10rem] sm:w-[68.75rem]"
+        className="absolute top-[-6rem] -z-10 right-[-11rem] h-[31.25rem] w-[31.25rem] rounded-full blur-[10rem] sm:w-[68.75rem] md:right-[8rem] sm:right-[11rem]"
         style={{
           backgroundColor: `#${theme === 'light' ? rightLightBg : rightDarkBg}`,
         }}

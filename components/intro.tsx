@@ -37,7 +37,7 @@ export default function Intro({ id }: PageComponentProps) {
       className="mb-28 max-w-[50rem] text-center sm:mb-0 scroll-mt-[100rem]"
     >
       <div
-        className={`flex mb-5 ${
+        className={`flex mb-5 relative ${
           isOwner
             ? 'justify-between items-start'
             : 'justify-center items-center'
