@@ -13,7 +13,7 @@ type ColorPickerProps = {
 
 const ColorPicker = ({ position }: ColorPickerProps) => {
   const { theme } = useTheme();
-  const { data, setData } = usePortfolioDataContext();
+  const { data, setData, updateAndSaveOneKey } = usePortfolioDataContext();
   const { saveDataDb } = useSaveDataDb();
   const positionName = position.charAt(0).toUpperCase() + position.slice(1);
   const keyPrefix = `${position}${theme === 'light' ? 'Light' : 'Dark'}Bg`;
@@ -38,9 +38,7 @@ const ColorPicker = ({ position }: ColorPickerProps) => {
         ? BG_COLORS.RIGHT_LIGHT
         : BG_COLORS.RIGHT_DARK;
 
-    const dataForDb = { ...data, [keyPrefix]: defaultColor };
-    setData((prev) => ({ ...prev, [keyPrefix]: defaultColor }));
-    saveDataDb(dataForDb);
+    updateAndSaveOneKey(defaultColor, keyPrefix);
   };
 
   const handleOnBlur = () => {

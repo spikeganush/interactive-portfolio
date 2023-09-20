@@ -1,53 +1,68 @@
-import { writeFile, mkdir, readdir, unlink } from 'fs/promises';
-import { NextRequest } from 'next/server';
-import path from 'path';
+import { NextRequest, NextResponse } from 'next/server';
+import { v2 as cloudinary } from 'cloudinary';
+import streamifier from 'streamifier';
 
 type Params = {
   id: string;
 };
 
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME!,
+  api_key: process.env.CLOUD_API_KEY!,
+  api_secret: process.env.CLOUD_API_SECRET!,
+  secure: true,
+});
+
 export async function POST(
   request: NextRequest,
   { params }: { params: Params }
 ) {
-  const data = await request.formData();
-  const file = data.get('file') as File;
+  try {
+    const data = await request.formData();
 
-  if (!file) {
-    return new Response(JSON.stringify({ error: 'No file uploaded' }), {
-      status: 400,
+    const file = data.get('file') as File;
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+
+    console.log({ bytes, buffer });
+
+    await cloudinary.api.delete_resources_by_prefix(
+      `images/${params.id}/profile/`
+    );
+
+    // Wrap the Cloudinary upload in a Promise
+    const uploadToCloudinary = new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        {
+          folder: `images/${params.id}/profile`,
+        },
+        (error, result) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(result);
+          }
+        }
+      );
+      streamifier.createReadStream(buffer).pipe(stream);
+    });
+
+    // Await the Promise and handle the result
+    try {
+      const result = await uploadToCloudinary;
+      return new Response(JSON.stringify(result), {
+        status: 200,
+      });
+    } catch (error) {
+      console.log('Upload failed:', error);
+      return new Response(JSON.stringify(error), {
+        status: 500,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return new Response(JSON.stringify(error), {
+      status: 500,
     });
   }
-
-  const bytes = await file.arrayBuffer();
-  const buffer = Buffer.from(bytes);
-
-  const directory = path.join(
-    process.env.UPLOAD_DIR_PATH ?? '',
-    'public',
-    'images',
-    params.id,
-    'profile'
-  );
-  const filePath = path.join(directory, file.name);
-  const filePathToReturn = path.join('images', params.id, 'profile', file.name);
-
-  await mkdir(path.dirname(filePath), { recursive: true });
-
-  try {
-    const files = await readdir(directory);
-    const unlinkPath = path.join(directory, files[0]);
-    await unlink(unlinkPath);
-    console.log(`Existing file at ${filePath} has been deleted.`);
-  } catch (error) {
-    console.log(`No existing file at ${filePath}.`);
-  }
-
-  await writeFile(filePath, buffer);
-
-  console.log(`open ${filePath} to see the uploaded file`);
-
-  return new Response(JSON.stringify({ path: filePathToReturn }), {
-    status: 200,
-  });
 }

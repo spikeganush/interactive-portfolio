@@ -1,8 +1,9 @@
 'use client';
 
 import { BG_COLORS } from '@/constant/general';
+import useSaveDataDb from '@/hooks/useSaveDataDb';
 import { DataState } from '@/types/general';
-import React, { useState, createContext, useContext } from 'react';
+import React, { useState, createContext, useContext, Key } from 'react';
 
 type PortfolioDataContextProviderProps = {
   children: React.ReactNode;
@@ -11,6 +12,7 @@ type PortfolioDataContextProviderProps = {
 type PortfolioDataContextType = {
   data: DataState;
   setData: React.Dispatch<React.SetStateAction<DataState>>;
+  updateAndSaveOneKey: (newData: any, key: Key) => void;
 };
 
 export const PortfolioDataContext =
@@ -37,11 +39,21 @@ export default function PortfolioDataContextProvider({
     email: null,
   });
 
+  const { saveDataDb } = useSaveDataDb();
+
+  const updateAndSaveOneKey = (value: any, key: Key) => {
+    setData((prev) => {
+      saveDataDb({ ...prev, [key]: value });
+      return { ...prev, [key]: value };
+    });
+  };
+
   return (
     <PortfolioDataContext.Provider
       value={{
         data,
         setData,
+        updateAndSaveOneKey,
       }}
     >
       {children}
