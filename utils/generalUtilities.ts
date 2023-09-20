@@ -1,3 +1,7 @@
+import { useEditContext } from '@/context/edit-context';
+import toast from 'react-hot-toast';
+import { Key } from 'readline';
+
 export function formatUsername(username: string) {
   // Remove all characters that are not alphanumeric, underscore or dot
   let formatted = username.replace(/[^a-zA-Z0-9._]/g, '');
@@ -16,4 +20,14 @@ export function formatUsername(username: string) {
   }
 
   return formatted;
+}
+
+export function throwErrorAndToast(message: string) {
+  toast.error(message);
+  throw new Error(message);
+}
+
+export function handleCloseEdit(key: string) {
+  const { setEdit } = useEditContext();
+  setEdit((prev) => ({ ...prev, [key]: false }));
 }
