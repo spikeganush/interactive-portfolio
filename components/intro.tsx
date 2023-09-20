@@ -16,13 +16,15 @@ import { usePortfolioDataContext } from '@/context/portfolio-data-context';
 import BgPicker from './edition/bg-picker';
 import UploadPhoto from './edition/upload-photo';
 import { useIsOwnerContext } from '@/context/is-owner-context';
+import { useEditContext } from '@/context/edit-context';
 
 export default function Intro({ id }: PageComponentProps) {
   const { ref } = useSectionInView('Home', 0.5);
   const { setActiveSection, setTimeOfLastClick } = useActiveSectionContext();
-  const { data, edit, setEdit } = usePortfolioDataContext();
+  const { data } = usePortfolioDataContext();
   const { data: session } = useSession();
   const { isOwner } = useIsOwnerContext();
+  const { edit, setEdit } = useEditContext();
 
   const handleEditPhoto = () => {
     setEdit((prev) => ({ ...prev, photo: true }));

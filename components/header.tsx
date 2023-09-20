@@ -10,7 +10,6 @@ import { useSession } from 'next-auth/react';
 import { usePortfolioDataContext } from '@/context/portfolio-data-context';
 import { useTheme } from '@/context/theme-context';
 import { BG_COLORS } from '@/constant/general';
-import useConnexion from '@/hooks/useConnexion';
 
 const Header = () => {
   const { activeSection, setActiveSection, setTimeOfLastClick } =
@@ -30,8 +29,6 @@ const Header = () => {
   const [rightDarkBg, setRightDarkBg] = useState<string>(
     data.rightDarkBg ?? BG_COLORS.RIGHT_DARK
   );
-
-  useConnexion();
 
   useEffect(() => {
     setLeftDarkBg(data.leftDarkBg ?? BG_COLORS.LEFT_DARK);

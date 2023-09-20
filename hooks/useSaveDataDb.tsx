@@ -1,11 +1,10 @@
-import { usePortfolioDataContext } from '@/context/portfolio-data-context';
+import { DataState } from '@/types/general';
 import toast from 'react-hot-toast';
 
 const useSaveDataDb = () => {
-  const { data } = usePortfolioDataContext();
-
-  const saveDataDb = async () => {
+  const saveDataDb = async (data: DataState) => {
     try {
+      console.log(data);
       const response = await fetch('/api/portfolio/save', {
         method: 'POST',
         body: JSON.stringify(data),

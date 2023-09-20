@@ -38,18 +38,22 @@ const ColorPicker = ({ position }: ColorPickerProps) => {
         ? BG_COLORS.RIGHT_LIGHT
         : BG_COLORS.RIGHT_DARK;
 
+    const dataForDb = { ...data, [keyPrefix]: defaultColor };
     setData((prev) => ({ ...prev, [keyPrefix]: defaultColor }));
-    saveDataDb();
+    saveDataDb(dataForDb);
   };
 
   const handleOnBlur = () => {
     setColorPickerOpen(false);
     setOpenBubble(false);
     removeBubbleText();
-    saveDataDb();
+    setData((prevData) => {
+      saveDataDb(prevData);
+      return prevData;
+    });
   };
 
-  const handleButtonClick = () => {
+  const handleDivClick = () => {
     setBubbleText(`Remember to change the ${
       theme === 'dark' ? 'light' : 'dark'
     } theme
@@ -95,7 +99,7 @@ const ColorPicker = ({ position }: ColorPickerProps) => {
           style={{
             backgroundColor: `#${data[keyPrefix as keyof typeof data]}`,
           }}
-          onClick={handleButtonClick}
+          onClick={handleDivClick}
         ></button>
 
         <div

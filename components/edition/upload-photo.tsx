@@ -1,20 +1,20 @@
 'use client';
-
+import { useEffect } from 'react';
 import { usePortfolioDataContext } from '@/context/portfolio-data-context';
 import useSaveDataDb from '@/hooks/useSaveDataDb';
 import { motion } from 'framer-motion';
-import { set } from 'mongoose';
 import { useSession } from 'next-auth/react';
-import path from 'path';
 import { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import toast from 'react-hot-toast';
 import { AiFillCloseCircle } from 'react-icons/ai';
+import { useEditContext } from '@/context/edit-context';
 
 const UploadPhoto = () => {
-  const { setEdit, data, setData } = usePortfolioDataContext();
+  const { data, setData } = usePortfolioDataContext();
   const { data: session } = useSession();
   const { saveDataDb } = useSaveDataDb();
+  const { setEdit } = useEditContext();
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     try {
@@ -28,10 +28,11 @@ const UploadPhoto = () => {
       });
       if (res.ok) {
         const json = await res.json();
-        console.log(json);
         const photoPath = json.path;
-        setData((prev) => ({ ...prev, photo: photoPath }));
-        await saveDataDb();
+        setData((prev) => {
+          saveDataDb({ ...prev, photo: photoPath });
+          return { ...prev, photo: photoPath };
+        });
         toast.success('File uploaded successfully');
 
         setEdit((prev) => ({ ...prev, photo: false }));

@@ -5,6 +5,7 @@ import PortfolioDataContextProvider from '@/context/portfolio-data-context';
 import IsOwnerContextProvider from '@/context/is-owner-context';
 import InfoBubbleContextProvider from '@/context/info-bubble-context';
 import ProviderSession from '@/components/provider';
+import EditContextProvider from './edit-context';
 
 const AllProviders = ({
   children,
@@ -15,15 +16,17 @@ const AllProviders = ({
 }) => {
   return (
     <ProviderSession session={session}>
-      <InfoBubbleContextProvider>
-        <ThemeContextProvider>
-          <PortfolioDataContextProvider>
-            <ActiveSectionContextProvider>
-              <IsOwnerContextProvider>{children}</IsOwnerContextProvider>
-            </ActiveSectionContextProvider>
-          </PortfolioDataContextProvider>
-        </ThemeContextProvider>
-      </InfoBubbleContextProvider>
+      <EditContextProvider>
+        <InfoBubbleContextProvider>
+          <ThemeContextProvider>
+            <PortfolioDataContextProvider>
+              <ActiveSectionContextProvider>
+                <IsOwnerContextProvider>{children}</IsOwnerContextProvider>
+              </ActiveSectionContextProvider>
+            </PortfolioDataContextProvider>
+          </ThemeContextProvider>
+        </InfoBubbleContextProvider>
+      </EditContextProvider>
     </ProviderSession>
   );
 };
