@@ -18,6 +18,8 @@ import UploadPhoto from './edition/upload-photo';
 import { useIsOwnerContext } from '@/context/is-owner-context';
 import { useEditContext } from '@/context/edit-context';
 import Image from 'next/image';
+import { useLoadingContext } from '@/context/loading-context';
+import PhotoLoader from './loaders/photo-loader';
 
 export default function Intro({ id }: PageComponentProps) {
   const { ref } = useSectionInView('Home', 0.5);
@@ -26,6 +28,7 @@ export default function Intro({ id }: PageComponentProps) {
   const { data: session } = useSession();
   const { isOwner } = useIsOwnerContext();
   const { edit, setEdit } = useEditContext();
+  const { loading } = useLoadingContext();
 
   const handleEditPhoto = () => {
     setEdit((prev) => ({ ...prev, photo: true }));
@@ -44,7 +47,7 @@ export default function Intro({ id }: PageComponentProps) {
             : 'justify-center items-center'
         }`}
       >
-        {session?.user ? null : (
+        {session?.user || id ? null : (
           <button
             type="button"
             onClick={() => {
@@ -71,7 +74,9 @@ export default function Intro({ id }: PageComponentProps) {
                   duration: 0.2,
                 }}
               >
-                {data?.photo ? (
+                {loading ? (
+                  <PhotoLoader className="h-24 w-24 rounded-full object-cover border-[0.35rem] border-white shadow-xl" />
+                ) : data?.photo ? (
                   <Image
                     src={data?.photo}
                     alt="Profile photo"

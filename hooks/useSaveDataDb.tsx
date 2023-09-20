@@ -4,7 +4,6 @@ import toast from 'react-hot-toast';
 const useSaveDataDb = () => {
   const saveDataDb = async (data: DataState) => {
     try {
-      console.log(data);
       const response = await fetch('/api/portfolio/save', {
         method: 'POST',
         body: JSON.stringify(data),

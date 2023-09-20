@@ -24,8 +24,6 @@ export async function POST(
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    console.log({ bytes, buffer });
-
     await cloudinary.api.delete_resources_by_prefix(
       `images/${params.id}/profile/`
     );
@@ -44,7 +42,16 @@ export async function POST(
           }
         }
       );
-      streamifier.createReadStream(buffer).pipe(stream);
+      let uploadBytes = 0;
+      const totalBytes = buffer.length;
+      const readStream = streamifier.createReadStream(buffer);
+
+      readStream.on('data', (chunk) => {
+        uploadBytes += chunk.length;
+        const progress = Math.round((uploadBytes / totalBytes) * 100);
+        console.log(`Progress: ${progress}%`);
+      });
+      readStream.pipe(stream);
     });
 
     // Await the Promise and handle the result

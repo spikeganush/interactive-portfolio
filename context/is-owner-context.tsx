@@ -1,8 +1,7 @@
 'use client';
 
-import type { SectionName } from '@/lib/types';
 import { useSession } from 'next-auth/react';
-import { useParams, usePathname } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import React, { useState, createContext, useContext, useEffect } from 'react';
 
 type IsOwnerContextProviderProps = {

@@ -8,14 +8,19 @@ import { useDropzone } from 'react-dropzone';
 import toast from 'react-hot-toast';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import { useEditContext } from '@/context/edit-context';
+import { useLoadingContext } from '@/context/loading-context';
 
 const UploadPhoto = () => {
   const { updateAndSaveOneKey } = usePortfolioDataContext();
   const { data: session } = useSession();
   const { setEdit } = useEditContext();
+  const { setLoading } = useLoadingContext();
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     try {
+      setEdit((prev) => ({ ...prev, photo: false }));
+
+      setLoading(true);
       const data = new FormData();
       if (!acceptedFiles[0] || !session?.user) return;
       data.append('file', acceptedFiles[0]);
@@ -29,14 +34,13 @@ const UploadPhoto = () => {
         const photoPath = json.secure_url;
         updateAndSaveOneKey(photoPath, 'photo');
         toast.success('File uploaded successfully');
-
-        setEdit((prev) => ({ ...prev, photo: false }));
-      } else {
-        toast.error('File upload failed');
+        setLoading(false);
       }
     } catch (error) {
+      setEdit((prev) => ({ ...prev, photo: true }));
       console.log(error);
       toast.error('File upload failed');
+      setLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
