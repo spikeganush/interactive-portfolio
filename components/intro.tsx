@@ -1,6 +1,5 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { BsArrowRight, BsLinkedin } from 'react-icons/bs';
@@ -16,7 +15,6 @@ import { PageComponentProps } from '@/types/general';
 import { usePortfolioDataContext } from '@/context/portfolio-data-context';
 import BgPicker from './edition/bg-picker';
 import UploadPhoto from './edition/upload-photo';
-import { usePathname } from 'next/navigation';
 import { useIsOwnerContext } from '@/context/is-owner-context';
 
 export default function Intro({ id }: PageComponentProps) {
@@ -73,7 +71,7 @@ export default function Intro({ id }: PageComponentProps) {
                 {data?.photo ? (
                   <img
                     src={data?.photo}
-                    alt="Ricardo portrait"
+                    alt="Profile photo"
                     width="192"
                     height="192"
                     className="h-24 w-24 rounded-full object-cover border-[0.35rem] border-white shadow-xl"
@@ -98,7 +96,7 @@ export default function Intro({ id }: PageComponentProps) {
               </motion.span>
             </>
           )}
-          {/* {isOwner ? (
+          {isOwner ? (
             edit.photo ? null : (
               <motion.button
                 className="absolute bottom-0 -right-6"
@@ -115,7 +113,7 @@ export default function Intro({ id }: PageComponentProps) {
                 <FiEdit size="1.5rem" />
               </motion.button>
             )
-          ) : null} */}
+          ) : null}
         </div>
       </div>
 

@@ -1,43 +1,95 @@
 'use client';
 
-import { useState } from 'react';
+import { usePortfolioDataContext } from '@/context/portfolio-data-context';
+import useSaveDataDb from '@/hooks/useSaveDataDb';
+import { motion } from 'framer-motion';
+import { set } from 'mongoose';
+import { useSession } from 'next-auth/react';
+import path from 'path';
+import { useCallback } from 'react';
+import { useDropzone } from 'react-dropzone';
+import toast from 'react-hot-toast';
+import { AiFillCloseCircle } from 'react-icons/ai';
 
 const UploadPhoto = () => {
-  const [file, setFile] = useState<File>();
+  const { setEdit, data, setData } = usePortfolioDataContext();
+  const { data: session } = useSession();
+  const { saveDataDb } = useSaveDataDb();
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!file) return;
-
+  const onDrop = useCallback(async (acceptedFiles: File[]) => {
     try {
       const data = new FormData();
-      data.set('file', file);
+      if (!acceptedFiles[0] || !session?.user) return;
+      data.append('file', acceptedFiles[0]);
 
-      const res = await fetch('/api/upload', {
+      const res = await fetch(`/api/upload/${session.user.id}`, {
         method: 'POST',
         body: data,
       });
-      // handle the error
-      if (!res.ok) throw new Error(await res.text());
-    } catch (e: any) {
-      // Handle errors here
-      console.error(e);
+      if (res.ok) {
+        const json = await res.json();
+        console.log(json);
+        const photoPath = json.path;
+        setData((prev) => ({ ...prev, photo: photoPath }));
+        await saveDataDb();
+        toast.success('File uploaded successfully');
+
+        setEdit((prev) => ({ ...prev, photo: false }));
+      } else {
+        toast.error('File upload failed');
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error('File upload failed');
     }
+  }, []);
+
+  const {
+    getRootProps,
+    getInputProps,
+    isDragActive,
+    isDragAccept,
+    isDragReject,
+  } = useDropzone({
+    accept: {
+      'image/*': ['.jpeg', '.png', '.jpg', '.webp'],
+    },
+    multiple: false,
+    maxSize: 2 * 1024 * 1024,
+    onDrop: onDrop,
+  });
+
+  const handleCloseEdit = () => {
+    setEdit((prev) => ({ ...prev, photo: false }));
   };
 
   return (
-    <>
-      <h1>Upload Photo</h1>
-      <form onSubmit={onSubmit}>
-        <input
-          type="file"
-          name="file"
-          accept="image/png, image/jpeg, image/jpg, image/webp"
-          onChange={(e) => setFile(e.target.files?.[0])}
-        />
-        <input type="submit" value="Upload" className="black_round_btn" />
-      </form>
-    </>
+    <motion.section
+      className="upload-photo"
+      initial={{ opacity: 0, scale: 0 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{
+        type: 'spring',
+        stiffness: 125,
+        delay: 0.1,
+        duration: 0.7,
+      }}
+    >
+      <div className="flex justify-center items-center gap-2 mb-3 w-auto sm:w-[35rem]">
+        <h1 className="text-lg">Upload Photo</h1>
+        <button onClick={handleCloseEdit}>
+          <AiFillCloseCircle size="2rem" />
+        </button>
+      </div>
+      <div {...getRootProps({ className: 'dropzone' })}>
+        <input {...getInputProps()} />
+        {isDragAccept && <p>All files will be accepted</p>}
+        {isDragReject && <p>Some files will be rejected</p>}
+        {!isDragActive && (
+          <p>Drag 'n' drop an image here, or click to select one</p>
+        )}
+      </div>
+    </motion.section>
   );
 };
 
