@@ -10,8 +10,10 @@ import { useSession } from 'next-auth/react';
 import { usePortfolioDataContext } from '@/context/portfolio-data-context';
 import { useTheme } from '@/context/theme-context';
 import { BG_COLORS } from '@/constant/general';
+import useConnexion from '@/hooks/useConnexion';
 
 const Header = () => {
+  useConnexion();
   const { activeSection, setActiveSection, setTimeOfLastClick } =
     useActiveSectionContext();
   const { data: session } = useSession();
