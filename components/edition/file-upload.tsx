@@ -72,6 +72,7 @@ const FileUpload = ({
         ].join(', ')}`
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
@@ -141,7 +142,7 @@ const FileUpload = ({
           <AiFillCloseCircle size="2rem" />
         </button>
       </div>
-      <div className="w-full flex flex-col justify-center items-center relative">
+      <div className="w-full flex flex-col justify-center items-center">
         {loading ? (
           <UploadLoader className="bg-white border-gray-900 border-2 border-dashed rounded-lg pt-10 sm:w-4/6 dark:bg-white/10 h-[148px] sm:h-[120px]" />
         ) : (
@@ -161,16 +162,17 @@ const FileUpload = ({
                 <p className="text-xs">(Less than {fileSize}MB)</p>
               </>
             )}
+            {showUploadSuccess ? (
+              <div
+                className={`badge__upload-success${
+                  uploadSuccess ? ' open' : ''
+                }`}
+              >
+                <BsPatchCheckFill className="text-green-500 text-2xl ml-2" />
+              </div>
+            ) : null}
           </div>
         )}
-
-        {showUploadSuccess ? (
-          <div
-            className={`badge__upload-success${uploadSuccess ? ' open' : ''}`}
-          >
-            <BsPatchCheckFill className="text-green-500 text-2xl ml-2" />
-          </div>
-        ) : null}
       </div>
     </motion.section>
   );

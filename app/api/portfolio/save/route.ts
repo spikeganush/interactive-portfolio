@@ -12,10 +12,11 @@ export const POST = async (request: NextRequest) => {
 
     const payload: DataState = await request.json();
 
-    if (!payload.userId) return new Response('No id', { status: 404 });
     await connectToDatabase();
 
-    const portfolio = await Portfolio.findOne({ creator: payload.userId });
+    const portfolio = payload.userId
+      ? await Portfolio.findOne({ creator: payload.userId })
+      : null;
 
     if (portfolio) {
       // Directly update the database
