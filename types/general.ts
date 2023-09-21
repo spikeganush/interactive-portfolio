@@ -49,3 +49,5 @@ export type EditState = {
   experiences: Boolean;
   email: Boolean;
 };
+
+export type EditStateKeys = keyof EditState;

@@ -26,9 +26,10 @@ const About = ({ id }: PageComponentProps) => {
       <span
         dangerouslySetInnerHTML={{
           __html: sanitizeHtml(data?.about ?? AboutData, {
-            allowedTags: ['p'],
+            allowedTags: ['p', 'span'],
             allowedAttributes: {
               p: ['class'],
+              span: ['class'],
             },
           }),
         }}

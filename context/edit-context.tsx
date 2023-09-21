@@ -10,6 +10,7 @@ type EditContextProviderProps = {
 type EditContextType = {
   edit: EditState;
   setEdit: React.Dispatch<React.SetStateAction<EditState>>;
+  updateEdit: (key: keyof EditState, value: boolean) => void;
 };
 
 export const EditContext = createContext<EditContextType | null>(null);
@@ -28,11 +29,16 @@ export default function EditContextProvider({
     email: false,
   });
 
+  const updateEdit = (key: keyof EditState, value: boolean) => {
+    setEdit((prev) => ({ ...prev, [key]: value }));
+  };
+
   return (
     <EditContext.Provider
       value={{
         edit,
         setEdit,
+        updateEdit,
       }}
     >
       {children}

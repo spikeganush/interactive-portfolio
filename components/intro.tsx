@@ -49,15 +49,26 @@ export default function Intro({ id }: PageComponentProps) {
         }`}
       >
         {session?.user || id ? null : (
-          <button
-            type="button"
-            onClick={() => {
-              signIn('google');
+          <motion.div
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{
+              type: 'spring',
+              stiffness: 125,
+              delay: 0.1,
+              duration: 0.5,
             }}
-            className="group bg-gray-900 text-white px-7 py-3 flex items-center gap-2 rounded-full outline-none focus:scale-110 hover:scale-110 hover:bg-gray-950 active:scale-105 transition"
           >
-            Customise your portfolio
-          </button>
+            <button
+              type="button"
+              onClick={() => {
+                signIn('google');
+              }}
+              className="group bg-gray-900 text-white px-7 py-3 flex items-center gap-2 rounded-full outline-none focus:scale-110 hover:scale-110 hover:bg-gray-950 active:scale-105 transition"
+            >
+              Customise your portfolio
+            </button>
+          </motion.div>
         )}
         {isOwner ? <BgPicker /> : null}
       </div>
@@ -84,7 +95,7 @@ export default function Intro({ id }: PageComponentProps) {
                     width="192"
                     height="192"
                     quality={95}
-                    className="h-24 w-24 rounded-full object-cover border-[0.35rem] border-white shadow-xl"
+                    className="italic h-24 w-24 rounded-full object-cover border-[0.35rem] border-white shadow-xl"
                   />
                 ) : (
                   <FaUserTie size="5rem" />
@@ -131,13 +142,13 @@ export default function Intro({ id }: PageComponentProps) {
         {edit.intro ? (
           <EditIntro />
         ) : (
-          <motion.h1
-            className="mb-10 mt-4 px-4 text-2xl font-medium !leading-[1.5] sm:text-4xl"
+          <motion.div
+            className="portfolio-intro mb-10 mt-4 px-4 text-2xl font-medium !leading-[1.5] sm:text-4xl"
             initial={{ opacity: 0, y: 100 }}
             animate={{ opacity: 1, y: 0 }}
             dangerouslySetInnerHTML={{
               __html: sanitizeHtml(data?.intro ?? IntroData, {
-                allowedTags: ['span'],
+                allowedTags: ['span', 'strong', 'em', 'p', 'ins'],
                 allowedAttributes: {
                   span: ['class'],
                 },

@@ -26,8 +26,3 @@ export function throwErrorAndToast(message: string) {
   toast.error(message);
   throw new Error(message);
 }
-
-export function handleCloseEdit(key: string) {
-  const { setEdit } = useEditContext();
-  setEdit((prev) => ({ ...prev, [key]: false }));
-}

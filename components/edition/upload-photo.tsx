@@ -10,19 +10,17 @@ import { AiFillCloseCircle } from 'react-icons/ai';
 import { useEditContext } from '@/context/edit-context';
 import { useLoadingContext } from '@/context/loading-context';
 import { throwErrorAndToast } from '@/utils/generalUtilities';
-import useCloseEdit from '@/hooks/useCloseEdit';
 
 const UploadPhoto = () => {
   const { updateAndSaveOneKey } = usePortfolioDataContext();
   const { data: session } = useSession();
-  const { setEdit } = useEditContext();
+  const { updateEdit } = useEditContext();
   const { setLoading } = useLoadingContext();
-  const { handleCloseEdit } = useCloseEdit();
   const fileSize = 2;
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     try {
-      setEdit((prev) => ({ ...prev, photo: false }));
+      updateEdit('photo', false);
       setLoading(true);
       if (!acceptedFiles.length) {
         return throwErrorAndToast('No files were uploaded');
@@ -49,7 +47,7 @@ const UploadPhoto = () => {
         setLoading(false);
       }
     } catch (error) {
-      setEdit((prev) => ({ ...prev, photo: true }));
+      updateEdit('photo', true);
       console.log(error);
       toast.error('File upload failed');
       setLoading(false);
@@ -85,7 +83,7 @@ const UploadPhoto = () => {
     >
       <div className="flex justify-center items-center gap-2 mb-3 w-auto sm:w-[35rem]">
         <h1 className="text-lg">Upload Photo</h1>
-        <button onClick={() => handleCloseEdit('photo')}>
+        <button onClick={() => updateEdit('photo', false)}>
           <AiFillCloseCircle size="2rem" />
         </button>
       </div>

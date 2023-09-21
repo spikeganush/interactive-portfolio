@@ -50,3 +50,7 @@ body {
 .dropzone {
   @apply flex flex-col items-center justify-center bg-white border-gray-900 border-2 border-dashed rounded-lg w-auto py-10 px-5 active:border-blue-300 dark:bg-white/10;
 }
+
+.portfolio-intro > p:not(:last-child) {
+  @apply mb-3;
+}

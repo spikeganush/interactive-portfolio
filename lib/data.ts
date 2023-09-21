@@ -35,20 +35,20 @@ export const fontFormat = ['font-bold', 'italic', 'underline'] as const;
 export const IntroData =
   '<span class="font-bold">Hello, I\'m John Doe.</span> I\'m a <span class="font-bold">superheroe </span> with <span class="font-bold">2 years</span> of experience. I enjoy saving <span class="italic">dogs & cats</span>. My focus is <span class="underline">Flying and Super-speed</span>.';
 
-export const AboutData = `<p className="mb-3">
-After earning a degree in <span className="font-medium">Computer Science</span>, 
+export const AboutData = `<p class="mb-3">
+After earning a degree in <span class="font-bold">Computer Science</span>, 
 I was fortunate to transition directly from my final-year internship into a role at TechCorp as a Backend Developer. 
-What <span className="underline">excites</span> me the most about coding is the endless opportunity for innovation. 
+What <span class="underline">excites</span> me the most about coding is the endless opportunity for innovation. 
 There's nothing like the thrill of cracking a complex algorithm or optimizing a piece of code. 
-My primary tech stack includes <span className="font-medium">Java, Spring Boot, Angular, MySQL, and AWS</span>. 
+My primary tech stack includes <span class="font-bold">Java, Spring Boot, Angular, MySQL, and AWS</span>. 
 </p>
-<p className="mb-3">
+<p class="mb-3">
 I'm always eager to explore new technologies and methodologies to stay ahead of the curve. 
 Currently, I'm on the lookout for a challenging full-time role in software development.
 </p>
 
 <p>
-<span className="italic">Outside of the coding world</span>, my interests are quite diverse. 
+<span class="italic">Outside of the coding world</span>, my interests are quite diverse. 
 I'm an avid reader, particularly of science fiction and history. 
 I also enjoy hiking and have recently taken up photography as a hobby. 
 Currently, I'm diving into the world of machine learning to broaden my skill set.
