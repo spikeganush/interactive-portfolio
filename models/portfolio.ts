@@ -21,7 +21,7 @@ const portfolioSchema = new Schema({
     type: String,
     required: [false],
   },
-  linked: {
+  linkedin: {
     type: String,
     required: [false],
   },

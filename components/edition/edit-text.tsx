@@ -14,6 +14,8 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { usePortfolioDataContext } from '@/context/portfolio-data-context';
 import { useEditContext } from '@/context/edit-context';
 
+import sanitizeHtml from 'sanitize-html';
+
 const toolbarOptions = {
   options: ['inline', 'emoji', 'history'],
   inline: {
@@ -21,12 +23,17 @@ const toolbarOptions = {
   },
 };
 
-const EditIntro = () => {
+type EditTextProps = {
+  component: 'intro' | 'about';
+};
+
+const EditText = ({ component }: EditTextProps) => {
   const htmlToDraft =
     typeof window === 'object' && require('html-to-draftjs').default;
+  const title = component.charAt(0).toUpperCase() + component.slice(1);
   const [editorState, setEditorState] = useState<EditorState | null>();
   const { updateAndSaveOneKey, data } = usePortfolioDataContext();
-  const [newText, setNewText] = useState(data.intro || '');
+  const [newText, setNewText] = useState(data[component] || '');
   const { updateEdit } = useEditContext();
 
   const memoizedToolbarOptions = useMemo(() => toolbarOptions, []);
@@ -45,15 +52,22 @@ const EditIntro = () => {
     setEditorState(() =>
       EditorState.createWithContent(
         ContentState.createFromBlockArray(
-          htmlToDraft(data.intro || '').contentBlocks
+          htmlToDraft(data[component] || '').contentBlocks
         )
       )
     );
   };
 
   const handleSave = () => {
-    updateAndSaveOneKey(newText, 'intro');
-    updateEdit('intro', false);
+    const cleanText = sanitizeHtml(newText, {
+      allowedTags: ['span', 'strong', 'em', 'p', 'ins'],
+      allowedAttributes: {
+        p: ['class'],
+        span: ['class'],
+      },
+    });
+    updateAndSaveOneKey(cleanText, component);
+    updateEdit(component, false);
   };
 
   const handleCancel = () => {
@@ -61,11 +75,11 @@ const EditIntro = () => {
     closeEditIntro();
   };
 
-  const closeEditIntro = () => updateEdit('intro', false);
+  const closeEditIntro = () => updateEdit(component, false);
 
   return (
     <motion.section
-      className="my-5"
+      className="my-5 w-full"
       initial={{ opacity: 0, y: -100 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2 }}
@@ -81,7 +95,7 @@ const EditIntro = () => {
           duration: 0.7,
         }}
       >
-        <h1 className="text-lg">Edit Intro</h1>
+        <h1 className="text-lg">Edit {title}</h1>
         <button onClick={closeEditIntro}>
           <AiFillCloseCircle size="2rem" />
         </button>
@@ -120,4 +134,4 @@ const EditIntro = () => {
   );
 };
 
-export default EditIntro;
+export default EditText;

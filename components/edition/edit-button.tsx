@@ -17,6 +17,7 @@ type EditButtonProps = {
   duration?: number;
   stiffness?: number;
   isAbsolute?: boolean;
+  className?: string;
 };
 
 /**
@@ -29,6 +30,7 @@ type EditButtonProps = {
  * @param delay Specifies the delay before the animation starts. Default is 0.
  * @param duration Specifies the duration of the animation. Default is 0.5.
  * @param isAbsolute Specifies whether the button should be absolutely positioned. Default is true.
+ * @param className Specifies the class name of the button. Default is an empty string.
  */
 const EditButton = ({
   component,
@@ -38,6 +40,7 @@ const EditButton = ({
   delay = 0,
   duration = 0.5,
   isAbsolute = true,
+  className = '',
 }: EditButtonProps) => {
   const { edit, updateEdit } = useEditContext();
   const { isOwner } = useIsOwnerContext();
@@ -49,7 +52,7 @@ const EditButton = ({
       {isOwner ? (
         edit[component] ? null : (
           <motion.button
-            className={`${isAbsolute ? 'absolute' : ''} ${
+            className={`${className} ${isAbsolute ? 'absolute' : ''} ${
               position === 'lower'
                 ? 'bottom-0 -right-6'
                 : 'top-1 -right-2 sm:top-4 sm:-right-5'

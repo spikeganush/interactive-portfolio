@@ -1,11 +1,12 @@
+'use client';
+
 import { useEditContext } from '@/context/edit-context';
-import { useIsOwnerContext } from '@/context/is-owner-context';
 import { motion } from 'framer-motion';
 import sanitizeHtml from 'sanitize-html';
-import EditIntro from '../edition/edit-intro';
 import { usePortfolioDataContext } from '@/context/portfolio-data-context';
 import { IntroData } from '@/lib/data';
 import EditButton from '../edition/edit-button';
+import EditText from '../edition/edit-text';
 
 const IntroEditIntro = () => {
   const { edit } = useEditContext();
@@ -14,7 +15,7 @@ const IntroEditIntro = () => {
   return (
     <div className="relative w-full">
       {edit.intro ? (
-        <EditIntro />
+        <EditText component="intro" />
       ) : (
         <motion.div
           className="portfolio-intro mb-10 mt-4 px-4 text-2xl font-medium !leading-[1.5] sm:text-4xl"

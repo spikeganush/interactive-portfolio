@@ -12,7 +12,7 @@ type PortfolioDataContextProviderProps = {
 type PortfolioDataContextType = {
   data: DataState;
   setData: React.Dispatch<React.SetStateAction<DataState>>;
-  updateAndSaveOneKey: (newData: any, key: Key) => void;
+  updateAndSaveOneKey: (newData: any, key: Key) => Promise<boolean>;
 };
 
 export const PortfolioDataContext =
@@ -30,7 +30,7 @@ export default function PortfolioDataContextProvider({
     photo: null,
     intro: null,
     resume: null,
-    linked: null,
+    linkedin: null,
     github: null,
     about: null,
     projects: null,
@@ -41,11 +41,21 @@ export default function PortfolioDataContextProvider({
 
   const { saveDataDb } = useSaveDataDb();
 
-  const updateAndSaveOneKey = (value: any, key: Key) => {
-    setData((prev) => {
-      saveDataDb({ ...prev, [key]: value });
-      return { ...prev, [key]: value };
-    });
+  const updateAndSaveOneKey = async (
+    value: any,
+    key: Key
+  ): Promise<boolean> => {
+    try {
+      // Update local state
+      setData((prev) => ({ ...prev, [key]: value }));
+
+      // Save to database and wait for it to complete
+      const success = await saveDataDb({ ...data, [key]: value });
+
+      return success;
+    } catch (error) {
+      return false;
+    }
   };
 
   return (

@@ -31,7 +31,7 @@ export type DataState = {
   photo: string | null;
   intro: string | null;
   resume: string | null;
-  linked: string | null;
+  linkedin: string | null;
   github: string | null;
   about: string | null;
   projects: project[] | null;
@@ -45,15 +45,15 @@ export type SupabaseFields = {
 } & DataState;
 
 export type EditState = {
-  photo: Boolean;
-  color: Boolean;
-  intro: Boolean;
-  buttons: Boolean;
-  about: Boolean;
-  projects: Boolean;
-  skills: Boolean;
-  experiences: Boolean;
-  email: Boolean;
+  photo: boolean;
+  color: boolean;
+  intro: boolean;
+  buttons: boolean;
+  about: boolean;
+  projects: boolean;
+  skills: boolean;
+  experiences: boolean;
+  email: boolean;
 };
 
 export type EditStateKeys = keyof EditState;

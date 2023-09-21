@@ -62,3 +62,11 @@ body {
 .badge__upload-success.open {
   @apply opacity-100 scale-100;
 }
+
+.social-button__save {
+  @apply inline-block ml-2;
+}
+
+.social-button__save.saved {
+  @apply text-emerald-400;
+}
