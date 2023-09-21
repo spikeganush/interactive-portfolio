@@ -1,29 +1,30 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useEditContext } from '@/context/edit-context';
-import UploadPhoto from '../edition/upload-photo';
 import PhotoLoader from '../loaders/photo-loader';
 import { usePortfolioDataContext } from '@/context/portfolio-data-context';
 import Image from 'next/image';
 import { FaUserTie } from 'react-icons/fa';
 import { useLoadingContext } from '@/context/loading-context';
-import { useIsOwnerContext } from '@/context/is-owner-context';
-import { FiEdit } from 'react-icons/fi';
+import EditButton from '../edition/edit-button';
+import FileUpload from '../edition/file-upload';
 
 const PhotoAndUploadPhoto = () => {
-  const { edit, updateEdit } = useEditContext();
+  const { edit } = useEditContext();
   const { data } = usePortfolioDataContext();
   const { loading } = useLoadingContext();
-  const { isOwner } = useIsOwnerContext();
 
-  const handleEditPhoto = () => {
-    updateEdit('photo', true);
-  };
   return (
     <div className="flex items-center justify-center">
-      <div className="relative">
+      <div className={`relative${edit.photo ? ' w-full' : ''}`}>
         {edit.photo ? (
-          <UploadPhoto />
+          <FileUpload
+            acceptedFileTypes="image"
+            fileSize={2}
+            folder="profile"
+            title="Upload photo"
+            editKey="photo"
+          />
         ) : (
           <>
             <motion.div
@@ -65,24 +66,13 @@ const PhotoAndUploadPhoto = () => {
             </motion.span>
           </>
         )}
-        {isOwner ? (
-          edit.photo ? null : (
-            <motion.button
-              className="absolute bottom-0 -right-6"
-              onClick={() => handleEditPhoto()}
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{
-                type: 'spring',
-                stiffness: 125,
-                delay: 0.1,
-                duration: 0.7,
-              }}
-            >
-              <FiEdit size="1.5rem" />
-            </motion.button>
-          )
-        ) : null}
+        <EditButton
+          component="photo"
+          type="spring"
+          stiffness={125}
+          delay={0.1}
+          duration={0.7}
+        />
       </div>
     </div>
   );

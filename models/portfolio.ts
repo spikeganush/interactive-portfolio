@@ -13,15 +13,15 @@ const portfolioSchema = new Schema({
     type: String,
     required: [false],
   },
-  resumeUrl: {
+  resume: {
     type: String,
     required: [false],
   },
-  githubUrl: {
+  github: {
     type: String,
     required: [false],
   },
-  linkedinUrl: {
+  linked: {
     type: String,
     required: [false],
   },

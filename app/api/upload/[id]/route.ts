@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { v2 as cloudinary } from 'cloudinary';
 import streamifier from 'streamifier';
 
@@ -21,18 +21,23 @@ export async function POST(
     const data = await request.formData();
 
     const file = data.get('file') as File;
+    const folderToUpload = data.get('folder') as string;
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
+    const cloudinaryFolder = `${
+      folderToUpload === 'resume' ? 'resumes/' : 'images/'
+    }${params.id}/${folderToUpload === 'resume' ? '' : `${folderToUpload}/`}`;
 
-    await cloudinary.api.delete_resources_by_prefix(
-      `images/${params.id}/profile/`
-    );
+    await cloudinary.api.delete_resources_by_prefix(cloudinaryFolder);
 
     // Wrap the Cloudinary upload in a Promise
     const uploadToCloudinary = new Promise((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream(
         {
-          folder: `images/${params.id}/profile`,
+          folder: cloudinaryFolder,
+          use_filename: folderToUpload === 'resume' ? true : false,
+          filename_override:
+            folderToUpload === 'resume' ? file.name : undefined,
         },
         (error, result) => {
           if (error) {

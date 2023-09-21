@@ -56,6 +56,11 @@ const EditIntro = () => {
     updateEdit('intro', false);
   };
 
+  const handleCancel = () => {
+    handleReset();
+    closeEditIntro();
+  };
+
   const closeEditIntro = () => updateEdit('intro', false);
 
   return (
@@ -81,23 +86,25 @@ const EditIntro = () => {
           <AiFillCloseCircle size="2rem" />
         </button>
       </motion.div>
-      {editorState ? (
-        <Editor
-          editorState={editorState}
-          onEditorStateChange={setEditorState}
-          placeholder="Write your intro here..."
-          wrapperClassName="bg-white text-left border-gray-900 rounded-lg w-full  p-2 mb-5 resize-none dark:bg-white/10"
-          editorClassName="!h-[260px]"
-          toolbarClassName="bg-white dark:bg-white/10"
-          toolbar={memoizedToolbarOptions}
-        />
-      ) : null}
+      <div className="h-[340px] sm:w-full">
+        {editorState ? (
+          <Editor
+            editorState={editorState}
+            onEditorStateChange={setEditorState}
+            placeholder="Write your intro here..."
+            wrapperClassName="bg-white text-left border-gray-900 rounded-lg sm:w-full p-2 mb-5 resize-none dark:bg-white/10"
+            editorClassName="!h-[260px]"
+            toolbarClassName="bg-white dark:bg-white/10"
+            toolbar={memoizedToolbarOptions}
+          />
+        ) : null}
+      </div>
 
       <div className="flex justify-center gap-5">
         <button
           aria-label="Cancel"
           className="bg-red-600 text-white px-7 py-3 flex items-center gap-2 rounded-full outline-none focus:scale-110 hover:scale-110 hover:bg-red-700 active:scale-105 transition"
-          onClick={handleReset}
+          onClick={handleCancel}
         >
           Cancel
         </button>

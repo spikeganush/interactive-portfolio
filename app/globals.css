@@ -48,9 +48,17 @@ body {
 }
 
 .dropzone {
-  @apply flex flex-col items-center justify-center bg-white border-gray-900 border-2 border-dashed rounded-lg w-auto py-10 px-5 active:border-blue-300 dark:bg-white/10;
+  @apply flex flex-col items-center justify-center bg-white border-gray-900 border-2 border-dashed rounded-lg w-auto sm:w-4/6 py-10 px-5 active:border-blue-300 dark:bg-white/10 h-[148px] sm:h-[120px];
 }
 
 .portfolio-intro > p:not(:last-child) {
   @apply mb-3;
+}
+
+.badge__upload-success {
+  @apply absolute opacity-0 scale-0 transition-all duration-300 delay-150 top-2 right-2;
+}
+
+.badge__upload-success.open {
+  @apply opacity-100 scale-100;
 }

@@ -11,6 +11,7 @@ export const GET = async (
   { params }: { params: Params }
 ) => {
   try {
+    if (!params.id) return new Response('No id', { status: 404 });
     await connectToDatabase;
 
     const portfolio = await Portfolio.findOne({ creator: params.id }).populate(
@@ -34,6 +35,7 @@ export const PATCH = async (
     const { portfolio } = await request.json();
     await connectToDatabase;
 
+    if (!params.id) return new Response('No id', { status: 404 });
     const existingPortfolio = await Portfolio.findOne({ creator: params.id });
 
     if (!existingPortfolio) {

@@ -21,28 +21,34 @@ export type experience = {
   icon: string;
 };
 
+export type userId = { userId: string | null };
+
 export type DataState = {
-  userId: string | null;
   leftLightBg: string | null;
   rightLightBg: string | null;
   leftDarkBg: string | null;
   rightDarkBg: string | null;
   photo: string | null;
   intro: string | null;
-  resumeUrl: string | null;
-  linkedinUrl: string | null;
-  githubUrl: string | null;
+  resume: string | null;
+  linked: string | null;
+  github: string | null;
   about: string | null;
   projects: project[] | null;
   skills: string[] | null;
   experiences: experience[] | null;
   email: string | null;
-};
+} & userId;
+
+export type SupabaseFields = {
+  creator: string;
+} & DataState;
 
 export type EditState = {
   photo: Boolean;
   color: Boolean;
   intro: Boolean;
+  buttons: Boolean;
   about: Boolean;
   projects: Boolean;
   skills: Boolean;
@@ -51,3 +57,5 @@ export type EditState = {
 };
 
 export type EditStateKeys = keyof EditState;
+
+export type SupabaseFieldsKeys = keyof SupabaseFields;

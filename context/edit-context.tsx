@@ -22,6 +22,7 @@ export default function EditContextProvider({
     photo: false,
     color: false,
     intro: false,
+    buttons: false,
     about: false,
     projects: false,
     skills: false,

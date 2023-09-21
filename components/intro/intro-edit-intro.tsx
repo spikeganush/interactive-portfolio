@@ -3,17 +3,16 @@ import { useIsOwnerContext } from '@/context/is-owner-context';
 import { motion } from 'framer-motion';
 import sanitizeHtml from 'sanitize-html';
 import EditIntro from '../edition/edit-intro';
-import { FiEdit } from 'react-icons/fi';
 import { usePortfolioDataContext } from '@/context/portfolio-data-context';
 import { IntroData } from '@/lib/data';
+import EditButton from '../edition/edit-button';
 
 const IntroEditIntro = () => {
-  const { edit, setEdit } = useEditContext();
-  const { isOwner } = useIsOwnerContext();
+  const { edit } = useEditContext();
   const { data } = usePortfolioDataContext();
 
   return (
-    <div className="relative">
+    <div className="relative w-full">
       {edit.intro ? (
         <EditIntro />
       ) : (
@@ -31,22 +30,14 @@ const IntroEditIntro = () => {
           }}
         />
       )}
-      {isOwner && !edit.intro ? (
-        <motion.button
-          className="absolute top-1 -right-1 sm:top-4 sm:-right-5"
-          onClick={() => setEdit((prev) => ({ ...prev, intro: true }))}
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{
-            type: 'spring',
-            stiffness: 125,
-            delay: 0.1,
-            duration: 0.7,
-          }}
-        >
-          <FiEdit size="1.5rem" />
-        </motion.button>
-      ) : null}
+      <EditButton
+        component="intro"
+        type="spring"
+        position="higher"
+        stiffness={125}
+        delay={0.3}
+        duration={0.7}
+      />
     </div>
   );
 };

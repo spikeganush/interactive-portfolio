@@ -1,6 +1,5 @@
 'use client';
 
-import { EditState } from '@/types/general';
 import React, { useState, createContext, useContext } from 'react';
 
 type LoadingContextProviderProps = {
