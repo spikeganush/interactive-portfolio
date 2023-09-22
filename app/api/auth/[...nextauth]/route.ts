@@ -16,6 +16,8 @@ const handler = NextAuth({
       if (!session.user || !session.user.email || !session.user.image) {
         return session;
       }
+      await connectToDatabase();
+
       const sessionUser = await User.findOne({ email: session.user.email });
 
       session.user.id = sessionUser._id.toString();
@@ -26,7 +28,7 @@ const handler = NextAuth({
         if (!profile) {
           return false;
         }
-        connectToDatabase();
+        await connectToDatabase();
         // check if user exists in database
         const userExists = await User.findOne({ email: profile.email });
 

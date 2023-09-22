@@ -3,10 +3,8 @@ import mongoose from 'mongoose';
 let isConnected = false;
 
 export const connectToDatabase = async () => {
-  console.log('Starting MongoDB connexion');
   mongoose.set('strictQuery', true);
   if (isConnected) {
-    console.log('MongoDB is already connected');
     return;
   }
   try {
@@ -14,7 +12,6 @@ export const connectToDatabase = async () => {
       dbName: 'personalPortfolio',
     });
     isConnected = true;
-    console.log('MongoDB Connected');
   } catch (error) {
     console.log('MongoDB connexion error: ', error);
   }
