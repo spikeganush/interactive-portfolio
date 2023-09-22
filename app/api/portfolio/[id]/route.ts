@@ -11,12 +11,10 @@ export const GET = async (
   { params }: { params: Params }
 ) => {
   try {
-    console.log('/api/portfolio/[id]/route.ts GET', params.id);
     await connectToDatabase();
     if (!params.id) return new Response('No id', { status: 404 });
 
     const portfolio = await Portfolio.findOne({ creator: params.id });
-    console.log(portfolio);
 
     if (!portfolio) {
       return new Response('Portfolio not found', { status: 404 });
