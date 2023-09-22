@@ -23,7 +23,10 @@ const useConnexion = () => {
     const fetchData = async () => {
       try {
         if (!params?.id) return;
-        const response = await fetch(`/api/portfolio/${params?.id}`);
+        const response = await fetch(`/api/portfolio/${params?.id}`, {
+          method: 'GET',
+        });
+        console.log(response);
         if (response.ok) {
           const data = await response.json();
 

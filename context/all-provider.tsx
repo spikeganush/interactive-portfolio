@@ -17,19 +17,19 @@ const AllProviders = ({
 }) => {
   return (
     <ProviderSession session={session}>
-      <LoadingContextProvider>
-        <EditContextProvider>
-          <InfoBubbleContextProvider>
-            <ThemeContextProvider>
-              <PortfolioDataContextProvider>
+      <PortfolioDataContextProvider>
+        <LoadingContextProvider>
+          <EditContextProvider>
+            <InfoBubbleContextProvider>
+              <ThemeContextProvider>
                 <ActiveSectionContextProvider>
                   <IsOwnerContextProvider>{children}</IsOwnerContextProvider>
                 </ActiveSectionContextProvider>
-              </PortfolioDataContextProvider>
-            </ThemeContextProvider>
-          </InfoBubbleContextProvider>
-        </EditContextProvider>
-      </LoadingContextProvider>
+              </ThemeContextProvider>
+            </InfoBubbleContextProvider>
+          </EditContextProvider>
+        </LoadingContextProvider>
+      </PortfolioDataContextProvider>
     </ProviderSession>
   );
 };

@@ -11,18 +11,19 @@ export const GET = async (
   { params }: { params: Params }
 ) => {
   try {
+    console.log('/api/portfolio/[id]/route.ts GET', params.id);
+    await connectToDatabase();
     if (!params.id) return new Response('No id', { status: 404 });
-    await connectToDatabase;
 
-    const portfolio = await Portfolio.findOne({ creator: params.id }).populate(
-      'creator'
-    );
+    const portfolio = await Portfolio.findOne({ creator: params.id });
+    console.log(portfolio);
 
     if (!portfolio) {
       return new Response('Portfolio not found', { status: 404 });
     }
     return new Response(JSON.stringify(portfolio), { status: 200 });
   } catch (error) {
+    console.log(error);
     return new Response('Failed to fetch all posts', { status: 500 });
   }
 };
@@ -33,7 +34,7 @@ export const PATCH = async (
 ) => {
   try {
     const { portfolio } = await request.json();
-    await connectToDatabase;
+    await connectToDatabase();
 
     if (!params.id) return new Response('No id', { status: 404 });
     const existingPortfolio = await Portfolio.findOne({ creator: params.id });
@@ -64,7 +65,7 @@ export const DELETE = async (
   { params }: { params: Params }
 ) => {
   try {
-    await connectToDatabase;
+    await connectToDatabase();
 
     await Portfolio.findByIdAndRemove(params.id);
 
