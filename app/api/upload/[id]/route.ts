@@ -45,6 +45,7 @@ export async function POST(
           use_filename: folderToUpload === 'resume' ? true : false,
           filename_override:
             folderToUpload === 'resume' ? file.name : undefined,
+          format: file.name.split('.')[1],
         },
         (error, result) => {
           if (error) {
@@ -56,23 +57,14 @@ export async function POST(
           }
         }
       );
-      let uploadBytes = 0;
-      const totalBytes = buffer.length;
-      const readStream = streamifier.createReadStream(buffer);
 
-      readStream.on('data', (chunk) => {
-        uploadBytes += chunk.length;
-        const progress = Math.round((uploadBytes / totalBytes) * 100);
-        console.log(`Progress: ${progress}%`);
-      });
-      readStream.pipe(stream);
+      streamifier.createReadStream(buffer).pipe(stream);
     });
 
     // Await the Promise and handle the result
     try {
       console.log('Upload to Cloudinary started...');
       const result = await uploadToCloudinary;
-      console.log('Upload to Cloudinary succeed!');
       return new Response(JSON.stringify(result), {
         status: 200,
       });
