@@ -29,30 +29,39 @@ const portfolioSchema = new Schema({
     type: String,
     required: [false],
   },
-  projects: [
-    {
-      title: {
-        type: String,
-        required: [false],
+  projects:
+    [
+      {
+        id: {
+          type: String,
+          required: [true, 'Please add a project id'],
+        },
+        position: {
+          type: Number,
+          required: [true, 'Please add a project position'],
+        },
+        title: {
+          type: String,
+          required: [true, 'Please add a project title'],
+        },
+        description: {
+          type: String,
+          required: [true, 'Please add a project description'],
+        },
+        imageUrl: {
+          type: String,
+          required: [true, 'Please add a project image url'],
+        },
+        url: {
+          type: [String],
+          required: [false],
+        },
+        tags: {
+          type: [String],
+          required: [true, 'Please add at least one project tags'],
+        },
       },
-      description: {
-        type: String,
-        required: [false],
-      },
-      imageUrl: {
-        type: String,
-        required: [false],
-      },
-      url: {
-        type: [String],
-        required: [false],
-      },
-      tags: {
-        type: [String],
-        required: [false],
-      },
-    },
-  ],
+    ] || null,
   skills: {
     type: [String],
     required: [false],

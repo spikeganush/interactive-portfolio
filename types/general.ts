@@ -5,6 +5,8 @@ export type PageComponentProps = {
 };
 
 export type project = {
+  id: string;
+  position: number;
   title: string;
   description: string;
   imageUrl: string | StaticImageData;

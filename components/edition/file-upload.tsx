@@ -1,16 +1,18 @@
-import { useCallback, useState } from 'react';
+'use client';
+
+import { useCallback, useState, Dispatch, SetStateAction } from 'react';
 import { useEditContext } from '@/context/edit-context';
 import { useLoadingContext } from '@/context/loading-context';
 import { usePortfolioDataContext } from '@/context/portfolio-data-context';
 import { useSession } from 'next-auth/react';
 import { FileRejection, useDropzone } from 'react-dropzone';
 import toast from 'react-hot-toast';
-import { AiFillCloseCircle } from 'react-icons/ai';
 import { motion } from 'framer-motion';
 import { throwErrorAndToast } from '@/utils/generalUtilities';
 import { EditStateKeys, SupabaseFieldsKeys } from '@/types/general';
 import { BsPatchCheckFill } from 'react-icons/bs';
 import UploadLoader from '../loaders/upload-loader';
+import CloseButton from '../buttons/close-buttons';
 
 type FileUploadProps = {
   title: string;
@@ -21,6 +23,9 @@ type FileUploadProps = {
   fileSize: number;
   closeEditor?: boolean;
   showUploadSuccess?: boolean;
+  setValue?: Dispatch<SetStateAction<string>>;
+  id?: string | null;
+  onCloseButtonClick?: () => void;
 };
 
 const FileUpload = ({
@@ -32,6 +37,9 @@ const FileUpload = ({
   fileSize,
   closeEditor = true,
   showUploadSuccess = false,
+  setValue,
+  id = null,
+  onCloseButtonClick,
 }: FileUploadProps) => {
   const mappedFileTypes: {
     [key: string]: {
@@ -41,6 +49,7 @@ const FileUpload = ({
     image: { 'image/*': ['.jpeg', '.png', '.jpg', '.webp'] },
     resume: { 'application/pdf': ['.pdf'] },
   };
+
   const extensionToTest =
     acceptedFileTypes === 'image' ? 'image/*' : 'application/pdf';
   const { updateAndSaveOneKey } = usePortfolioDataContext();
@@ -75,41 +84,51 @@ const FileUpload = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onDrop = useCallback(async (acceptedFiles: File[]) => {
-    setUploadSuccess(false);
-    try {
-      if (closeEditor) {
-        updateEdit(editKey, false);
-      }
-      setLoading(true);
-      if (!acceptedFiles.length) {
-        return throwErrorAndToast('No files were uploaded');
-      }
-
-      const data = new FormData();
-      if (!acceptedFiles[0] || !session?.user) return;
-      data.append('file', acceptedFiles[0]);
-      data.append('folder', folder);
-      const res = await fetch(`/api/upload/${session.user.id}`, {
-        method: 'POST',
-        body: data,
-      });
-      if (res.ok) {
-        const json = await res.json();
-        const filePath = json.secure_url;
-        updateAndSaveOneKey(filePath, supabaseKey);
-        toast.success('File uploaded successfully');
-        setUploadSuccess(true);
-        setLoading(false);
-      }
-    } catch (error) {
-      updateEdit(editKey, true);
-      console.log(error);
-      setLoading(false);
+  const onDrop = useCallback(
+    async (acceptedFiles: File[]) => {
       setUploadSuccess(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+      try {
+        if (closeEditor) {
+          updateEdit(editKey, false);
+        }
+        setLoading(true);
+        if (!acceptedFiles.length) {
+          return throwErrorAndToast('No files were uploaded');
+        }
+
+        const data = new FormData();
+        if (!acceptedFiles[0] || !session?.user) return;
+        data.append('file', acceptedFiles[0]);
+        data.append('folder', folder);
+        data.append('folderId', id as string);
+        const res = await fetch(`/api/upload/${session.user.id}`, {
+          method: 'POST',
+          body: data,
+        });
+        if (res.ok) {
+          const json = await res.json();
+          const filePath = json.secure_url;
+          if (setValue) {
+            setValue(filePath);
+          } else {
+            updateAndSaveOneKey(filePath, supabaseKey);
+          }
+          toast.success('File uploaded successfully');
+          setUploadSuccess(true);
+          setLoading(false);
+        }
+      } catch (error) {
+        if (closeEditor) {
+          updateEdit(editKey, true);
+        }
+        console.log(error);
+        setLoading(false);
+        setUploadSuccess(false);
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    },
+    [id]
+  );
 
   const {
     getRootProps,
@@ -138,9 +157,14 @@ const FileUpload = ({
     >
       <div className="flex justify-center items-center gap-2 mb-3">
         <h1 className="text-lg">{title}</h1>
-        <button onClick={() => updateEdit(editKey, false)}>
-          <AiFillCloseCircle size="2rem" />
-        </button>
+
+        <CloseButton
+          onClick={() =>
+            onCloseButtonClick
+              ? onCloseButtonClick()
+              : updateEdit(editKey, false)
+          }
+        />
       </div>
       <div className="w-full flex flex-col justify-center items-center">
         {loading ? (

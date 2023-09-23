@@ -56,6 +56,8 @@ Currently, I'm diving into the world of machine learning to broaden my skill set
 
 export const projectsData = [
   {
+    id: '1',
+    position: 1,
     title: 'Play Today. Marketplace',
     description:
       "I was in charge of the full project. A marketplace to buy Golf players' NFTs.",
@@ -71,6 +73,8 @@ export const projectsData = [
     imageUrl: '/marketplace.png',
   },
   {
+    id: '2',
+    position: 2,
     title: 'Play Today. App Showcase',
     description:
       "I was in charge of the full project. It's a website to showcase the Golf app we have made on React-Native.",
@@ -79,6 +83,8 @@ export const projectsData = [
     imageUrl: '/app.png',
   },
   {
+    id: '3',
+    position: 3,
     title: 'Play Today. Golf',
     description:
       'I was in charge of all the Wallet section (Show the badges, balance, purchase Crypto,...).',
@@ -90,6 +96,8 @@ export const projectsData = [
     imageUrl: '/golf.png',
   },
   {
+    id: '4',
+    position: 4,
     title: 'Play Today. Metaverse',
     description:
       'The React front-end initialises a Unity instance to render the WebGL project and handles user authentication, transferring the data to the WebGL build.',

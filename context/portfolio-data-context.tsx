@@ -13,6 +13,7 @@ type PortfolioDataContextType = {
   data: DataState;
   setData: React.Dispatch<React.SetStateAction<DataState>>;
   updateAndSaveOneKey: (newData: any, key: Key) => Promise<boolean>;
+  saveAProject: (project: any) => Promise<boolean>;
 };
 
 export const PortfolioDataContext =
@@ -58,12 +59,38 @@ export default function PortfolioDataContextProvider({
     }
   };
 
+  const saveAProject = async (project: any) => {
+    try {
+      // Update local state
+      setData((prev) => ({
+        ...prev,
+        projects: prev.projects ? [...prev.projects, project] : [project],
+      }));
+
+      // Prepare data for database
+      const updatedProjects = data.projects
+        ? [...data.projects, project]
+        : [project];
+
+      // Save to database and wait for it to complete
+      const success = await saveDataDb({
+        ...data,
+        projects: updatedProjects,
+      });
+
+      return success;
+    } catch (error) {
+      return false;
+    }
+  };
+
   return (
     <PortfolioDataContext.Provider
       value={{
         data,
         setData,
         updateAndSaveOneKey,
+        saveAProject,
       }}
     >
       {children}

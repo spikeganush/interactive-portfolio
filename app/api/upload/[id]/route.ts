@@ -22,11 +22,16 @@ export async function POST(
 
     const file = data.get('file') as File;
     const folderToUpload = data.get('folder') as string;
+    const folderId = data.get('folderId') as string | null;
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
     const cloudinaryFolder = `${
       folderToUpload === 'resume' ? 'resumes/' : 'images/'
-    }${params.id}/${folderToUpload === 'resume' ? '' : `${folderToUpload}/`}`;
+    }${params.id}/${
+      folderToUpload === 'resume'
+        ? ''
+        : `${folderToUpload}/${folderId ? folderId : ''}`
+    }`;
 
     await cloudinary.api.delete_resources_by_prefix(cloudinaryFolder);
 

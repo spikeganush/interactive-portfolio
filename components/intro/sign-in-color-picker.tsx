@@ -3,17 +3,19 @@ import { useIsOwnerContext } from '@/context/is-owner-context';
 import { signIn, useSession } from 'next-auth/react';
 import React from 'react';
 import BgPicker from '../edition/bg-picker';
+import { useParams } from 'next/navigation';
 
-const SignInAndColorPicker = ({ id }: { id?: string }) => {
+const SignInAndColorPicker = () => {
   const { isOwner } = useIsOwnerContext();
   const { data: session } = useSession();
+  const params = useParams();
   return (
     <div
       className={`flex mb-5 relative ${
         isOwner ? 'justify-between items-start' : 'justify-center items-center'
       }`}
     >
-      {session?.user || id ? null : (
+      {session?.user || params?.id ? null : (
         <motion.div
           initial={{ opacity: 0, scale: 0 }}
           animate={{ opacity: 1, scale: 1 }}
