@@ -34,23 +34,23 @@ const portfolioSchema = new Schema({
       {
         id: {
           type: String,
-          required: [true, 'Please add a project id'],
+          required: [false],
         },
         position: {
           type: Number,
-          required: [true, 'Please add a project position'],
+          required: [false],
         },
         title: {
           type: String,
-          required: [true, 'Please add a project title'],
+          required: [false],
         },
         description: {
           type: String,
-          required: [true, 'Please add a project description'],
+          required: [false],
         },
         imageUrl: {
           type: String,
-          required: [true, 'Please add a project image url'],
+          required: [false],
         },
         url: {
           type: [String],
@@ -58,7 +58,7 @@ const portfolioSchema = new Schema({
         },
         tags: {
           type: [String],
-          required: [true, 'Please add at least one project tags'],
+          required: [false],
         },
       },
     ] || null,
