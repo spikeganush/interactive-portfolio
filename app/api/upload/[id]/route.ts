@@ -31,12 +31,10 @@ export async function POST(
     }${params.id}/${
       folderToUpload === 'resume'
         ? ''
-        : `${folderToUpload}/${
-            folderId && folderId !== '' && folderId !== undefined
-              ? folderId
-              : ''
-          }`
+        : `${folderToUpload}/${folderToUpload === 'projects' ? folderId : ''}`
     }`;
+
+    console.log('Cloudinary folder where the upload goes: ', cloudinaryFolder);
 
     await cloudinary.api.delete_resources_by_prefix(cloudinaryFolder);
 
