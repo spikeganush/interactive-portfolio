@@ -1,14 +1,12 @@
 import { usePortfolioDataContext } from '@/context/portfolio-data-context';
 import { useSession } from 'next-auth/react';
-import { useParams, usePathname, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 
 import { useEffect } from 'react';
 
 const useConnexion = () => {
   const { data: session } = useSession();
   const params = useParams();
-  const router = useRouter();
-  const pathName = usePathname();
   const { setData } = usePortfolioDataContext();
 
   const getServerSideProps = async () => {
@@ -42,13 +40,6 @@ const useConnexion = () => {
     if (!params?.id) return;
     getServerSideProps();
   }, [params?.id]);
-
-  useEffect(() => {
-    if (session?.user?.id && pathName === '/') {
-      // add the user id to the url
-      router.push(`/${session?.user?.id}`);
-    }
-  }, [session?.user?.id, pathName]);
 
   return { getServerSideProps };
 };
