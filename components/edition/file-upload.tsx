@@ -8,7 +8,7 @@ import { useSession } from 'next-auth/react';
 import { FileRejection, useDropzone } from 'react-dropzone';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
-import { throwErrorAndToast } from '@/utils/generalUtilities';
+import { deleteFile, throwErrorAndToast } from '@/utils/generalUtilities';
 import { EditStateKeys, SupabaseFieldsKeys } from '@/types/general';
 import { BsPatchCheckFill } from 'react-icons/bs';
 import UploadLoader from '../loaders/upload-loader';
@@ -94,14 +94,13 @@ const FileUpload = ({
         if (!acceptedFiles.length) {
           return throwErrorAndToast('No files were uploaded');
         }
-
-        if (previousUrl) {
-          const deletePreviousFile = await fetch(`/api/upload/`, {
-            method: 'DELETE',
-            body: JSON.stringify({ url: previousUrl }),
-          });
-          await deletePreviousFile;
+        if (acceptedFiles[0].size > fileSize * 1024 * 1024) {
+          return throwErrorAndToast(
+            `File size must be less than ${fileSize}MB`
+          );
         }
+
+        await deleteFile(previousUrl);
 
         const data = new FormData();
         if (!acceptedFiles[0] || !session?.user) return;

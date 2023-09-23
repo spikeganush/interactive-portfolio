@@ -26,3 +26,17 @@ export function throwErrorAndToast(message: string) {
   toast.error(message);
   throw new Error(message);
 }
+
+export async function deleteFile(url: string | null): Promise<void> {
+  try {
+    if (!url) return;
+    const deletePreviousFile = await fetch(`/api/upload/`, {
+      method: 'DELETE',
+      body: JSON.stringify({ url }),
+    });
+    await deletePreviousFile;
+  } catch (error) {
+    console.log('deletePreviousFile error: ', error);
+    throw new Error(error as string);
+  }
+}
