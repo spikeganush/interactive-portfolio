@@ -116,6 +116,10 @@ const FileUpload = ({
           toast.success('File uploaded successfully');
           setUploadSuccess(true);
           setLoading(false);
+        } else {
+          setLoading(false);
+          setUploadSuccess(false);
+          return throwErrorAndToast('File upload failed');
         }
       } catch (error) {
         if (closeEditor) {
@@ -125,8 +129,8 @@ const FileUpload = ({
         setLoading(false);
         setUploadSuccess(false);
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [id]
   );
 

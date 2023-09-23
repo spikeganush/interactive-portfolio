@@ -55,6 +55,7 @@ const EditText = ({
       returnToProjects(
         draftToHtml(convertToRaw(editorState.getCurrentContent()))
       );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editorState]);
 
   useEffect(() => {
