@@ -23,7 +23,6 @@ export async function POST(
     const file = data.get('file') as File;
     const folderToUpload = data.get('folder') as string;
     const folderId = data.get('folderId') as string | null;
-    console.log('FolderId to upload to:', folderId);
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
     const cloudinaryFolder = `${
@@ -49,8 +48,10 @@ export async function POST(
         },
         (error, result) => {
           if (error) {
+            console.error('Upload to Cloudinary failed:', error);
             reject(error);
           } else {
+            console.log('Upload to Cloudinary succeed!');
             resolve(result);
           }
         }
@@ -69,7 +70,9 @@ export async function POST(
 
     // Await the Promise and handle the result
     try {
+      console.log('Upload to Cloudinary started...');
       const result = await uploadToCloudinary;
+      console.log('Upload to Cloudinary succeed!');
       return new Response(JSON.stringify(result), {
         status: 200,
       });
