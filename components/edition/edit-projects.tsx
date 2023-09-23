@@ -15,6 +15,7 @@ import { usePortfolioDataContext } from '@/context/portfolio-data-context';
 import AddTag from '../projects/add-tag';
 import Image from 'next/image';
 import CloseButton from '../buttons/close-buttons';
+import { del } from '@vercel/blob';
 
 const EditProjects = () => {
   const { updateEdit } = useEditContext();
@@ -42,18 +43,20 @@ const EditProjects = () => {
   }, [data]);
 
   const handleCancelProject = async (close: boolean) => {
-    if (image && id && session?.user?.id) {
-      const res = await fetch(
-        `/api/cloudinary/project/${session.user.id}/${id}`,
-        {
+    try {
+      if (image) {
+        const deletePreviousFile = await fetch(`/api/upload/`, {
           method: 'DELETE',
-        }
-      );
-      if (res.ok) {
+          body: JSON.stringify({ url: image }),
+        });
+        await deletePreviousFile;
         setImage('');
         toast.success('Project image deleted');
       }
+    } catch (error) {
+      toast.error('Error deleting project image');
     }
+
     close && updateEdit('projects', false);
   };
 
@@ -144,14 +147,12 @@ const EditProjects = () => {
           <FileUpload
             acceptedFileTypes="image"
             fileSize={2}
-            folder="projects"
             setValue={setImage}
             title="Add project image:"
             editKey="projects"
             closeEditor={false}
-            showUploadSuccess
-            id={id}
             onCloseButtonClick={() => handleCancelProject(true)}
+            showUploadSuccess
           />
         </motion.div>
         {image ? (

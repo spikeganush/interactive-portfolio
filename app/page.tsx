@@ -21,6 +21,7 @@ export default function Home() {
       // add the user id to the url
       router.push(`/${session?.user?.id}`);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session?.user?.id, pathName]);
   return (
     <main className="flex flex-col items-center px-4">

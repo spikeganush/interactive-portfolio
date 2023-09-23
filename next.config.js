@@ -5,7 +5,10 @@ const nextConfig = {
     serverComponentsExternalPackages: ['mongoose'],
   },
   images: {
-    domains: ['res.cloudinary.com'],
+    domains: [
+      'kr1boow66isaddsx.public.blob.vercel-storage.com',
+      'res.cloudinary.com',
+    ],
   },
   webpack(config) {
     config.experiments = {

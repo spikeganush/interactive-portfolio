@@ -13,33 +13,32 @@ import { EditStateKeys, SupabaseFieldsKeys } from '@/types/general';
 import { BsPatchCheckFill } from 'react-icons/bs';
 import UploadLoader from '../loaders/upload-loader';
 import CloseButton from '../buttons/close-buttons';
+import type { PutBlobResult } from '@vercel/blob';
 
 type FileUploadProps = {
   title: string;
   editKey: EditStateKeys;
   supabaseKey?: SupabaseFieldsKeys;
-  folder: string;
   acceptedFileTypes: 'image' | 'resume';
   fileSize: number;
   closeEditor?: boolean;
   showUploadSuccess?: boolean;
   setValue?: Dispatch<SetStateAction<string>>;
-  id?: string | null;
   onCloseButtonClick?: () => void;
+  previousUrl?: string | null;
 };
 
 const FileUpload = ({
   title,
   editKey,
   supabaseKey = editKey as SupabaseFieldsKeys,
-  folder,
   acceptedFileTypes,
   fileSize,
   closeEditor = true,
   showUploadSuccess = false,
   setValue,
-  id = null,
   onCloseButtonClick,
+  previousUrl = null,
 }: FileUploadProps) => {
   const mappedFileTypes: {
     [key: string]: {
@@ -96,18 +95,24 @@ const FileUpload = ({
           return throwErrorAndToast('No files were uploaded');
         }
 
+        if (previousUrl) {
+          const deletePreviousFile = await fetch(`/api/upload/`, {
+            method: 'DELETE',
+            body: JSON.stringify({ url: previousUrl }),
+          });
+          await deletePreviousFile;
+        }
+
         const data = new FormData();
         if (!acceptedFiles[0] || !session?.user) return;
         data.append('file', acceptedFiles[0]);
-        data.append('folder', folder);
-        data.append('folderId', id as string);
-        const res = await fetch(`/api/upload/${session.user.id}`, {
+        const res = await fetch(`/api/upload/`, {
           method: 'POST',
           body: data,
         });
-        if (res.ok) {
-          const json = await res.json();
-          const filePath = json.secure_url;
+        const newBlob = (await res.json()) as PutBlobResult;
+        if (newBlob.url) {
+          const filePath = newBlob.url;
           if (setValue) {
             setValue(filePath);
           } else {
@@ -131,7 +136,7 @@ const FileUpload = ({
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [id]
+    []
   );
 
   const {

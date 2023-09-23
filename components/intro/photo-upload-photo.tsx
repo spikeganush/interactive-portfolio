@@ -21,9 +21,9 @@ const PhotoAndUploadPhoto = () => {
           <FileUpload
             acceptedFileTypes="image"
             fileSize={2}
-            folder="profile"
             title="Upload photo"
             editKey="photo"
+            previousUrl={data?.photo || null}
           />
         ) : (
           <>
