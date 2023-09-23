@@ -72,14 +72,20 @@ export async function POST(
       });
     } catch (error) {
       console.log('Upload failed:', error);
-      return new Response(JSON.stringify(error), {
-        status: 500,
-      });
+      return new Response(
+        JSON.stringify({ error: 'Upload failed', details: error }),
+        {
+          status: 500,
+        }
+      );
     }
   } catch (error) {
-    console.log(error);
-    return new Response(JSON.stringify(error), {
-      status: 500,
-    });
+    console.error('An error occurred:', error);
+    return new Response(
+      JSON.stringify({ error: 'An unexpected error occurred', details: error }),
+      {
+        status: 500,
+      }
+    );
   }
 }

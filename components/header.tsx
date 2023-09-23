@@ -32,8 +32,6 @@ const Header = () => {
     data.rightDarkBg ?? BG_COLORS.RIGHT_DARK
   );
 
-  console.log({ data });
-
   useEffect(() => {
     setLeftDarkBg(data.leftDarkBg ?? BG_COLORS.LEFT_DARK);
     setRightDarkBg(data.rightDarkBg ?? BG_COLORS.RIGHT_DARK);
