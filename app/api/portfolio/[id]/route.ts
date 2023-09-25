@@ -26,37 +26,37 @@ export const GET = async (
   }
 };
 
-// export const PATCH = async (
-//   request: NextRequest,
-//   { params }: { params: Params }
-// ) => {
-//   try {
-//     const { portfolio } = await request.json();
-//     await connectToDatabase();
+export const PATCH = async (
+  request: NextRequest,
+  { params }: { params: Params }
+) => {
+  try {
+    const { portfolio } = await request.json();
+    await connectToDatabase();
 
-//     if (!params.id) return new Response('No id', { status: 404 });
-//     const existingPortfolio = await Portfolio.findOne({ creator: params.id });
+    if (!params.id) return new Response('No id', { status: 404 });
+    const existingPortfolio = await Portfolio.findOne({ creator: params.id });
 
-//     if (!existingPortfolio) {
-//       return new Response('Portfolio not found', { status: 404 });
-//     }
+    if (!existingPortfolio) {
+      return new Response('Portfolio not found', { status: 404 });
+    }
 
-//     for (const key in portfolio) {
-//       if (key === 'userId') {
-//         existingPortfolio['creator'] = portfolio[key];
-//       } else {
-//         existingPortfolio[key] = portfolio[key];
-//       }
-//     }
+    for (const key in portfolio) {
+      if (key === 'userId') {
+        existingPortfolio['creator'] = portfolio[key];
+      } else {
+        existingPortfolio[key] = portfolio[key];
+      }
+    }
 
-//     await existingPortfolio.save();
+    await existingPortfolio.save();
 
-//     return new Response('Successfully updated the portfolio', { status: 200 });
-//   } catch (error) {
-//     console.log(error);
-//     return new Response('Failed to update portfolio', { status: 500 });
-//   }
-// };
+    return new Response('Successfully updated the portfolio', { status: 200 });
+  } catch (error) {
+    console.log(error);
+    return new Response('Failed to update portfolio', { status: 500 });
+  }
+};
 
 export const DELETE = async (
   request: NextRequest,

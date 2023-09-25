@@ -29,19 +29,19 @@ export const DELETE = async (
   }
 };
 
-export const PATCH = async (
-  request: NextRequest,
-  { params }: { params: Params }
-) => {
-  try {
-    const { id, portfolioId } = params;
-    const { project } = await request.json();
-    await connectToDatabase();
-    const data = await Portfolio.updateOne(
-      { creator: portfolioId },
-      { $set: { projects: { id: id } } }
-    );
-  } catch (error) {
-    return new Response('Failed to update project', { status: 500 });
-  }
-};
+// export const PATCH = async (
+//   request: NextRequest,
+//   { params }: { params: Params }
+// ) => {
+//   try {
+//     const { id, portfolioId } = params;
+//     const { project } = await request.json();
+//     await connectToDatabase();
+//     const data = await Portfolio.updateOne(
+//       { creator: portfolioId },
+//       { $set: { projects: { id: id } } }
+//     );
+//   } catch (error) {
+//     return new Response('Failed to update project', { status: 500 });
+//   }
+// };
