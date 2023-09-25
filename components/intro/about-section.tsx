@@ -21,7 +21,7 @@ const AboutSection = () => {
           className="ml-2"
           component="about"
           isAbsolute={false}
-          type="spring"
+          animationType="spring"
           stiffness={125}
           delay={0.5}
           duration={0.7}

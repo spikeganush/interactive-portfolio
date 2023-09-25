@@ -5,6 +5,7 @@ export type PageComponentProps = {
 };
 
 export type project = {
+  _id?: string;
   id: string;
   position: number;
   title: string;
@@ -15,6 +16,7 @@ export type project = {
 };
 
 export type experience = {
+  id: string;
   title: string;
   description: string;
   location: string;
@@ -26,6 +28,7 @@ export type experience = {
 export type userId = { userId: string | null };
 
 export type DataState = {
+  _id?: string;
   leftLightBg: string | null;
   rightLightBg: string | null;
   leftDarkBg: string | null;

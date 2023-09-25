@@ -8,7 +8,7 @@ import { useSession } from 'next-auth/react';
 import { FileRejection, useDropzone } from 'react-dropzone';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
-import { deleteFile, throwErrorAndToast } from '@/utils/generalUtilities';
+import { deleteFile, throwErrorAndToast } from '@/lib/utils';
 import { EditStateKeys, SupabaseFieldsKeys } from '@/types/general';
 import { BsPatchCheckFill } from 'react-icons/bs';
 import UploadLoader from '../loaders/upload-loader';

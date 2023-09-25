@@ -1,5 +1,6 @@
 'use client';
 
+import { motion } from 'framer-motion';
 import React from 'react';
 import SectionHeading from './section-heading';
 import {
@@ -10,13 +11,12 @@ import 'react-vertical-timeline-component/style.min.css';
 import { experiencesData, experiencesDataIcons } from '@/lib/data';
 import { useSectionInView } from '@/lib/hooks';
 import { useTheme } from '@/context/theme-context';
-import { PageComponentProps } from '@/types/general';
-import { usePortfolioDataContext } from '@/context/portfolio-data-context';
+// import { usePortfolioDataContext } from '@/context/portfolio-data-context';
 
-export default function Experience({ id }: PageComponentProps) {
+export default function Experience() {
   const { ref } = useSectionInView('Experience');
   const { theme } = useTheme();
-  const { data } = usePortfolioDataContext();
+  // const { data } = usePortfolioDataContext();
 
   return (
     <section id="experience" ref={ref} className="scroll-mt-28 mb-28 sm:mb-40">
@@ -25,6 +25,7 @@ export default function Experience({ id }: PageComponentProps) {
         {experiencesData.map((item, index) => (
           <React.Fragment key={index}>
             <VerticalTimelineElement
+              // visible={true} //Temporary, everything is hidden on next 13.5 without that on local
               contentStyle={{
                 background:
                   theme === 'light' ? '#f3f4f6' : 'rgba(255, 255, 255, 0.05)',

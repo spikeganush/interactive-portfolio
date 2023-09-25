@@ -1,9 +1,9 @@
 'use client';
 
 import { BG_COLORS } from '@/constant/general';
-import useSaveDataDb from '@/hooks/useSaveDataDb';
-import { DataState } from '@/types/general';
+import { DataState, project } from '@/types/general';
 import React, { useState, createContext, useContext, Key } from 'react';
+import toast from 'react-hot-toast';
 
 type PortfolioDataContextProviderProps = {
   children: React.ReactNode;
@@ -13,7 +13,8 @@ type PortfolioDataContextType = {
   data: DataState;
   setData: React.Dispatch<React.SetStateAction<DataState>>;
   updateAndSaveOneKey: (newData: any, key: Key) => Promise<boolean>;
-  saveAProject: (project: any) => Promise<boolean>;
+  saveAProject: (project: project, userId: string) => Promise<boolean>;
+  deleteAProject: (id: string, userId: string) => Promise<boolean>;
 };
 
 export const PortfolioDataContext =
@@ -40,46 +41,88 @@ export default function PortfolioDataContextProvider({
     email: null,
   });
 
-  const { saveDataDb } = useSaveDataDb();
-
   const updateAndSaveOneKey = async (
     value: any,
     key: Key
   ): Promise<boolean> => {
     try {
-      // Update local state
-      setData((prev) => ({ ...prev, [key]: value }));
-
+      const updatedData = { ...data, [key]: value };
       // Save to database and wait for it to complete
-      const success = await saveDataDb({ ...data, [key]: value });
-
-      return success;
+      const success = await await fetch('/api/portfolio/', {
+        method: 'POST',
+        body: JSON.stringify(updatedData),
+      });
+      if (success.status === 200) {
+        // Update local state
+        setData(updatedData);
+        toast.success('Data saved successfully!');
+        return true;
+      } else {
+        return false;
+      }
     } catch (error) {
       return false;
     }
   };
 
-  const saveAProject = async (project: any) => {
+  const saveAProject = async (
+    project: project,
+    userId: string
+  ): Promise<boolean> => {
     try {
-      // Update local state
-      setData((prev) => ({
-        ...prev,
-        projects: prev.projects ? [...prev.projects, project] : [project],
-      }));
+      if (!project && !userId) return false;
 
-      // Prepare data for database
-      const updatedProjects = data.projects
-        ? [...data.projects, project]
-        : [project];
-
-      // Save to database and wait for it to complete
-      const success = await saveDataDb({
-        ...data,
-        projects: updatedProjects,
+      const success = await fetch(`/api/project/${userId}`, {
+        method: 'POST',
+        body: JSON.stringify(project),
       });
+      if (success.status === 200) {
+        const response = await fetch(`/api/portfolio/${userId}`, {
+          method: 'GET',
+        });
+        if (response.status == 200) {
+          const data = await response.json();
 
-      return success;
+          setData((prev) => ({
+            ...prev,
+            ...data,
+          }));
+          toast.success('Project saved successfully!');
+        }
+        return true;
+      }
+      return false;
     } catch (error) {
+      return false;
+    }
+  };
+
+  const deleteAProject = async (
+    id: string,
+    portfolioId: string
+  ): Promise<boolean> => {
+    try {
+      const projectsWithoutTheId = data.projects?.filter(
+        (project) => project.id !== id
+      );
+
+      const response = await fetch(`/api/project/${id}/${portfolioId}`, {
+        method: 'DELETE',
+      });
+      if (response.status === 200) {
+        toast.success('Project deleted successfully!');
+        setData((prev) => ({
+          ...prev,
+          projects: projectsWithoutTheId ?? null,
+        }));
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.trace();
+      console.log(error);
+      toast.error('Error deleting project');
       return false;
     }
   };
@@ -91,6 +134,7 @@ export default function PortfolioDataContextProvider({
         setData,
         updateAndSaveOneKey,
         saveAProject,
+        deleteAProject,
       }}
     >
       {children}

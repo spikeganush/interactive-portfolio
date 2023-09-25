@@ -8,18 +8,16 @@ import AddProjectTitle from '../projects/add-project-title';
 import AddProjectLinks from '../projects/add-project-links';
 import FileUpload from './file-upload';
 import CancelButton from '../buttons/cancel-button';
-import { useSession } from 'next-auth/react';
 import toast from 'react-hot-toast';
 import SaveButton from '../buttons/save-button';
 import { usePortfolioDataContext } from '@/context/portfolio-data-context';
 import AddTag from '../projects/add-tag';
 import Image from 'next/image';
 import CloseButton from '../buttons/close-buttons';
-import { del } from '@vercel/blob';
+import { deleteFile } from '@/lib/utils';
 
 const EditProjects = () => {
   const { updateEdit } = useEditContext();
-  const { data: session } = useSession();
   const { data, saveAProject } = usePortfolioDataContext();
   const [title, setTitle] = useState('');
   const [id, setId] = useState('');
@@ -45,11 +43,7 @@ const EditProjects = () => {
   const handleCancelProject = async (close: boolean) => {
     try {
       if (image) {
-        const deletePreviousFile = await fetch(`/api/upload/`, {
-          method: 'DELETE',
-          body: JSON.stringify({ url: image }),
-        });
-        await deletePreviousFile;
+        await deleteFile(image);
         setImage('');
         toast.success('Project image deleted');
       }
@@ -78,18 +72,21 @@ const EditProjects = () => {
       toast.error('Please add at least one tag');
       error++;
     }
-    if (error > 0) return;
-    const res = await saveAProject({
-      id,
-      title,
-      description,
-      imageUrl: image,
-      url: links,
-      tags,
-      position,
-    });
+    if (error > 0 || !position) return;
+    const res = await saveAProject(
+      {
+        id,
+        title,
+        description,
+        imageUrl: image,
+        url: links,
+        tags,
+        position,
+      },
+      data.userId as string
+    );
+
     if (res) {
-      toast.success('Project saved');
       updateEdit('projects', false);
     } else {
       toast.error('Error saving project');

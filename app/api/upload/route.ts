@@ -25,7 +25,6 @@ export async function POST(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   try {
     const { url } = await request.json();
-    console.log({ url });
     await del(url);
     return new Response('Successfully deleted the file', { status: 200 });
   } catch (error) {

@@ -1,6 +1,10 @@
 import { Schema, model, models } from 'mongoose';
 
 const portfolioSchema = new Schema({
+  _id: {
+    type: Schema.Types.ObjectId,
+    required: [false],
+  },
   creator: {
     type: Schema.Types.ObjectId,
     ref: 'User',
@@ -34,6 +38,10 @@ const portfolioSchema = new Schema({
       {
         id: {
           type: String,
+          required: [false],
+        },
+        _id: {
+          type: Schema.Types.ObjectId,
           required: [false],
         },
         position: {

@@ -7,10 +7,9 @@ import { useSectionInView } from '@/lib/hooks';
 import { sendEmail } from '@/actions/sendEmail';
 import SubmitBtn from './submit-btn';
 import toast from 'react-hot-toast';
-import { PageComponentProps } from '@/types/general';
 import { usePortfolioDataContext } from '@/context/portfolio-data-context';
 
-const Contact = ({ id }: PageComponentProps) => {
+const Contact = () => {
   const { ref } = useSectionInView('Contact');
   const { data } = usePortfolioDataContext();
 

@@ -5,14 +5,17 @@ import { FiEdit } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 import { EditStateKeys } from '@/types/general';
 import { useIsOwnerContext } from '@/context/is-owner-context';
+import { BiAddToQueue } from 'react-icons/bi';
 
 /**
  * @component EditButton
  */
 type EditButtonProps = {
   component: EditStateKeys;
+  type?: 'edit' | 'add';
+  iconSize?: string;
   position?: 'higher' | 'lower';
-  type?: 'spring' | 'tween';
+  animationType?: 'spring' | 'tween';
   delay?: number;
   duration?: number;
   stiffness?: number;
@@ -24,6 +27,8 @@ type EditButtonProps = {
  * EditButton Component
  *
  * @param component Specifies the component that will be edited when the button is clicked.
+ * @param type Specifies the type of the button. Default is 'edit'.
+ * @param iconSize Specifies the size of the icon. Default is '1.5rem'.
  * @param position Determines the vertical position of the button. Default is 'lower'.
  * @param type Specifies the type of animation to use for the button. Default is 'spring'.
  * @param stiffness Specifies the stiffness of the spring animation. Default is 0.
@@ -34,8 +39,10 @@ type EditButtonProps = {
  */
 const EditButton = ({
   component,
+  type = 'edit',
+  iconSize = '1.5rem',
   position = 'lower',
-  type = 'spring',
+  animationType = 'spring',
   stiffness = 0,
   delay = 0,
   duration = 0.5,
@@ -61,13 +68,17 @@ const EditButton = ({
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{
-              type,
+              type: animationType,
               stiffness,
               delay,
               duration,
             }}
           >
-            <FiEdit size="1.5rem" />
+            {type === 'edit' ? (
+              <FiEdit size={iconSize} />
+            ) : (
+              <BiAddToQueue size={iconSize} />
+            )}
           </motion.button>
         )
       ) : null}

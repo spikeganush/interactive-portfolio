@@ -1,6 +1,6 @@
 import User from '@/models/user';
 import { connectToDatabase } from '@/utils/database';
-import { formatUsername } from '@/utils/generalUtilities';
+import { formatUsername } from '@/lib/utils';
 import NextAuth from 'next-auth/next';
 import GoogleProvider from 'next-auth/providers/google';
 

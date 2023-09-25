@@ -66,7 +66,7 @@ const ButtonSection = () => {
           <EditButton
             component="buttons"
             position="higher"
-            type="spring"
+            animationType="spring"
             stiffness={125}
             delay={0.4}
             duration={0.7}

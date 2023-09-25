@@ -33,7 +33,7 @@ const IntroEditIntro = () => {
       )}
       <EditButton
         component="intro"
-        type="spring"
+        animationType="spring"
         position="higher"
         stiffness={125}
         delay={0.3}

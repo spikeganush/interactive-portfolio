@@ -23,10 +23,11 @@ const ProjectsSection = () => {
       <SectionHeading>
         My projects
         <EditButton
+          type="add"
           className="ml-2"
           component="projects"
           isAbsolute={false}
-          type="spring"
+          animationType="spring"
           stiffness={125}
           delay={0.5}
           duration={0.7}

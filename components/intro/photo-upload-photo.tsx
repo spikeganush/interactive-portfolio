@@ -68,7 +68,7 @@ const PhotoAndUploadPhoto = () => {
         )}
         <EditButton
           component="photo"
-          type="spring"
+          animationType="spring"
           stiffness={125}
           delay={0.1}
           duration={0.7}

@@ -1,3 +1,5 @@
+import toast from 'react-hot-toast';
+
 export const validateString = (
   value: unknown,
   maxLength: number
@@ -23,4 +25,55 @@ export const getErrorMessage = (error: unknown): string => {
   }
 
   return message;
+};
+
+export const formatUsername = (username: string) => {
+  // Remove all characters that are not alphanumeric, underscore or dot
+  let formatted = username.replace(/[^a-zA-Z0-9._]/g, '');
+
+  // Remove leading and trailing underscores and dots
+  formatted = formatted.replace(/^[_.]|[_.]$/g, '');
+
+  // Replace multiple consecutive underscores or dots with a single one
+  formatted = formatted.replace(/[_.]{2,}/g, '_');
+
+  // Truncate or pad to fit the length requirement
+  if (formatted.length > 20) {
+    formatted = formatted.substring(0, 20);
+  } else if (formatted.length < 8) {
+    formatted = formatted.padEnd(8, '1');
+  }
+
+  return formatted;
+};
+
+export const throwErrorAndToast = (message: string) => {
+  toast.error(message);
+  throw new Error(message);
+};
+
+export const deleteFile = async (url: string | null): Promise<void> => {
+  try {
+    if (!url) return;
+    const deletePreviousFile = await fetch(`/api/upload/`, {
+      method: 'DELETE',
+      body: JSON.stringify({ url }),
+    });
+    await deletePreviousFile;
+  } catch (error) {
+    console.log('deletePreviousFile error: ', error);
+    throw new Error(error as string);
+  }
+};
+
+let timeout: NodeJS.Timeout;
+
+export const debounce = <F extends (...args: any[]) => any>(
+  func: F,
+  delay: number
+): ((...args: Parameters<F>) => void) => {
+  return (...args: Parameters<F>) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), delay);
+  };
 };

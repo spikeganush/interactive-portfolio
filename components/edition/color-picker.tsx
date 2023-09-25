@@ -3,9 +3,9 @@ import { IoIosRefreshCircle } from 'react-icons/io';
 import { useTheme } from '@/context/theme-context';
 import { usePortfolioDataContext } from '@/context/portfolio-data-context';
 import { BG_COLORS } from '@/constant/general';
-import useSaveDataDb from '@/hooks/useSaveDataDb';
 import { useInfoBubbleContext } from '@/context/info-bubble-context';
 import { HexColorPicker } from 'react-colorful';
+import { debounce } from '@/lib/utils';
 
 type ColorPickerProps = {
   position: 'left' | 'right';
@@ -14,18 +14,20 @@ type ColorPickerProps = {
 const ColorPicker = ({ position }: ColorPickerProps) => {
   const { theme } = useTheme();
   const { data, setData, updateAndSaveOneKey } = usePortfolioDataContext();
-  const { saveDataDb } = useSaveDataDb();
   const positionName = position.charAt(0).toUpperCase() + position.slice(1);
   const keyPrefix = `${position}${theme === 'light' ? 'Light' : 'Dark'}Bg`;
   const { setBubbleText, setOpenBubble, removeBubbleText } =
     useInfoBubbleContext();
   const [colorPickerOpen, setColorPickerOpen] = useState(false);
+  const [newColor, setNewColor] = useState('');
 
   const divRef = useRef<HTMLDivElement>(null);
 
+  const debouncedUpdateAndSaveOneKey = debounce(updateAndSaveOneKey, 300); // 300ms delay
+
   const handleColorChange = (e: string) => {
-    const newColor = e.split('#')[1];
-    setData((prev) => ({ ...prev, [keyPrefix]: newColor }));
+    const color = e.split('#')[1];
+    setNewColor(color);
   };
 
   const handleColorReset = () => {
@@ -41,13 +43,13 @@ const ColorPicker = ({ position }: ColorPickerProps) => {
     updateAndSaveOneKey(defaultColor, keyPrefix);
   };
 
-  const handleOnBlur = () => {
+  const handleOnBlur = async () => {
     setColorPickerOpen(false);
     setOpenBubble(false);
     removeBubbleText();
-    setData((prevData) => {
-      saveDataDb(prevData);
-      return prevData;
+    setNewColor((prev) => {
+      debouncedUpdateAndSaveOneKey(prev, keyPrefix);
+      return prev;
     });
   };
 
