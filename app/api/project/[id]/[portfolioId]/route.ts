@@ -1,6 +1,5 @@
+import { withDatabaseConnection } from '@/lib/server-utils';
 import Portfolio from '@/models/portfolio';
-import { connectToDatabase } from '@/utils/database';
-import { request } from 'http';
 import { NextRequest } from 'next/server';
 
 type Params = {
@@ -8,26 +7,23 @@ type Params = {
   portfolioId: string;
 };
 
-export const DELETE = async (
-  request: NextRequest,
-  { params }: { params: Params }
-) => {
-  try {
-    const { id, portfolioId } = params;
-    if (!id || !portfolioId) return new Response('No id', { status: 404 });
+export const DELETE = withDatabaseConnection(
+  async (request: NextRequest, { params }: { params: Params }) => {
+    try {
+      const { id, portfolioId } = params;
+      if (!id || !portfolioId) return new Response('No id', { status: 404 });
 
-    await connectToDatabase();
+      const data = await Portfolio.findByIdAndUpdate(portfolioId, {
+        $pull: { projects: { id: id } },
+      });
 
-    const data = await Portfolio.findByIdAndUpdate(portfolioId, {
-      $pull: { projects: { id: id } },
-    });
-
-    return new Response(JSON.stringify(data), { status: 200 });
-  } catch (error) {
-    console.log({ error });
-    return new Response('Failed to delete project', { status: 500 });
+      return new Response(JSON.stringify(data), { status: 200 });
+    } catch (error) {
+      console.log({ error });
+      return new Response('Failed to delete project', { status: 500 });
+    }
   }
-};
+);
 
 // export const PATCH = async (
 //   request: NextRequest,

@@ -1,26 +1,21 @@
+import { withDatabaseConnection } from '@/lib/server-utils';
 import Portfolio from '@/models/portfolio';
 import { DataState } from '@/types/general';
-import { connectToDatabase } from '@/utils/database';
-import { c } from '@vercel/blob/dist/put-6f84b94d';
 import { NextRequest } from 'next/server';
 
-export const GET = async () => {
+export const GET = withDatabaseConnection(async () => {
   try {
-    await connectToDatabase();
-
     const posts = await Portfolio.find({}).populate('creator');
 
     return new Response(JSON.stringify(posts), { status: 200 });
   } catch (error) {
     return new Response('Failed to fetch all posts', { status: 500 });
   }
-};
+});
 
-export const POST = async (request: NextRequest) => {
+export const POST = withDatabaseConnection(async (request: NextRequest) => {
   try {
     const payload: DataState = await request.json();
-
-    await connectToDatabase();
 
     const portfolio = payload.userId
       ? await Portfolio.findOne({ creator: payload.userId })
@@ -29,8 +24,8 @@ export const POST = async (request: NextRequest) => {
     if (portfolio) {
       // Directly update the database
       Object.assign(portfolio, payload);
-      const result = await portfolio.save();
-      console.log({ result });
+      await portfolio.save();
+
       return new Response('Portfolio updated successfully!', { status: 200 });
     } else {
       const newPortfolio = new Portfolio({
@@ -48,4 +43,4 @@ export const POST = async (request: NextRequest) => {
       status: 500,
     });
   }
-};
+});
