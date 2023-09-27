@@ -90,6 +90,16 @@ const EditProjects = ({ idToEdit = null }: EditProjectsProps) => {
     }
   };
 
+  const deleteImage = async () => {
+    try {
+      await deleteFile(image);
+      setImage('');
+      toast.success('Project image deleted');
+    } catch (error) {
+      toast.error('Error deleting project image');
+    }
+  };
+
   const handleSaveProject = async () => {
     let error = 0;
     if (title === '') {
@@ -195,7 +205,7 @@ const EditProjects = ({ idToEdit = null }: EditProjectsProps) => {
             <div className="relative">
               <Image src={image} alt={title} width={200} height={200} />
               <CloseButton
-                onClick={() => handleCancelProject(false)}
+                onClick={deleteImage}
                 className="absolute top-1 right-1"
               />
             </div>
