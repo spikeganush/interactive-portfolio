@@ -9,7 +9,7 @@ import { FileRejection, useDropzone } from 'react-dropzone';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
 import { deleteFile, throwErrorAndToast } from '@/lib/utils';
-import { EditStateKeys, SupabaseFieldsKeys } from '@/types/general';
+import { EditStateKeys, ForceEditKeys } from '@/types/general';
 import { BsPatchCheckFill } from 'react-icons/bs';
 import UploadLoader from '../loaders/upload-loader';
 import CloseButton from '../buttons/close-buttons';
@@ -18,7 +18,7 @@ import type { PutBlobResult } from '@vercel/blob';
 type FileUploadProps = {
   title: string;
   editKey: EditStateKeys;
-  forceEditKey?: SupabaseFieldsKeys;
+  forceEditKey?: ForceEditKeys;
   acceptedFileTypes: 'image' | 'resume';
   fileSize: number;
   closeEditor?: boolean;
@@ -66,7 +66,7 @@ type FileUploadProps = {
 const FileUpload = ({
   title,
   editKey,
-  forceEditKey = editKey as SupabaseFieldsKeys,
+  forceEditKey = editKey as ForceEditKeys,
   acceptedFileTypes,
   fileSize,
   closeEditor = true,

@@ -64,4 +64,4 @@ export type EditState = {
 
 export type EditStateKeys = keyof EditState;
 
-export type SupabaseFieldsKeys = keyof SupabaseFields;
+export type ForceEditKeys = keyof SupabaseFields;

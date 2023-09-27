@@ -14,7 +14,7 @@ const UploadResume = () => {
           acceptedFileTypes="resume"
           fileSize={5}
           editKey="buttons"
-          supabaseKey={'resume'}
+          forceEditKey={'resume'}
           closeEditor={false}
           showUploadSuccess={true}
         />
