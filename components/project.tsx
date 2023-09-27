@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { IoLogoGooglePlaystore, IoLogoAppleAppstore } from 'react-icons/io5';
 import { project } from '@/types/general';
@@ -11,6 +11,8 @@ import { usePortfolioDataContext } from '@/context/portfolio-data-context';
 import { deleteFile } from '@/lib/utils';
 import toast from 'react-hot-toast';
 import { useIsOwnerContext } from '@/context/is-owner-context';
+import { FiEdit } from 'react-icons/fi';
+import { useEditContext } from '@/context/edit-context';
 
 const Project = ({
   _id,
@@ -32,10 +34,12 @@ const Project = ({
   const [open, setOpen] = useState(false);
   const { data, deleteAProject } = usePortfolioDataContext();
   const { isOwner } = useIsOwnerContext();
+  const { setEdit } = useEditContext();
 
   const handleDelete = async () => {
     try {
-      if (!data.projects || !data._id) return;
+      if (!data.projects || !data._id || !id)
+        return toast.error('Error deleting project');
 
       const isProjectUpdated = await deleteAProject(id, data._id);
       if (isProjectUpdated) {
@@ -46,6 +50,10 @@ const Project = ({
     } catch (error) {
       toast.error('Error deleting project');
     }
+  };
+
+  const handleProjectEdit = (id: string) => {
+    setEdit((prev) => ({ ...prev, project: { ...prev.project, [id]: true } }));
   };
 
   return (
@@ -69,9 +77,16 @@ const Project = ({
         className="group mb-3 sm:mb-8 last:mb-0 w-full sm:w-5/6"
       >
         <section className="bg-gray-100 w-full border border-black/5 rounded-lg overflow-hidden sm:pr-8 relative sm:h-[25rem] hover:bg-gray-200 transition sm:group-even:pl-8 dark:text-white dark:bg-white/10 dark:hover:bg-white/20">
-          <div className="absolute top-2 right-2 z-[5]">
-            <CloseButton onClick={() => setOpen(true)} />
-          </div>
+          {isOwner ? (
+            <div className="flex gap-2 absolute top-2 right-2 z-[5]">
+              <FiEdit
+                size="2rem"
+                onClick={() => handleProjectEdit(id ?? _id)}
+                className="cursor-pointer"
+              />
+              <CloseButton onClick={() => setOpen(true)} />
+            </div>
+          ) : null}
           <div className="pt-4 pb-7 px-5 sm:pl-10 sm:pr-2 sm:pt-10 sm:max-w-[50%] flex flex-col h-full sm:group-even:ml-[18rem]">
             <h3 className="text-2xl font-semibold">{title}</h3>
             <p
@@ -85,7 +100,16 @@ const Project = ({
                 </a>
               ) : (
                 url?.map((link, index) => (
-                  <a href={link} target="_blank" key={`${link}${index}`}>
+                  <a
+                    title={
+                      link.includes('play.google.com')
+                        ? 'Play Store'
+                        : 'App Store'
+                    }
+                    href={link}
+                    target="_blank"
+                    key={`${link}${index}`}
+                  >
                     {link.includes('play.google.com') ? (
                       <IoLogoGooglePlaystore className="text-gray-700 text-4xl inline-block mr-6 mt-4 dark:text-white/70" />
                     ) : (

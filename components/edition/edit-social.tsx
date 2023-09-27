@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { usePortfolioDataContext } from '@/context/portfolio-data-context';
-import { motion } from 'framer-motion';
 import { IoIosSave } from 'react-icons/io';
+import SectionGrow from '../motion/section-grow';
 
 type EditSocialProps = {
   name: 'linkedin' | 'github';
@@ -22,17 +22,7 @@ const EditSocial = ({ name, delay }: EditSocialProps) => {
     setSaved(updated);
   };
   return (
-    <motion.section
-      className="upload-section w-full"
-      initial={{ opacity: 0, scale: 0 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{
-        type: 'spring',
-        stiffness: 125,
-        delay,
-        duration: 0.7,
-      }}
-    >
+    <SectionGrow className="upload-section w-full" delay={delay}>
       <h1 className="text-lg my-3">Edit {title} URL:</h1>
       <input
         type="text"
@@ -48,7 +38,7 @@ const EditSocial = ({ name, delay }: EditSocialProps) => {
           size={'2rem'}
         />
       </button>
-    </motion.section>
+    </SectionGrow>
   );
 };
 

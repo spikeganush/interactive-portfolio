@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import DivGrow from '../motion/div-grow';
 
 type AddProjectTitleProps = {
   title: string;
@@ -21,17 +22,7 @@ const AddProjectTitle = ({ title, setTitle }: AddProjectTitleProps) => {
       >
         Title:
       </motion.h1>
-      <motion.div
-        initial={{ opacity: 0, scale: 0 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{
-          type: 'spring',
-          stiffness: 125,
-          delay: 0.65,
-          duration: 0.7,
-        }}
-        className="w-5/6 sm:w-3/6"
-      >
+      <DivGrow delay={0.65}>
         <input
           type="text"
           name="Title"
@@ -40,7 +31,7 @@ const AddProjectTitle = ({ title, setTitle }: AddProjectTitleProps) => {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
-      </motion.div>
+      </DivGrow>
     </>
   );
 };

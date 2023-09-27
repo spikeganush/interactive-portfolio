@@ -1,7 +1,7 @@
-import { motion } from 'framer-motion';
 import { SetStateAction, Dispatch, useState } from 'react';
 import SaveButton from '../buttons/save-button';
 import CloseButton from '../buttons/close-buttons';
+import DivGrow from '../motion/div-grow';
 
 type AddTagProps = {
   tags: string[];
@@ -19,17 +19,7 @@ const AddTag = ({ tags, setTags }: AddTagProps) => {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{
-        type: 'spring',
-        stiffness: 125,
-        delay: 0.7,
-        duration: 0.7,
-      }}
-      className="mb-3 w-5/6 sm:w-3/6"
-    >
+    <DivGrow className="mb-3 w-5/6 sm:w-3/6" delay={0.7}>
       <h1 className="text-lg my-3">Add tag(s):</h1>
       <input
         type="text"
@@ -58,7 +48,7 @@ const AddTag = ({ tags, setTags }: AddTagProps) => {
           </div>
         ))}
       </div>
-    </motion.div>
+    </DivGrow>
   );
 };
 

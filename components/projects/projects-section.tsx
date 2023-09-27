@@ -5,7 +5,7 @@ import EditButton from '../edition/edit-button';
 import Project from '../project';
 import { projectsData } from '@/lib/data';
 import { usePortfolioDataContext } from '@/context/portfolio-data-context';
-import { motion } from 'framer-motion';
+import ContainerSlide from '../motion/container-slide';
 
 const ProjectsSection = () => {
   const { data } = usePortfolioDataContext();
@@ -14,12 +14,7 @@ const ProjectsSection = () => {
     data.projects && data.projects.length > 0 ? data.projects : projectsData;
 
   return (
-    <motion.section
-      className="w-full"
-      initial={{ opacity: 0, y: 100 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.2 }}
-    >
+    <ContainerSlide className="projects w-full" slide="down-up">
       <SectionHeading>
         My projects
         <EditButton
@@ -40,7 +35,7 @@ const ProjectsSection = () => {
           </React.Fragment>
         ))}
       </div>
-    </motion.section>
+    </ContainerSlide>
   );
 };
 

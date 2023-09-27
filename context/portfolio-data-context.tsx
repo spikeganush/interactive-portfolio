@@ -2,7 +2,13 @@
 
 import { BG_COLORS } from '@/constant/general';
 import { DataState, project } from '@/types/general';
-import React, { useState, createContext, useContext, Key } from 'react';
+import React, {
+  useState,
+  createContext,
+  useContext,
+  Key,
+  useEffect,
+} from 'react';
 import toast from 'react-hot-toast';
 
 type PortfolioDataContextProviderProps = {
@@ -40,6 +46,10 @@ export default function PortfolioDataContextProvider({
     experiences: null,
     email: null,
   });
+
+  useEffect(() => {
+    console.log({ data });
+  }, [data]);
 
   const updateAndSaveOneKey = async (
     value: any,

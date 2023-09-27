@@ -83,11 +83,11 @@ const ColorPicker = ({ position }: ColorPickerProps) => {
 
   return (
     <div className={`flex flex-col${position === 'right' ? ' items-end' : ''}`}>
-      <label
+      <div
         className={`font-medium text-xs sm:text-base  ${
           position === 'right' ? 'text-right' : 'text-left'
         }`}
-      >{`${positionName} background color`}</label>
+      >{`${positionName} background color`}</div>
       <div className="flex">
         {position === 'right' && (
           <button className="w-fit mr-3" onClick={handleColorReset}>

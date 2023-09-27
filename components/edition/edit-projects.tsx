@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { useEditContext } from '@/context/edit-context';
 import EditText from './edit-text';
 import AddProjectTitle from '../projects/add-project-title';
@@ -15,8 +14,16 @@ import AddTag from '../projects/add-tag';
 import Image from 'next/image';
 import CloseButton from '../buttons/close-buttons';
 import { deleteFile } from '@/lib/utils';
+import EditionProjectTitle from '../projects/edition-project-title';
+import ContainerSlide from '../motion/container-slide';
+import SectionGrow from '../motion/section-grow';
+import DivGrow from '../motion/div-grow';
 
-const EditProjects = () => {
+type EditProjectsProps = {
+  idToEdit?: string | null;
+};
+
+const EditProjects = ({ idToEdit = null }: EditProjectsProps) => {
   const { updateEdit } = useEditContext();
   const { data, saveAProject } = usePortfolioDataContext();
   const [title, setTitle] = useState('');
@@ -29,6 +36,7 @@ const EditProjects = () => {
   const [linkType, setLinkType] = useState<'website' | 'stores' | null>(null);
 
   useEffect(() => {
+    if (idToEdit) return;
     const timestamp = Date.now(); // Get current time in milliseconds since 1970
     const randomNum = Math.floor(Math.random() * 100000); // Generate a random number between 0 and 99999
     const uniqueId = `${timestamp}${randomNum}`; // Concatenate the two numbers
@@ -94,38 +102,10 @@ const EditProjects = () => {
   };
 
   return (
-    <motion.section
-      className="my-5 w-full"
-      initial={{ opacity: 0, y: -100 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.2 }}
-    >
-      <motion.div
-        className="flex justify-center items-center gap-2 mb-3 w-full"
-        initial={{ opacity: 0, scale: 0 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{
-          type: 'spring',
-          stiffness: 125,
-          delay: 0.4,
-          duration: 0.7,
-        }}
-      >
-        <h1 className="text-lg">Add/Edit Projects</h1>
-        <CloseButton onClick={() => handleCancelProject(true)} />
-      </motion.div>
-      <motion.section
-        className="project-section flex flex-col items-center"
-        initial={{ opacity: 0, scale: 0 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{
-          type: 'spring',
-          stiffness: 125,
-          delay: 0.3,
-          duration: 0.7,
-        }}
-      >
-        <motion.div className="flex flex-col items-center w-full mb-3">
+    <ContainerSlide>
+      <EditionProjectTitle onClick={() => handleCancelProject(true)} />
+      <SectionGrow className="project-section flex flex-col items-center">
+        <div className="flex flex-col items-center w-full mb-3">
           <AddProjectTitle title={title} setTitle={setTitle} />
           <AddProjectLinks
             linkType={linkType}
@@ -151,18 +131,11 @@ const EditProjects = () => {
             onCloseButtonClick={() => handleCancelProject(true)}
             showUploadSuccess
           />
-        </motion.div>
+        </div>
         {image ? (
-          <motion.div
+          <DivGrow
             className="flex justify-center items-center gap-2 mb-3 w-full"
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{
-              type: 'spring',
-              stiffness: 125,
-              delay: 0.4,
-              duration: 0.7,
-            }}
+            delay={0.4}
           >
             <div className="relative">
               <Image src={image} alt={title} width={200} height={200} />
@@ -171,14 +144,14 @@ const EditProjects = () => {
                 className="absolute top-1 right-1"
               />
             </div>
-          </motion.div>
+          </DivGrow>
         ) : null}
         <div className="flex gap-3">
           <CancelButton onClick={() => handleCancelProject(true)} />
           <SaveButton onClick={handleSaveProject} />
         </div>
-      </motion.section>
-    </motion.section>
+      </SectionGrow>
+    </ContainerSlide>
   );
 };
 

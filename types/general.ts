@@ -56,6 +56,7 @@ export type EditState = {
   buttons: boolean;
   about: boolean;
   projects: boolean;
+  project: Record<string, boolean>;
   skills: boolean;
   experiences: boolean;
   email: boolean;

@@ -6,7 +6,6 @@ const Editor = dynamic(
   { ssr: false }
 );
 import { useEffect, useState, useMemo, Dispatch, SetStateAction } from 'react';
-import { motion } from 'framer-motion';
 import { ContentState, EditorState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
@@ -17,6 +16,8 @@ import sanitizeHtml from 'sanitize-html';
 import CancelButton from '../buttons/cancel-button';
 import SaveButton from '../buttons/save-button';
 import CloseButton from '../buttons/close-buttons';
+import ContainerSlide from '../motion/container-slide';
+import DivGrow from '../motion/div-grow';
 
 const toolbarOptions = {
   options: ['inline', 'emoji', 'history'],
@@ -97,27 +98,15 @@ const EditText = ({
   const closeEditIntro = () => updateEdit(component, false);
 
   return (
-    <motion.section
-      className="my-5 w-full"
-      initial={{ opacity: 0, y: -100 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.2 }}
-    >
+    <ContainerSlide>
       {project ? null : (
-        <motion.div
+        <DivGrow
           className="flex justify-center items-center gap-2 mb-3 w-full"
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{
-            type: 'spring',
-            stiffness: 125,
-            delay: 0.4,
-            duration: 0.7,
-          }}
+          delay={0.4}
         >
           <h1 className="text-lg">Edit {title}</h1>
           <CloseButton onClick={closeEditIntro} />
-        </motion.div>
+        </DivGrow>
       )}
       <div className="h-[340px] sm:w-full">
         {editorState ? (
@@ -138,7 +127,7 @@ const EditText = ({
           <SaveButton onClick={handleSave} />
         </div>
       )}
-    </motion.section>
+    </ContainerSlide>
   );
 };
 

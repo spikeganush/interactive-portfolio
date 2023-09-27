@@ -1,9 +1,9 @@
-import { motion } from 'framer-motion';
 import { useIsOwnerContext } from '@/context/is-owner-context';
 import { signIn, useSession } from 'next-auth/react';
 import React from 'react';
 import BgPicker from '../edition/bg-picker';
 import { useParams } from 'next/navigation';
+import DivGrow from '../motion/div-grow';
 
 const SignInAndColorPicker = () => {
   const { isOwner } = useIsOwnerContext();
@@ -16,16 +16,7 @@ const SignInAndColorPicker = () => {
       }`}
     >
       {session?.user || params?.id ? null : (
-        <motion.div
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{
-            type: 'spring',
-            stiffness: 125,
-            delay: 0.1,
-            duration: 0.5,
-          }}
-        >
+        <DivGrow delay={0.1} duration={0.5}>
           <button
             type="button"
             onClick={() => {
@@ -35,7 +26,7 @@ const SignInAndColorPicker = () => {
           >
             Customise your portfolio
           </button>
-        </motion.div>
+        </DivGrow>
       )}
       {isOwner ? <BgPicker /> : null}
     </div>

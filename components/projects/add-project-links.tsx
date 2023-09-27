@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { SetStateAction, Dispatch } from 'react';
 import CancelButton from '../buttons/cancel-button';
+import DivGrow from '../motion/div-grow';
 type AddProjectLinksProps = {
   links: string[];
   setLinks: Dispatch<SetStateAction<string[]>>;
@@ -16,32 +17,13 @@ const AddProjectLinks = ({
 }: AddProjectLinksProps) => {
   return (
     <>
-      <motion.div
-        initial={{ opacity: 0, scale: 0 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{
-          type: 'spring',
-          stiffness: 125,
-          delay: 0.7,
-          duration: 0.7,
-        }}
-      >
+      <DivGrow>
         <h1 className="text-lg my-3">Add demo link(s):</h1>
-      </motion.div>
+      </DivGrow>
       <div className="mb-3 flex flex-col items-center w-full">
         {linkType ? (
           linkType === 'website' ? (
-            <motion.div
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{
-                type: 'spring',
-                stiffness: 125,
-                delay: 0.2,
-                duration: 0.7,
-              }}
-              className="w-5/6 sm:w-3/6"
-            >
+            <DivGrow delay={0.2} className="w-5/6 sm:w-3/6">
               <h1 className="text-lg my-3">Demo Website:</h1>
               <input
                 type="text"
@@ -51,20 +33,10 @@ const AddProjectLinks = ({
                 value={links[0] || ''}
                 onChange={(e) => setLinks([e.target.value])}
               />
-            </motion.div>
+            </DivGrow>
           ) : (
             <motion.div className="flex gap-2 w-full sm:w-5/6">
-              <motion.div
-                className="flex-1"
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{
-                  type: 'spring',
-                  stiffness: 125,
-                  delay: 0.2,
-                  duration: 0.7,
-                }}
-              >
+              <DivGrow delay={0.2} className="flex-1">
                 <h1 className="text-base my-3">Demo Play Store:</h1>
                 <input
                   type="text"
@@ -74,19 +46,9 @@ const AddProjectLinks = ({
                   value={links[0]}
                   onChange={(e) => setLinks([e.target.value])}
                 />
-              </motion.div>
+              </DivGrow>
 
-              <motion.div
-                className="flex-1"
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{
-                  type: 'spring',
-                  stiffness: 125,
-                  delay: 0.3,
-                  duration: 0.7,
-                }}
-              >
+              <DivGrow delay={0.3} className="flex-1">
                 <h1 className="text-base my-3 text-right">Demo App Store:</h1>
                 <input
                   type="text"
@@ -98,38 +60,20 @@ const AddProjectLinks = ({
                     setLinks((prev) => [prev[0], e.target.value])
                   }
                 />
-              </motion.div>
+              </DivGrow>
             </motion.div>
           )
         ) : (
           <div className="flex gap-3">
-            <motion.div
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{
-                type: 'spring',
-                stiffness: 125,
-                delay: 0.8,
-                duration: 0.7,
-              }}
-            >
+            <DivGrow delay={0.8}>
               <button
                 className="relative bg-blue-500 text-white flex items-center justify-center w-[75px] aspect-square gap-2 rounded-full outline-none focus:scale-110 hover:scale-110 hover:bg-blue-600 active:scale-105 transition"
                 onClick={() => setLinkType('website')}
               >
                 <span className="font-bold">Website</span>
               </button>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{
-                type: 'spring',
-                stiffness: 125,
-                delay: 0.85,
-                duration: 0.7,
-              }}
-            >
+            </DivGrow>
+            <DivGrow delay={0.85}>
               <button
                 className="bg-blue-500 text-white flex items-center justify-center w-[75px] aspect-square gap-2 rounded-full outline-none focus:scale-110 hover:scale-110 hover:bg-blue-600 active:scale-105 transition"
                 onClick={() => setLinkType('stores')}
@@ -139,23 +83,14 @@ const AddProjectLinks = ({
                   Stores
                 </span>
               </button>
-            </motion.div>
+            </DivGrow>
           </div>
         )}
       </div>
       {linkType ? (
-        <motion.div
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{
-            type: 'spring',
-            stiffness: 125,
-            delay: linkType === 'website' ? 0.3 : 0.6,
-            duration: 0.7,
-          }}
-        >
+        <DivGrow delay={linkType === 'website' ? 0.3 : 0.6}>
           <CancelButton onClick={() => setLinkType(null)} />
-        </motion.div>
+        </DivGrow>
       ) : null}
     </>
   );

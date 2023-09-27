@@ -8,6 +8,7 @@ import { FaUserTie } from 'react-icons/fa';
 import { useLoadingContext } from '@/context/loading-context';
 import EditButton from '../edition/edit-button';
 import FileUpload from '../edition/file-upload';
+import DivGrow from '../motion/div-grow';
 
 const PhotoAndUploadPhoto = () => {
   const { edit } = useEditContext();
@@ -27,14 +28,7 @@ const PhotoAndUploadPhoto = () => {
           />
         ) : (
           <>
-            <motion.div
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{
-                type: 'tween',
-                duration: 0.2,
-              }}
-            >
+            <DivGrow type="tween" duration={0.2}>
               {loading ? (
                 <PhotoLoader className="h-24 w-24 rounded-full object-cover border-[0.35rem] border-white shadow-xl" />
               ) : data?.photo ? (
@@ -49,7 +43,7 @@ const PhotoAndUploadPhoto = () => {
               ) : (
                 <FaUserTie size="5rem" />
               )}
-            </motion.div>
+            </DivGrow>
 
             <motion.span
               className="absolute bottom-0 right-0 text-4xl"

@@ -54,16 +54,21 @@ const EditButton = ({
   const handleEdit = () => {
     updateEdit(component, true);
   };
+
+  const classNameTrimmed = `${className} ${isAbsolute ? 'absolute' : ''} ${
+    position === 'lower'
+      ? 'bottom-0 -right-6'
+      : 'top-1 -right-2 sm:top-4 sm:-right-5'
+  }`
+    .trim()
+    .replace('  ', ' ');
+
   return (
     <>
       {isOwner ? (
         edit[component] ? null : (
           <motion.button
-            className={`${className} ${isAbsolute ? 'absolute' : ''} ${
-              position === 'lower'
-                ? 'bottom-0 -right-6'
-                : 'top-1 -right-2 sm:top-4 sm:-right-5'
-            }`}
+            className={classNameTrimmed}
             onClick={handleEdit}
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}

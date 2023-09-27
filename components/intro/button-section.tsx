@@ -49,6 +49,7 @@ const ButtonSection = () => {
           </a>
 
           <a
+            title="LinkedIn"
             className="bg-white p-4 text-gray-700 hover:text-gray-950 flex items-center gap-2 rounded-full focus:scale-[1.15] hover:scale-[1.15] active:scale-105 transition cursor-pointer borderBlack dark:bg-white/10 dark:text-white/60"
             href={data?.linkedin ?? 'https://www.linkedin.com/'}
             target="_blank"
@@ -57,6 +58,7 @@ const ButtonSection = () => {
           </a>
 
           <a
+            title="GitHub"
             className="bg-white p-4 text-gray-700 flex items-center gap-2 text-[1.35rem] rounded-full focus:scale-[1.15] hover:scale-[1.15] hover:text-gray-950 active:scale-105 transition cursor-pointer borderBlack dark:bg-white/10 dark:text-white/60"
             href={data?.github ?? 'https://github.com'}
             target="_blank"

@@ -2,24 +2,23 @@
 
 import { useSectionInView } from '@/lib/hooks';
 import React from 'react';
-import { motion } from 'framer-motion';
 import { PageComponentProps } from '@/types/general';
 import AboutSection from './intro/about-section';
 import { useEditContext } from '@/context/edit-context';
 import EditText from './edition/edit-text';
+import ContainerSlide from './motion/container-slide';
 
 const About = ({ id }: PageComponentProps) => {
   const { ref } = useSectionInView('About');
   const { edit } = useEditContext();
 
   return (
-    <motion.section
+    <ContainerSlide
       ref={ref}
       className="mb-28 max-w-[50rem] w-full text-center leading-8 sm:mb-40 scroll-mt-28 px-2"
-      initial={{ opacity: 0, y: 100 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.175 }}
       id="about"
+      slide="down-up"
+      delay={0.175}
     >
       {edit.about ? (
         <div className="flex w-full">
@@ -28,7 +27,7 @@ const About = ({ id }: PageComponentProps) => {
       ) : (
         <AboutSection />
       )}
-    </motion.section>
+    </ContainerSlide>
   );
 };
 
