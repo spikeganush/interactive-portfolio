@@ -18,7 +18,7 @@ import type { PutBlobResult } from '@vercel/blob';
 type FileUploadProps = {
   title: string;
   editKey: EditStateKeys;
-  supabaseKey?: SupabaseFieldsKeys;
+  forceEditKey?: SupabaseFieldsKeys;
   acceptedFileTypes: 'image' | 'resume';
   fileSize: number;
   closeEditor?: boolean;
@@ -28,10 +28,45 @@ type FileUploadProps = {
   previousUrl?: string | null;
 };
 
+/**
+ *
+ * @param title string we want to display as title
+ * @requires
+ *
+ * @param editKey EditStateKeys
+ * @requires
+ *
+ * @param forceEditKey forceEditKey
+ * @default editKey
+ *
+ * @param acceptedFileTypes 'image' | 'resume'
+ * @requires
+ *
+ * @param fileSize number
+ * @requires
+ *
+ * @param closeEditor boolean
+ * @default true
+ *
+ * @param showUploadSuccess boolean
+ * @default false
+ *
+ * @param setValue Dispatch<SetStateAction<string>>
+ * @default null
+ *
+ * @param onCloseButtonClick () => void
+ * @default () => updateEdit(editKey, false)
+ *
+ * @param previousUrl string | null
+ * @default null
+ *
+ *
+ */
+
 const FileUpload = ({
   title,
   editKey,
-  supabaseKey = editKey as SupabaseFieldsKeys,
+  forceEditKey = editKey as SupabaseFieldsKeys,
   acceptedFileTypes,
   fileSize,
   closeEditor = true,
@@ -115,7 +150,7 @@ const FileUpload = ({
           if (setValue) {
             setValue(filePath);
           } else {
-            updateAndSaveOneKey(filePath, supabaseKey);
+            updateAndSaveOneKey(filePath, forceEditKey);
           }
           toast.success('File uploaded successfully');
           setUploadSuccess(true);

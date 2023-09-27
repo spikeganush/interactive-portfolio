@@ -27,23 +27,39 @@ const toolbarOptions = {
 };
 
 type EditTextProps = {
-  component: 'intro' | 'about' | 'projects';
+  component: 'intro' | 'about' | 'projects' | 'project';
   project?: boolean;
   returnToProjects?: Dispatch<SetStateAction<string>>;
+  initialValue?: string | null;
 };
 
+/**
+ *
+ * @param component  'intro' | 'about' | 'projects' | 'project'
+ * @param project  boolean
+ * @param returnToProjects  Dispatch<SetStateAction<string>>
+ *
+ * @param initialValue  string | null
+ * @default null
+ *
+ */
 const EditText = ({
   component,
   project = false,
   returnToProjects,
+  initialValue = null,
 }: EditTextProps) => {
   const htmlToDraft =
     typeof window === 'object' && require('html-to-draftjs').default;
   const title = component.charAt(0).toUpperCase() + component.slice(1);
-  const [editorState, setEditorState] = useState<EditorState | null>();
+  const [editorState, setEditorState] = useState<EditorState | null>(null);
   const { updateAndSaveOneKey, data } = usePortfolioDataContext();
   const [newText, setNewText] = useState(
-    component === 'projects' ? '' : data[component] || ''
+    component === 'project'
+      ? initialValue
+      : component === 'projects'
+      ? ''
+      : data[component] || ''
   );
   const { updateEdit } = useEditContext();
 
@@ -52,10 +68,12 @@ const EditText = ({
   useEffect(() => {
     if (!editorState) return;
     setNewText(draftToHtml(convertToRaw(editorState.getCurrentContent())));
-    if (returnToProjects)
+    if (returnToProjects) {
       returnToProjects(
         draftToHtml(convertToRaw(editorState.getCurrentContent()))
       );
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editorState]);
 
@@ -64,9 +82,21 @@ const EditText = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
+  // useEffect(() => {
+  //   console.log('newText', newText);
+  // }, [newText]);
+
   const handleReset = () => {
     if (component === 'projects') {
       setEditorState(() => EditorState.createEmpty());
+    } else if (component === 'project') {
+      setEditorState(() =>
+        EditorState.createWithContent(
+          ContentState.createFromBlockArray(
+            htmlToDraft(initialValue).contentBlocks
+          )
+        )
+      );
     } else {
       setEditorState(() =>
         EditorState.createWithContent(
@@ -79,7 +109,7 @@ const EditText = ({
   };
 
   const handleSave = () => {
-    const cleanText = sanitizeHtml(newText, {
+    const cleanText = sanitizeHtml(newText as string, {
       allowedTags: ['span', 'strong', 'em', 'p', 'ins'],
       allowedAttributes: {
         p: ['class'],

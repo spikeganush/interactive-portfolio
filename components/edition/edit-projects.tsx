@@ -24,8 +24,8 @@ type EditProjectsProps = {
 };
 
 const EditProjects = ({ idToEdit = null }: EditProjectsProps) => {
-  const { updateEdit } = useEditContext();
-  const { data, saveAProject } = usePortfolioDataContext();
+  const { updateEdit, setEdit } = useEditContext();
+  const { data, saveAProject, updateAProject } = usePortfolioDataContext();
   const [title, setTitle] = useState('');
   const [id, setId] = useState('');
   const [position, setPosition] = useState<number | null>(null);
@@ -48,9 +48,35 @@ const EditProjects = ({ idToEdit = null }: EditProjectsProps) => {
     setPosition(data.projects ? data.projects.length + 1 : 1);
   }, [data]);
 
+  useEffect(() => {
+    if (!idToEdit) return;
+    if (!data.projects) return;
+    const project = data.projects.find((project) => project.id === idToEdit);
+
+    if (!project) return;
+    setTitle(project.title);
+    setDescription(project.description);
+    setImage(project.imageUrl as string);
+    setLinks(project.url as string[]);
+    setTags(project.tags);
+    setId(project.id);
+    setPosition(project.position);
+  }, [idToEdit]);
+
+  const closeEdit = () => {
+    if (idToEdit) {
+      setEdit((prev) => ({
+        ...prev,
+        project: { ...prev.project, [idToEdit]: false },
+      }));
+    } else {
+      updateEdit('projects', false);
+    }
+  };
+
   const handleCancelProject = async (close: boolean) => {
     try {
-      if (image) {
+      if (image && !idToEdit) {
         await deleteFile(image);
         setImage('');
         toast.success('Project image deleted');
@@ -59,7 +85,9 @@ const EditProjects = ({ idToEdit = null }: EditProjectsProps) => {
       toast.error('Error deleting project image');
     }
 
-    close && updateEdit('projects', false);
+    if (close) {
+      closeEdit();
+    }
   };
 
   const handleSaveProject = async () => {
@@ -81,8 +109,9 @@ const EditProjects = ({ idToEdit = null }: EditProjectsProps) => {
       error++;
     }
     if (error > 0 || !position) return;
-    const res = await saveAProject(
-      {
+    let res;
+    if (idToEdit) {
+      res = await updateAProject({
         id,
         title,
         description,
@@ -90,12 +119,24 @@ const EditProjects = ({ idToEdit = null }: EditProjectsProps) => {
         url: links,
         tags,
         position,
-      },
-      data.userId as string
-    );
-
+      });
+    } else {
+      res = await saveAProject(
+        {
+          id,
+          title,
+          description,
+          imageUrl: image,
+          url: links,
+          tags,
+          position,
+        },
+        data.userId as string
+      );
+    }
+    console.log(res);
     if (res) {
-      updateEdit('projects', false);
+      closeEdit();
     } else {
       toast.error('Error saving project');
     }
@@ -103,7 +144,10 @@ const EditProjects = ({ idToEdit = null }: EditProjectsProps) => {
 
   return (
     <ContainerSlide>
-      <EditionProjectTitle onClick={() => handleCancelProject(true)} />
+      <EditionProjectTitle
+        onClick={() => handleCancelProject(true)}
+        id={idToEdit}
+      />
       <SectionGrow className="project-section flex flex-col items-center">
         <div className="flex flex-col items-center w-full mb-3">
           <AddProjectTitle title={title} setTitle={setTitle} />
@@ -115,11 +159,22 @@ const EditProjects = ({ idToEdit = null }: EditProjectsProps) => {
           />
 
           <h1 className="text-lg my-3">Description:</h1>
-          <EditText
-            component="projects"
-            returnToProjects={setDescription}
-            project
-          />
+          {idToEdit ? (
+            description && (
+              <EditText
+                component="project"
+                returnToProjects={setDescription}
+                initialValue={description}
+                project
+              />
+            )
+          ) : (
+            <EditText
+              component="projects"
+              returnToProjects={setDescription}
+              project
+            />
+          )}
           <AddTag tags={tags} setTags={setTags} />
           <FileUpload
             acceptedFileTypes="image"

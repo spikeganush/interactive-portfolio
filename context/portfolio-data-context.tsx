@@ -2,13 +2,7 @@
 
 import { BG_COLORS } from '@/constant/general';
 import { DataState, project } from '@/types/general';
-import React, {
-  useState,
-  createContext,
-  useContext,
-  Key,
-  useEffect,
-} from 'react';
+import React, { useState, createContext, useContext, Key } from 'react';
 import toast from 'react-hot-toast';
 
 type PortfolioDataContextProviderProps = {
@@ -21,6 +15,7 @@ type PortfolioDataContextType = {
   updateAndSaveOneKey: (newData: any, key: Key) => Promise<boolean>;
   saveAProject: (project: project, userId: string) => Promise<boolean>;
   deleteAProject: (id: string, userId: string) => Promise<boolean>;
+  updateAProject: (project: project) => Promise<boolean>;
 };
 
 export const PortfolioDataContext =
@@ -47,9 +42,25 @@ export default function PortfolioDataContextProvider({
     email: null,
   });
 
-  useEffect(() => {
-    console.log({ data });
-  }, [data]);
+  const refetchData = async (userId: string): Promise<boolean> => {
+    try {
+      const response = await fetch(`/api/portfolio/${userId}`, {
+        method: 'GET',
+      });
+      if (response.status == 200) {
+        const data = await response.json();
+
+        setData((prev) => ({
+          ...prev,
+          ...data,
+        }));
+        toast.success('Project saved successfully!');
+      }
+      return true;
+    } catch (error) {
+      return false;
+    }
+  };
 
   const updateAndSaveOneKey = async (
     value: any,
@@ -75,6 +86,12 @@ export default function PortfolioDataContextProvider({
     }
   };
 
+  /**
+   *
+   * @param project
+   * @param userId
+   * @returns boolean
+   */
   const saveAProject = async (
     project: project,
     userId: string
@@ -87,19 +104,7 @@ export default function PortfolioDataContextProvider({
         body: JSON.stringify(project),
       });
       if (success.status === 200) {
-        const response = await fetch(`/api/portfolio/${userId}`, {
-          method: 'GET',
-        });
-        if (response.status == 200) {
-          const data = await response.json();
-
-          setData((prev) => ({
-            ...prev,
-            ...data,
-          }));
-          toast.success('Project saved successfully!');
-        }
-        return true;
+        await refetchData(userId);
       }
       return false;
     } catch (error) {
@@ -137,6 +142,30 @@ export default function PortfolioDataContextProvider({
     }
   };
 
+  const updateAProject = async (project: project): Promise<boolean> => {
+    try {
+      const portfolioId = data._id;
+      const projectId = project.id;
+
+      const response = await fetch(`/api/project/${projectId}/${portfolioId}`, {
+        method: 'PUT',
+        body: JSON.stringify(project),
+      });
+      if (response.status === 200) {
+        await refetchData(data.userId as string);
+        toast.success('Project updated successfully!');
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.trace();
+      console.log(error);
+      toast.error('Error updating project');
+      return false;
+    }
+  };
+
   return (
     <PortfolioDataContext.Provider
       value={{
@@ -145,6 +174,7 @@ export default function PortfolioDataContextProvider({
         updateAndSaveOneKey,
         saveAProject,
         deleteAProject,
+        updateAProject,
       }}
     >
       {children}
