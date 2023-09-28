@@ -148,6 +148,7 @@ const EditText = ({
             editorClassName="!h-[260px]"
             toolbarClassName="bg-white dark:bg-white/10"
             toolbar={memoizedToolbarOptions}
+            spellCheck
           />
         ) : null}
       </div>

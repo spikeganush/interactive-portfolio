@@ -144,7 +144,6 @@ const EditProjects = ({ idToEdit = null }: EditProjectsProps) => {
         data.userId as string
       );
     }
-    console.log(res);
     if (res) {
       closeEdit();
     } else {

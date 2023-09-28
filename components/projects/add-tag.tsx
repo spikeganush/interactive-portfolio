@@ -2,6 +2,7 @@ import { SetStateAction, Dispatch, useState } from 'react';
 import SaveButton from '../buttons/save-button';
 import CloseButton from '../buttons/close-buttons';
 import DivGrow from '../motion/div-grow';
+import toast from 'react-hot-toast';
 
 type AddTagProps = {
   tags: string[];
@@ -10,7 +11,12 @@ type AddTagProps = {
 
 const AddTag = ({ tags, setTags }: AddTagProps) => {
   const [tag, setTag] = useState('');
+
   const handleAddTag = () => {
+    if (!tag || tag.trim() === '') {
+      setTag('');
+      return toast.error('Tag cannot be empty');
+    }
     setTags([...tags, tag]);
     setTag('');
   };

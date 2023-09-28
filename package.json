@@ -9,8 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@cloudinary/react": "^1.11.2",
-    "@cloudinary/url-gen": "^1.11.2",
     "@react-email/components": "^0.0.7",
     "@react-email/tailwind": "^0.0.8",
     "@types/draftjs-to-html": "^0.8.1",

@@ -16,6 +16,8 @@ type PortfolioDataContextType = {
   saveAProject: (project: project, userId: string) => Promise<boolean>;
   deleteAProject: (id: string, userId: string) => Promise<boolean>;
   updateAProject: (project: project) => Promise<boolean>;
+  updateSkill: (skill: string) => Promise<boolean>;
+  deleteSkill: (skill: string) => Promise<boolean>;
 };
 
 export const PortfolioDataContext =
@@ -166,6 +168,57 @@ export default function PortfolioDataContextProvider({
     }
   };
 
+  const updateSkill = async (skill: string): Promise<boolean> => {
+    try {
+      // Save to database and wait for it to complete
+      const success = await await fetch(`/api/skill/${data._id}`, {
+        method: 'PUT',
+        body: JSON.stringify(skill),
+      });
+      if (success.status === 200) {
+        // Update local state
+        setData((prev) => {
+          const newSkillsArray = prev.skills
+            ? [...prev.skills, skill]
+            : [skill];
+          return {
+            ...prev,
+            skills: newSkillsArray,
+          };
+        });
+        toast.success('Data saved successfully!');
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      return false;
+    }
+  };
+
+  const deleteSkill = async (skill: string): Promise<boolean> => {
+    try {
+      // Save to database and wait for it to complete
+      const success = await await fetch(`/api/skill/${data._id}`, {
+        method: 'DELETE',
+        body: JSON.stringify(skill),
+      });
+      if (success.status === 200) {
+        // Update local state
+        setData((prev) => ({
+          ...prev,
+          skills: prev.skills ? prev.skills?.filter((s) => s !== skill) : [],
+        }));
+        toast.success('Data saved successfully!');
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      return false;
+    }
+  };
+
   return (
     <PortfolioDataContext.Provider
       value={{
@@ -175,6 +228,8 @@ export default function PortfolioDataContextProvider({
         saveAProject,
         deleteAProject,
         updateAProject,
+        updateSkill,
+        deleteSkill,
       }}
     >
       {children}
