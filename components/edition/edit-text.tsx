@@ -15,9 +15,8 @@ import { useEditContext } from '@/context/edit-context';
 import sanitizeHtml from 'sanitize-html';
 import CancelButton from '../buttons/cancel-button';
 import SaveButton from '../buttons/save-button';
-import CloseButton from '../buttons/close-buttons';
 import ContainerSlide from '../motion/container-slide';
-import DivGrow from '../motion/div-grow';
+import EditTitle from './edit-title';
 
 const toolbarOptions = {
   options: ['inline', 'emoji', 'history'],
@@ -130,13 +129,7 @@ const EditText = ({
   return (
     <ContainerSlide>
       {project ? null : (
-        <DivGrow
-          className="flex justify-center items-center gap-2 mb-3 w-full"
-          delay={0.4}
-        >
-          <h1 className="text-lg">Edit {title}</h1>
-          <CloseButton onClick={closeEditIntro} />
-        </DivGrow>
+        <EditTitle title={`Edit ${title}`} onClick={closeEditIntro} />
       )}
       <div className="h-[340px] sm:w-full">
         {editorState ? (

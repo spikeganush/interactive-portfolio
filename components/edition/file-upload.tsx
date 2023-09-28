@@ -14,6 +14,7 @@ import { BsPatchCheckFill } from 'react-icons/bs';
 import UploadLoader from '../loaders/upload-loader';
 import CloseButton from '../buttons/close-buttons';
 import type { PutBlobResult } from '@vercel/blob';
+import EditTitle from './edit-title';
 
 type FileUploadProps = {
   title: string;
@@ -198,17 +199,12 @@ const FileUpload = ({
         duration: 0.7,
       }}
     >
-      <div className="flex justify-center items-center gap-2 mb-3">
-        <h1 className="text-lg">{title}</h1>
-
-        <CloseButton
-          onClick={() =>
-            onCloseButtonClick
-              ? onCloseButtonClick()
-              : updateEdit(editKey, false)
-          }
-        />
-      </div>
+      <EditTitle
+        title="Edit Skills"
+        onClick={() =>
+          onCloseButtonClick ? onCloseButtonClick() : updateEdit(editKey, false)
+        }
+      />
       <div className="w-full flex flex-col justify-center items-center">
         {loading ? (
           <UploadLoader className="bg-white border-gray-900 border-2 border-dashed rounded-lg pt-10 sm:w-4/6 dark:bg-white/10 h-[148px] sm:h-[120px]" />

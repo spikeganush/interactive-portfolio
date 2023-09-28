@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import ContainerSlide from '../motion/container-slide';
-import EditSkillsTitle from '../skills/edit-skills-title';
 import { useEditContext } from '@/context/edit-context';
 import { usePortfolioDataContext } from '@/context/portfolio-data-context';
 import DivGrow from '../motion/div-grow';
 import CloseButton from '../buttons/close-buttons';
 import SaveButton from '../buttons/save-button';
 import toast from 'react-hot-toast';
+import EditTitle from './edit-title';
 
 const EditSkills = () => {
   const { setEdit } = useEditContext();
@@ -33,7 +33,7 @@ const EditSkills = () => {
 
   return (
     <ContainerSlide>
-      <EditSkillsTitle onClick={closeEditSkillz} />
+      <EditTitle title="Edit Skills" onClick={closeEditSkillz} />
       <DivGrow className="mb-3 w-5/6 sm:w-3/6 mx-auto" delay={0.7}>
         <h1 className="text-lg my-3">Add skills:</h1>
         <input

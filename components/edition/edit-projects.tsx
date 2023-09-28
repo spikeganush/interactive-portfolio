@@ -14,10 +14,10 @@ import AddTag from '../projects/add-tag';
 import Image from 'next/image';
 import CloseButton from '../buttons/close-buttons';
 import { deleteFile } from '@/lib/utils';
-import EditionProjectTitle from '../projects/edition-project-title';
 import ContainerSlide from '../motion/container-slide';
 import SectionGrow from '../motion/section-grow';
 import DivGrow from '../motion/div-grow';
+import EditTitle from './edit-title';
 
 type EditProjectsProps = {
   idToEdit?: string | null;
@@ -153,9 +153,9 @@ const EditProjects = ({ idToEdit = null }: EditProjectsProps) => {
 
   return (
     <ContainerSlide>
-      <EditionProjectTitle
+      <EditTitle
+        title={`${idToEdit ? 'Edit' : 'Add'} Project${id ? '' : 's'}`}
         onClick={() => handleCancelProject(true)}
-        id={idToEdit}
       />
       <SectionGrow className="project-section flex flex-col items-center">
         <div className="flex flex-col items-center w-full mb-3">
