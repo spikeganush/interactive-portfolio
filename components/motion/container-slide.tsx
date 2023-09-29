@@ -5,7 +5,7 @@ type ContainerSlideProps = {
   children?: React.ReactNode;
   slide?: 'up-down' | 'down-up';
   delay?: number;
-  id: string;
+  id?: string;
   className?: string;
 } & React.HTMLProps<HTMLDivElement>;
 
