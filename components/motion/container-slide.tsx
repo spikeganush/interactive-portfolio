@@ -23,6 +23,7 @@ type Ref = HTMLDivElement;
  *
  *
  */
+// eslint-disable-next-line react/display-name
 const ContainerSlide = forwardRef<Ref, ContainerSlideProps>((props, ref) => {
   const { children, slide = 'up-down', delay = 0.2, id, className } = props;
   const y = slide === 'up-down' ? -100 : 100;
