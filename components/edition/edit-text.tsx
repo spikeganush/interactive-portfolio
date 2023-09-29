@@ -26,7 +26,13 @@ const toolbarOptions = {
 };
 
 type EditTextProps = {
-  component: 'intro' | 'about' | 'projects' | 'project';
+  component:
+    | 'intro'
+    | 'about'
+    | 'projects'
+    | 'project'
+    | 'experiences'
+    | 'experience';
   project?: boolean;
   returnToProjects?: Dispatch<SetStateAction<string>>;
   initialValue?: string | null;
@@ -54,9 +60,9 @@ const EditText = ({
   const [editorState, setEditorState] = useState<EditorState | null>(null);
   const { updateAndSaveOneKey, data } = usePortfolioDataContext();
   const [newText, setNewText] = useState(
-    component === 'project'
+    component === 'project' || component === 'experience'
       ? initialValue
-      : component === 'projects'
+      : component === 'projects' || component === 'experiences'
       ? ''
       : data[component] || ''
   );
@@ -86,9 +92,9 @@ const EditText = ({
   // }, [newText]);
 
   const handleReset = () => {
-    if (component === 'projects') {
+    if (component === 'projects' || component === 'experiences') {
       setEditorState(() => EditorState.createEmpty());
-    } else if (component === 'project') {
+    } else if (component === 'project' || component === 'experience') {
       setEditorState(() =>
         EditorState.createWithContent(
           ContentState.createFromBlockArray(

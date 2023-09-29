@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { IoLogoGooglePlaystore, IoLogoAppleAppstore } from 'react-icons/io5';
 import { project } from '@/types/general';
@@ -81,7 +81,7 @@ const Project = ({
             className="group mb-3 sm:mb-8 last:mb-0 w-full sm:w-5/6"
           >
             <section className="bg-gray-100 w-full border border-black/5 rounded-lg overflow-hidden sm:pr-8 relative sm:h-[25rem] hover:bg-gray-200 transition sm:group-even:pl-8 dark:text-white dark:bg-white/10 dark:hover:bg-white/20">
-              {isOwner ? (
+              {isOwner && data.projects && data.projects.length > 0 ? (
                 <div className="flex gap-2 absolute top-2 right-2 z-[5]">
                   <FiEdit
                     size="2rem"

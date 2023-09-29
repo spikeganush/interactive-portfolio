@@ -28,6 +28,7 @@ export default function EditContextProvider({
     project: {},
     skills: false,
     experiences: false,
+    experience: {},
     email: false,
   });
 

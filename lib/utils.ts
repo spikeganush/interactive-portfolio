@@ -77,3 +77,10 @@ export const debounce = <F extends (...args: any[]) => any>(
     timeout = setTimeout(() => func(...args), delay);
   };
 };
+
+export const getId = (): string => {
+  const timestamp = Date.now(); // Get current time in milliseconds since 1970
+  const randomNum = Math.floor(Math.random() * 100000); // Generate a random number between 0 and 99999
+  const uniqueId = `${timestamp}${randomNum}`; // Concatenate the two numbers
+  return uniqueId;
+};

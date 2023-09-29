@@ -128,6 +128,8 @@ export const skillsData = [
   'PostgreSQL',
 ];
 
+export type ExperienceIcons = 'LuGraduationCap' | 'CgWorkAlt' | 'FaReact';
+
 export const experiencesDataIcons: { [key: string]: IconType } = {
   LuGraduationCap: LuGraduationCap,
   CgWorkAlt: CgWorkAlt,

@@ -200,7 +200,7 @@ const FileUpload = ({
       }}
     >
       <EditTitle
-        title="Edit Skills"
+        title={title}
         onClick={() =>
           onCloseButtonClick ? onCloseButtonClick() : updateEdit(editKey, false)
         }

@@ -23,6 +23,7 @@ export type experience = {
   startYear: string;
   endYear?: string;
   icon: string;
+  position: number;
 };
 
 export type userId = { userId: string | null };
@@ -59,6 +60,7 @@ export type EditState = {
   project: Record<string, boolean>;
   skills: boolean;
   experiences: boolean;
+  experience: Record<string, boolean>;
   email: boolean;
 };
 

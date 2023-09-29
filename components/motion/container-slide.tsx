@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { motion } from 'framer-motion';
 
 type ContainerSlideProps = {
   children?: React.ReactNode;
   slide?: 'up-down' | 'down-up';
   delay?: number;
+  id: string;
+  className?: string;
 } & React.HTMLProps<HTMLDivElement>;
+
+type Ref = HTMLDivElement;
 
 /**
  *
@@ -17,20 +21,17 @@ type ContainerSlideProps = {
  * @param delay number
  * @default 0.2
  *
- * @param rest all the div props
+ *
  */
-const ContainerSlide = ({
-  children,
-  slide = 'up-down',
-  delay = 0.2,
-  ...rest // all the div props
-}: ContainerSlideProps) => {
+const ContainerSlide = forwardRef<Ref, ContainerSlideProps>((props, ref) => {
+  const { children, slide = 'up-down', delay = 0.2, id, className } = props;
   const y = slide === 'up-down' ? -100 : 100;
 
   return (
     <motion.section
-      {...(rest as any)}
-      className={`${rest.className ?? 'my-5 w-full'}`}
+      ref={ref}
+      id={id}
+      className={`${className ?? 'my-5 w-full'}`}
       initial={{ opacity: 0, y }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay }}
@@ -38,6 +39,6 @@ const ContainerSlide = ({
       {children}
     </motion.section>
   );
-};
+});
 
 export default ContainerSlide;

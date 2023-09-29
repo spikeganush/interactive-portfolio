@@ -1,7 +1,7 @@
 'use client';
 
 import { BG_COLORS } from '@/constant/general';
-import { DataState, project } from '@/types/general';
+import { DataState, experience, project } from '@/types/general';
 import React, { useState, createContext, useContext, Key } from 'react';
 import toast from 'react-hot-toast';
 
@@ -18,6 +18,12 @@ type PortfolioDataContextType = {
   updateAProject: (project: project) => Promise<boolean>;
   updateSkill: (skill: string) => Promise<boolean>;
   deleteSkill: (skill: string) => Promise<boolean>;
+  saveAnExperience: (
+    experience: experience,
+    userId: string
+  ) => Promise<boolean>;
+  deleteAnExperience: (id: string, userId: string) => Promise<boolean>;
+  updateAnExperience: (experience: experience) => Promise<boolean>;
 };
 
 export const PortfolioDataContext =
@@ -107,9 +113,12 @@ export default function PortfolioDataContextProvider({
       });
       if (success.status === 200) {
         await refetchData(userId);
+        return true;
+      } else {
+        return false;
       }
-      return false;
     } catch (error) {
+      console.log('saveAProject error: ', error);
       return false;
     }
   };
@@ -119,19 +128,13 @@ export default function PortfolioDataContextProvider({
     portfolioId: string
   ): Promise<boolean> => {
     try {
-      const projectsWithoutTheId = data.projects?.filter(
-        (project) => project.id !== id
-      );
-
       const response = await fetch(`/api/project/${id}/${portfolioId}`, {
         method: 'DELETE',
       });
       if (response.status === 200) {
+        await refetchData(data.userId as string);
         toast.success('Project deleted successfully!');
-        setData((prev) => ({
-          ...prev,
-          projects: projectsWithoutTheId ?? null,
-        }));
+
         return true;
       } else {
         return false;
@@ -219,6 +222,88 @@ export default function PortfolioDataContextProvider({
     }
   };
 
+  const saveAnExperience = async (
+    experience: experience,
+    userId: string
+  ): Promise<boolean> => {
+    try {
+      if (!experience && !userId) return false;
+
+      const success = await fetch(`/api/experience/${userId}`, {
+        method: 'POST',
+        body: JSON.stringify(experience),
+      });
+      console.log({ success });
+      if (success.status === 200) {
+        await refetchData(userId);
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      return false;
+    }
+  };
+
+  const deleteAnExperience = async (
+    id: string,
+    portfolioId: string
+  ): Promise<boolean> => {
+    try {
+      const experiencesWithoutTheId = data.experiences?.filter(
+        (experience) => experience.id !== id
+      );
+
+      const response = await fetch(`/api/experience/${id}/${portfolioId}`, {
+        method: 'DELETE',
+      });
+      if (response.status === 200) {
+        toast.success('Project deleted successfully!');
+        setData((prev) => ({
+          ...prev,
+          experiences: experiencesWithoutTheId ?? null,
+        }));
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.trace();
+      console.log(error);
+      toast.error('Error deleting experience');
+      return false;
+    }
+  };
+
+  const updateAnExperience = async (
+    experience: experience
+  ): Promise<boolean> => {
+    try {
+      const portfolioId = data._id;
+      const experienceId = experience.id;
+
+      const response = await fetch(
+        `/api/experience/${experienceId}/${portfolioId}`,
+        {
+          method: 'PUT',
+          body: JSON.stringify(experience),
+        }
+      );
+      if (response.status === 200) {
+        await refetchData(data.userId as string);
+        toast.success('Project updated successfully!');
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.trace();
+      console.log(error);
+      toast.error('Error updating experience');
+      return false;
+    }
+  };
+
   return (
     <PortfolioDataContext.Provider
       value={{
@@ -230,6 +315,9 @@ export default function PortfolioDataContextProvider({
         updateAProject,
         updateSkill,
         deleteSkill,
+        saveAnExperience,
+        deleteAnExperience,
+        updateAnExperience,
       }}
     >
       {children}

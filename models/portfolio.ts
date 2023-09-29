@@ -74,34 +74,47 @@ const portfolioSchema = new Schema({
     type: [String],
     required: [false],
   },
-  experience: [
-    {
-      logo: {
-        type: String,
-        required: [false],
+  experiences:
+    [
+      {
+        id: {
+          type: String,
+          required: [false],
+        },
+        _id: {
+          type: Schema.Types.ObjectId,
+          required: [false],
+        },
+        icon: {
+          type: String,
+          required: [false],
+        },
+        title: {
+          type: String,
+          required: [false],
+        },
+        location: {
+          type: String,
+          required: [false],
+        },
+        description: {
+          type: String,
+          required: [false],
+        },
+        startYear: {
+          type: String,
+          required: [false],
+        },
+        endYear: {
+          type: String,
+          required: [false],
+        },
+        position: {
+          type: Number,
+          required: [false],
+        },
       },
-      title: {
-        type: String,
-        required: [false],
-      },
-      location: {
-        type: String,
-        required: [false],
-      },
-      description: {
-        type: String,
-        required: [false],
-      },
-      startYear: {
-        type: String,
-        required: [false],
-      },
-      endYear: {
-        type: String,
-        required: [false],
-      },
-    },
-  ],
+    ] || null,
   email: {
     type: String,
     required: [false],

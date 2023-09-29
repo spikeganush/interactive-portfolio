@@ -13,7 +13,7 @@ import { usePortfolioDataContext } from '@/context/portfolio-data-context';
 import AddTag from '../projects/add-tag';
 import Image from 'next/image';
 import CloseButton from '../buttons/close-buttons';
-import { deleteFile } from '@/lib/utils';
+import { deleteFile, getId } from '@/lib/utils';
 import ContainerSlide from '../motion/container-slide';
 import SectionGrow from '../motion/section-grow';
 import DivGrow from '../motion/div-grow';
@@ -37,9 +37,7 @@ const EditProjects = ({ idToEdit = null }: EditProjectsProps) => {
 
   useEffect(() => {
     if (idToEdit) return;
-    const timestamp = Date.now(); // Get current time in milliseconds since 1970
-    const randomNum = Math.floor(Math.random() * 100000); // Generate a random number between 0 and 99999
-    const uniqueId = `${timestamp}${randomNum}`; // Concatenate the two numbers
+    const uniqueId = getId();
     setId(uniqueId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -61,6 +59,7 @@ const EditProjects = ({ idToEdit = null }: EditProjectsProps) => {
     setTags(project.tags);
     setId(project.id);
     setPosition(project.position);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idToEdit]);
 
   const closeEdit = () => {
@@ -101,49 +100,37 @@ const EditProjects = ({ idToEdit = null }: EditProjectsProps) => {
   };
 
   const handleSaveProject = async () => {
-    let error = 0;
-    if (title === '') {
-      toast.error('Please enter a title');
-      error++;
+    const validationErrors = [];
+
+    if (title === '') validationErrors.push('Please enter a title');
+    if (description === '<p></p>\n')
+      validationErrors.push('Please enter a description');
+    if (image === '') validationErrors.push('Please upload an image');
+    if (tags.length === 0) validationErrors.push('Please add at least one tag');
+
+    if (validationErrors.length > 0 || !position) {
+      validationErrors.forEach((error) => toast.error(error));
+      return;
     }
-    if (description === '<p></p>\n') {
-      toast.error('Please enter a description');
-      error++;
-    }
-    if (image === '') {
-      toast.error('Please upload an image');
-      error++;
-    }
-    if (tags.length === 0) {
-      toast.error('Please add at least one tag');
-      error++;
-    }
-    if (error > 0 || !position) return;
-    let res;
+
+    const projectData = {
+      id,
+      title,
+      description,
+      imageUrl: image,
+      url: links,
+      tags,
+      position,
+    };
+
+    let res: boolean;
+
     if (idToEdit) {
-      res = await updateAProject({
-        id,
-        title,
-        description,
-        imageUrl: image,
-        url: links,
-        tags,
-        position,
-      });
+      res = await updateAProject(projectData);
     } else {
-      res = await saveAProject(
-        {
-          id,
-          title,
-          description,
-          imageUrl: image,
-          url: links,
-          tags,
-          position,
-        },
-        data.userId as string
-      );
+      res = await saveAProject(projectData, data.userId as string);
     }
+
     if (res) {
       closeEdit();
     } else {

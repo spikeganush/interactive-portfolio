@@ -21,7 +21,7 @@ const EditTitle = ({
 }: EditTitleProps) => {
   return (
     <DivGrow className={className} delay={0.4}>
-      <h1 className="text-lg">{title}</h1>
+      <h1 className="text-3xl">{title}</h1>
       <CloseButton onClick={onClick} />
     </DivGrow>
   );
