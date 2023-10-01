@@ -43,6 +43,35 @@ const EditExperiences = ({ idToEdit = null }: EditExperiencesProps) => {
     setPosition(data.experiences ? data.experiences.length + 1 : 1);
   }, [data]);
 
+  useEffect(() => {
+    if (!idToEdit) return;
+    if (!data.experiences) return;
+    const experience = data.experiences.find(
+      (experience) => experience.id === idToEdit
+    );
+
+    if (!experience) return;
+    setTitle(experience.title);
+    setDescription(experience.description);
+    setStartYear(experience.startYear);
+    setEndYear(experience.endYear || '');
+    setLocation(experience.location);
+    setIcon(experience.icon as ExperienceIcons);
+    setId(experience.id);
+    setPosition(experience.position);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [idToEdit]);
+
+  const closeEdit = () => {
+    if (idToEdit) {
+      setEdit((prev) => ({
+        ...prev,
+        experience: { ...prev.experience, [idToEdit]: false },
+      }));
+    } else {
+      setEdit((prev) => ({ ...prev, experiences: false }));
+    }
+  };
   const handleCancel = () => {
     setEdit((prev) => ({ ...prev, experiences: false }));
   };
@@ -78,7 +107,7 @@ const EditExperiences = ({ idToEdit = null }: EditExperiencesProps) => {
     }
 
     if (res) {
-      setEdit((prev) => ({ ...prev, experiences: false }));
+      closeEdit();
     } else {
       toast.error('Error saving experience');
     }
@@ -87,8 +116,8 @@ const EditExperiences = ({ idToEdit = null }: EditExperiencesProps) => {
   return (
     <ContainerSlide>
       <EditTitle
-        title="Edit experiences"
-        onClick={() => setEdit((prev) => ({ ...prev, experiences: false }))}
+        title={`${idToEdit ? 'Edit' : 'Add'} Experience`}
+        onClick={closeEdit}
       />
       <SectionGrow className="experience-section flex flex-col items-center">
         <AddProjectTitle
@@ -109,7 +138,7 @@ const EditExperiences = ({ idToEdit = null }: EditExperiencesProps) => {
           setYearEnd={setEndYear}
         />
         <h1 className="text-lg my-3">Description:</h1>
-        <div className="w-full sm:w-4/6">
+        <div className={`w-full ${idToEdit ? 'sm:w-full' : 'sm:w-4/6'}`}>
           {idToEdit ? (
             description && (
               <EditText

@@ -78,7 +78,6 @@ const EditProjects = ({ idToEdit = null }: EditProjectsProps) => {
       if (image && !idToEdit) {
         await deleteFile(image);
         setImage('');
-        toast.success('Project image deleted');
       }
     } catch (error) {
       toast.error('Error deleting project image');

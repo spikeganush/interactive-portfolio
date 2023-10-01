@@ -138,6 +138,7 @@ export const experiencesDataIcons: { [key: string]: IconType } = {
 
 export const experiencesData = [
   {
+    id: '1',
     title: 'Bachelor in Mobile App Development',
     location: 'Sydney, Australia',
     description: 'I graduated after 3 years of studying at AIT.',
@@ -146,6 +147,7 @@ export const experiencesData = [
     endYear: '2022',
   },
   {
+    id: '2',
     title: 'Full-Stack Developer',
     location: 'Sydney, Australia',
     description:
@@ -154,6 +156,7 @@ export const experiencesData = [
     startYear: '2021',
   },
   {
+    id: '3',
     title: 'Full-stack Developer',
     location: 'Sydney, Australia',
     description:
@@ -163,6 +166,7 @@ export const experiencesData = [
     endYear: '2023',
   },
   {
+    id: '4',
     title: 'Full-stack Developer',
     location: 'Sydney, Australia',
     description:

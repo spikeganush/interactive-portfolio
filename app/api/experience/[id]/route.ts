@@ -18,12 +18,10 @@ export const POST = withDatabaseConnection(
       if (!experience) {
         return new Response('Missing experience', { status: 400 });
       }
-      console.log({ id, experience });
       const data = await Portfolio.updateOne(
         { creator: id },
         { $push: { experiences: experience } }
       );
-      console.log({ id, experience, data });
       return new Response(JSON.stringify(data), { status: 200 });
     } catch (error) {
       return new Response('Failed to add experience', { status: 500 });
