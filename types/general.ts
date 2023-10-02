@@ -48,10 +48,6 @@ export type DataState = {
   customUrl: string | null;
 } & userId;
 
-export type SupabaseFields = {
-  creator: string;
-} & DataState;
-
 export type EditState = {
   photo: boolean;
   color: boolean;
@@ -69,4 +65,4 @@ export type EditState = {
 
 export type EditStateKeys = keyof EditState;
 
-export type ForceEditKeys = keyof SupabaseFields;
+export type ForceEditKeys = keyof DataState;

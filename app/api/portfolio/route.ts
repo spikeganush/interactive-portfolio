@@ -28,9 +28,10 @@ export const POST = withDatabaseConnection(async (request: NextRequest) => {
 
       return new Response('Portfolio updated successfully!', { status: 200 });
     } else {
+      const { creator, ...rest } = payload;
       const newPortfolio = new Portfolio({
         creator: payload.userId,
-        ...payload,
+        ...rest,
       });
 
       await newPortfolio.save();
