@@ -23,6 +23,7 @@ export default function Home() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session?.user?.id, pathName]);
+
   return (
     <main className="flex flex-col items-center px-4">
       <Intro />

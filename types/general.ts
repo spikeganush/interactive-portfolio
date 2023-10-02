@@ -30,6 +30,7 @@ export type userId = { userId: string | null };
 
 export type DataState = {
   _id?: string;
+  creator: string | null;
   leftLightBg: string | null;
   rightLightBg: string | null;
   leftDarkBg: string | null;

@@ -34,6 +34,7 @@ export default function PortfolioDataContextProvider({
 }: PortfolioDataContextProviderProps) {
   const [data, setData] = useState<DataState>({
     userId: null,
+    creator: null,
     leftLightBg: BG_COLORS.LEFT_LIGHT,
     rightLightBg: BG_COLORS.RIGHT_LIGHT,
     leftDarkBg: BG_COLORS.LEFT_DARK,

@@ -1,8 +1,8 @@
 'use client';
 
 import { useSession } from 'next-auth/react';
-import { useParams } from 'next/navigation';
 import React, { useState, createContext, useContext, useEffect } from 'react';
+import { usePortfolioDataContext } from './portfolio-data-context';
 
 type IsOwnerContextProviderProps = {
   children: React.ReactNode;
@@ -18,17 +18,18 @@ export default function IsOwnerContextProvider({
   children,
 }: IsOwnerContextProviderProps) {
   const [isOwner, setIsOwner] = useState(false);
-  const params = useParams();
   const { data: session } = useSession();
+  const { data } = usePortfolioDataContext();
 
   useEffect(() => {
     if (!session?.user) return setIsOwner(false);
-    if (session?.user?.id === params.id) {
+    if (session?.user?.id === data.creator) {
       setIsOwner(true);
     } else {
       setIsOwner(false);
     }
-  }, [session?.user, params]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session?.user, data.creator]);
 
   return (
     <IsOwnerContext.Provider
