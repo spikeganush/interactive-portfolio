@@ -19,7 +19,7 @@ import { useEditContext } from '@/context/edit-context';
 import EditExperiences from '../edition/edit-experiences';
 
 const ExperiencesSection = () => {
-  const { ref } = useSectionInView('Experience');
+  const { ref } = useSectionInView('Experience', 0.6);
   const { theme } = useTheme();
   const { data, deleteAnExperience } = usePortfolioDataContext();
   const [experiences, setExperiences] = useState(experiencesData);
@@ -68,11 +68,11 @@ const ExperiencesSection = () => {
             open={open}
           />
         ) : null}
-        <VerticalTimeline lineColor="">
+        <VerticalTimeline lineColor="" animate>
           {experiences.map((item, index) => (
             <VerticalTimelineElement
               key={index}
-              // visible={true} //Temporary, everything is hidden on next 13.5 without that on local
+              visible={true} //Temporary, everything is hidden on next 13.5 without that on local
               contentStyle={{
                 background:
                   theme === 'light' ? '#f3f4f6' : 'rgba(255, 255, 255, 0.05)',
@@ -98,7 +98,10 @@ const ExperiencesSection = () => {
                 fontSize: '1.5rem',
               }}
             >
-              {isOwner && data.experiences && data.experiences.length > 0 ? (
+              {isOwner &&
+              data.experiences &&
+              data.experiences.length > 0 &&
+              !edit.experience[item.id] ? (
                 <EditDeleteButtons
                   handleEdit={() => handleEdit(item.id)}
                   handleDelete={() => {

@@ -2,7 +2,6 @@
 
 import SectionHeading from '../section-heading';
 import { AboutData } from '@/lib/data';
-import sanitizeHtml from 'sanitize-html';
 import EditButton from '../edition/edit-button';
 import { usePortfolioDataContext } from '@/context/portfolio-data-context';
 import { motion } from 'framer-motion';
@@ -30,13 +29,7 @@ const AboutSection = () => {
 
       <motion.span
         dangerouslySetInnerHTML={{
-          __html: sanitizeHtml(data?.about ?? AboutData, {
-            allowedTags: ['span', 'strong', 'em', 'p', 'ins'],
-            allowedAttributes: {
-              p: ['class'],
-              span: ['class'],
-            },
-          }),
+          __html: data?.about ?? AboutData,
         }}
       />
     </motion.div>

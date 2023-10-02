@@ -7,6 +7,9 @@ type ContainerSlideProps = {
   delay?: number;
   id?: string;
   className?: string;
+  dangerouslySetInnerHTML?: {
+    __html: string;
+  };
 } & React.HTMLProps<HTMLDivElement>;
 
 type Ref = HTMLDivElement;
@@ -21,11 +24,23 @@ type Ref = HTMLDivElement;
  * @param delay number
  * @default 0.2
  *
+ * @param id string
  *
+ * @param className string
+ * @default my-5 w-full
+ *
+ * @param dangerouslySetInnerHTML string
  */
 // eslint-disable-next-line react/display-name
 const ContainerSlide = forwardRef<Ref, ContainerSlideProps>((props, ref) => {
-  const { children, slide = 'up-down', delay = 0.2, id, className } = props;
+  const {
+    children,
+    slide = 'up-down',
+    delay = 0.2,
+    id,
+    className,
+    dangerouslySetInnerHTML,
+  } = props;
   const y = slide === 'up-down' ? -100 : 100;
 
   return (
@@ -36,6 +51,7 @@ const ContainerSlide = forwardRef<Ref, ContainerSlideProps>((props, ref) => {
       initial={{ opacity: 0, y }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay }}
+      dangerouslySetInnerHTML={dangerouslySetInnerHTML}
     >
       {children}
     </motion.section>

@@ -1,7 +1,6 @@
 'use client';
 
 import { useEditContext } from '@/context/edit-context';
-import sanitizeHtml from 'sanitize-html';
 import { usePortfolioDataContext } from '@/context/portfolio-data-context';
 import { IntroData } from '@/lib/data';
 import EditButton from '../edition/edit-button';
@@ -21,12 +20,7 @@ const IntroEditIntro = () => {
           className="portfolio-intro mb-10 mt-4 px-4 text-2xl font-medium !leading-[1.5] sm:text-4xl"
           slide="down-up"
           dangerouslySetInnerHTML={{
-            __html: sanitizeHtml(data?.intro ?? IntroData, {
-              allowedTags: ['span', 'strong', 'em', 'p', 'ins'],
-              allowedAttributes: {
-                span: ['class'],
-              },
-            }),
+            __html: data?.intro ?? IntroData,
           }}
         />
       )}

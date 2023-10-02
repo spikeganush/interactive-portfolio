@@ -13,7 +13,6 @@ import { ExperienceIcons } from '@/lib/data';
 import CancelButton from '../buttons/cancel-button';
 import SaveButton from '../buttons/save-button';
 import DivGrow from '../motion/div-grow';
-import { set } from 'mongoose';
 import toast from 'react-hot-toast';
 
 type EditExperiencesProps = {
