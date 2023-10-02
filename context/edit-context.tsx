@@ -30,6 +30,7 @@ export default function EditContextProvider({
     experiences: false,
     experience: {},
     email: false,
+    customUrl: false,
   });
 
   const updateEdit = (key: keyof EditState, value: boolean) => {

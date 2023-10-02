@@ -44,6 +44,7 @@ export type DataState = {
   skills: string[] | null;
   experiences: experience[] | null;
   email: string | null;
+  customUrl: string | null;
 } & userId;
 
 export type SupabaseFields = {
@@ -62,6 +63,7 @@ export type EditState = {
   experiences: boolean;
   experience: Record<string, boolean>;
   email: boolean;
+  customUrl: boolean;
 };
 
 export type EditStateKeys = keyof EditState;

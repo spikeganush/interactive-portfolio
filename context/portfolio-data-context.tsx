@@ -48,6 +48,7 @@ export default function PortfolioDataContextProvider({
     skills: null,
     experiences: null,
     email: null,
+    customUrl: null,
   });
 
   const refetchData = async (userId: string): Promise<boolean> => {
